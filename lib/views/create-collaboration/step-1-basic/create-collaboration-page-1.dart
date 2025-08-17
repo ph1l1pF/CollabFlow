@@ -8,8 +8,17 @@ class BasicCollaborationStep extends StatefulWidget {
     required DateTime deadline,
   })
   onNext;
+  final String initialTitle;
+  final String initialDescription;
+  final DateTime initialDeadline;
 
-  const BasicCollaborationStep({super.key, required this.onNext});
+  const BasicCollaborationStep({
+    super.key,
+    required this.onNext,
+    required this.initialTitle,
+    required this.initialDescription,
+    required this.initialDeadline,
+  });
 
   @override
   State<BasicCollaborationStep> createState() => _BasicCollaborationStepState();
@@ -17,9 +26,17 @@ class BasicCollaborationStep extends StatefulWidget {
 
 class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
   final _formKey = GlobalKey<FormState>();
-  String _title = '';
-  String _description = '';
-  DateTime _deadline = DateTime.now();
+  late String _title;
+  late String _description;
+  late DateTime _deadline;
+
+  @override
+  void initState() {
+    super.initState();
+    _title = widget.initialTitle;
+    _description = widget.initialDescription;
+    _deadline = widget.initialDeadline;
+  }
 
   Future<void> _pickDeadline() async {
     final picked = await showDatePicker(
@@ -59,12 +76,14 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
               validator: (val) =>
                   val == null || val.isEmpty ? 'Titel eingeben' : null,
               onSaved: (val) => _title = val ?? '',
+              initialValue: widget.initialTitle,
             ),
             const SizedBox(height: 16),
             TextFormField(
               decoration: const InputDecoration(labelText: 'Beschreibung'),
               maxLines: 3,
               onSaved: (val) => _description = val ?? '',
+              initialValue: widget.initialDescription,
             ),
             const SizedBox(height: 16),
             ListTile(
@@ -72,6 +91,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
               subtitle: Text(DateFormat('yyyy-MM-dd').format(_deadline)),
               trailing: const Icon(Icons.calendar_today),
               onTap: _pickDeadline,
+              
             ),
             const SizedBox(height: 24),
             ElevatedButton(onPressed: _goNext, child: const Text("Weiter")),

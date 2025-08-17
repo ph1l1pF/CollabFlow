@@ -1,10 +1,20 @@
 import 'package:flutter/material.dart';
 
 class ScriptStep extends StatefulWidget {
-  final void Function({required String scriptContent, required String notes})
-  onNext;
+  final void Function({
+    required String scriptContent,
+    required String notes,
+    required bool next,
+  }) onNext;
+  final String initialScriptContent;
+  final String initialNotes;
 
-  const ScriptStep({super.key, required this.onNext});
+  const ScriptStep({
+    super.key,
+    required this.onNext,
+    required this.initialScriptContent,
+    required this.initialNotes,
+  });
 
   @override
   State<ScriptStep> createState() => _ScriptStepState();
@@ -12,14 +22,39 @@ class ScriptStep extends StatefulWidget {
 
 class _ScriptStepState extends State<ScriptStep> {
   final _formKey = GlobalKey<FormState>();
-  String _scriptContent = '';
-  String _notes = '';
+  late TextEditingController _scriptController;
+  late TextEditingController _notesController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scriptController = TextEditingController(text: widget.initialScriptContent);
+    _notesController = TextEditingController(text: widget.initialNotes);
+  }
+
+  @override
+  void dispose() {
+    _scriptController.dispose();
+    _notesController.dispose();
+    super.dispose();
+  }
 
   void _goNext() {
     if (_formKey.currentState?.validate() ?? false) {
-      _formKey.currentState?.save();
-      widget.onNext(scriptContent: _scriptContent, notes: _notes);
+      widget.onNext(
+        scriptContent: _scriptController.text,
+        notes: _notesController.text,
+        next: true,
+      );
     }
+  }
+
+  void _goBack() {
+    widget.onNext(
+      scriptContent: _scriptController.text,
+      notes: _notesController.text,
+      next: false,
+    );
   }
 
   @override
@@ -31,26 +66,25 @@ class _ScriptStepState extends State<ScriptStep> {
           padding: const EdgeInsets.all(16),
           children: [
             TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Skript',
-                alignLabelWithHint: true,
-                border: OutlineInputBorder(),
-              ),
-              maxLines: 6,
-              onSaved: (val) => _scriptContent = val ?? '',
+              controller: _scriptController,
+              decoration: const InputDecoration(labelText: 'Script'),
+              maxLines: 5,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
             TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Notizen (optional)',
-                alignLabelWithHint: true,
-                border: OutlineInputBorder(),
-              ),
-              maxLines: 4,
-              onSaved: (val) => _notes = val ?? '',
+              controller: _notesController,
+              decoration: const InputDecoration(labelText: 'Notizen'),
+              maxLines: 3,
             ),
             const SizedBox(height: 24),
-            ElevatedButton(onPressed: _goNext, child: const Text("Weiter")),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(onPressed: _goBack, child: const Text('Zurück')),
+                const SizedBox(width: 8),
+                ElevatedButton(onPressed: _goNext, child: const Text('Weiter')),
+              ],
+            ),
           ],
         ),
       ),

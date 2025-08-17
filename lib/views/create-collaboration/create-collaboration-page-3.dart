@@ -2,9 +2,24 @@ import 'package:collabflow/models/collaboration.dart';
 import 'package:flutter/material.dart';
 
 class PartnerStep extends StatefulWidget {
-  final void Function(Partner partner) onNext;
+  final void Function(Partner partner, bool next) onFinish;
+  final String initialName;
+  final String initialEmail;
+  final String initialPhone;
+  final String initialCompanyName;
+  final String initialIndustry;
+  final String initialCustomerNumber;
 
-  const PartnerStep({super.key, required this.onNext});
+  const PartnerStep({
+    super.key,
+    required this.onFinish,
+    required this.initialName,
+    required this.initialEmail,
+    required this.initialPhone,
+    required this.initialCompanyName,
+    required this.initialIndustry,
+    required this.initialCustomerNumber,
+  });
 
   @override
   State<PartnerStep> createState() => _PartnerStepState();
@@ -13,25 +28,47 @@ class PartnerStep extends StatefulWidget {
 class _PartnerStepState extends State<PartnerStep> {
   final _formKey = GlobalKey<FormState>();
 
-  String name = '';
-  String email = '';
-  String phone = '';
-  String companyName = '';
-  String industry = '';
-  String customerNumber = '';
+  late TextEditingController _nameController;
+  late TextEditingController _emailController;
+  late TextEditingController _phoneController;
+  late TextEditingController _companyNameController;
+  late TextEditingController _industryController;
+  late TextEditingController _customerNumberController;
 
-  void _submit() {
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController(text: widget.initialName);
+    _emailController = TextEditingController(text: widget.initialEmail);
+    _phoneController = TextEditingController(text: widget.initialPhone);
+    _companyNameController = TextEditingController(text: widget.initialCompanyName);
+    _industryController = TextEditingController(text: widget.initialIndustry);
+    _customerNumberController = TextEditingController(text: widget.initialCustomerNumber);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    _companyNameController.dispose();
+    _industryController.dispose();
+    _customerNumberController.dispose();
+    super.dispose();
+  }
+
+  void _submit(bool next) {
     if (_formKey.currentState?.validate() ?? false) {
-      _formKey.currentState?.save();
-      widget.onNext(
+      widget.onFinish(
         Partner(
-          name: name,
-          email: email,
-          phone: phone,
-          companyName: companyName,
-          industry: industry,
-          customerNumber: customerNumber,
+          name: _nameController.text,
+          email: _emailController.text,
+          phone: _phoneController.text,
+          companyName: _companyNameController.text,
+          industry: _industryController.text,
+          customerNumber: _customerNumberController.text,
         ),
+        next,
       );
     }
   }
@@ -49,24 +86,26 @@ class _PartnerStepState extends State<PartnerStep> {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            _buildField("Name Ansprechpartner", onSaved: (val) => name = val),
-            _buildField(
-              "E-Mail",
-              keyboardType: TextInputType.emailAddress,
-              onSaved: (val) => email = val,
-            ),
-            _buildField(
-              "Telefonnummer",
-              keyboardType: TextInputType.phone,
-              onSaved: (val) => phone = val,
-            ),
-            _buildField("Firmenname", onSaved: (val) => companyName = val),
-            _buildField("Branche", onSaved: (val) => industry = val),
-            _buildField("Kundennummer", onSaved: (val) => customerNumber = val),
+            _buildField("Name Ansprechpartner", controller: _nameController),
+            _buildField("E-Mail", controller: _emailController, keyboardType: TextInputType.emailAddress),
+            _buildField("Telefonnummer", controller: _phoneController, keyboardType: TextInputType.phone),
+            _buildField("Firmenname", controller: _companyNameController),
+            _buildField("Branche", controller: _industryController),
+            _buildField("Kundennummer", controller: _customerNumberController),
             const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _submit,
-              child: const Text("Fertigstellen"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () => _submit(false),
+                  child: const Text("Zurück"),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: () => _submit(true),
+                  child: const Text("Weiter"),
+                ),
+              ],
             ),
           ],
         ),
@@ -77,17 +116,17 @@ class _PartnerStepState extends State<PartnerStep> {
   Widget _buildField(
     String label, {
     TextInputType keyboardType = TextInputType.text,
-    required void Function(String) onSaved,
+    required TextEditingController controller,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: TextFormField(
+        controller: controller,
         decoration: InputDecoration(
           labelText: label,
           border: const OutlineInputBorder(),
         ),
         keyboardType: keyboardType,
-        onSaved: (val) => onSaved(val ?? ''),
       ),
     );
   }

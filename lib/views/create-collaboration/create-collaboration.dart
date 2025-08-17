@@ -1,6 +1,6 @@
 import 'package:collabflow/models/collaboration.dart';
 import 'package:collabflow/repositories/collaborations-repository.dart';
-import 'package:collabflow/views/create-collaboration/create-collaboration-page-1.dart';
+import 'package:collabflow/views/create-collaboration/step-1-basic/create-collaboration-page-1.dart';
 import 'package:collabflow/views/create-collaboration/create-collaboration-page-2.dart';
 import 'package:collabflow/views/create-collaboration/create-collaboration-page-3.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
   String? _scriptContent;
   String? _notes;
 
-  late Partner _partner;
+  Partner? _partner;
 
   int _currentStep = 0;
 
@@ -40,6 +40,10 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
     setState(() => _currentStep++);
   }
 
+  void _previousStep() {
+    setState(() => _currentStep--);
+  }
+
   void _handleBasicInfo({
     required String title,
     required String description,
@@ -48,6 +52,7 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
     _title = title;
     _description = description;
     _deadline = deadline;
+    
     _nextStep();
   }
 
@@ -64,11 +69,28 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
           builder: (context) {
             switch (_currentStep) {
               case 0:
-                return BasicCollaborationStep(onNext: _handleBasicInfo);
+                return BasicCollaborationStep(
+                  onNext: _handleBasicInfo,
+                  initialTitle: _title ?? '',
+                  initialDescription: _description ?? '',
+                  initialDeadline: _deadline ?? DateTime.now(),
+                );
               case 1:
-                return ScriptStep(onNext: _handleScriptStep);
+                return ScriptStep(
+                  onNext: _handleScriptStep,
+                  initialScriptContent: _scriptContent ?? '',
+                  initialNotes: _notes ?? '',
+                );
               case 2:
-                return PartnerStep(onNext: _handlePartnerStep);
+                return PartnerStep(
+                  onFinish: _handlePartnerStep,
+                  initialName: _partner?.name ?? '',
+                  initialEmail: _partner?.email ?? '',
+                  initialPhone: _partner?.phone ?? '',
+                  initialCompanyName: _partner?.companyName ?? '',
+                  initialIndustry: _partner?.industry ?? '',
+                  initialCustomerNumber: _partner?.customerNumber ?? '',
+                  );
               default:
                 throw Exception("Unknown step $_currentStep");
             }
@@ -78,8 +100,13 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
     );
   }
 
-  void _handlePartnerStep(Partner partner) {
+  void _handlePartnerStep(Partner partner, bool next) {
     _partner = partner;
+
+    if(!next){
+      _previousStep();
+      return;
+    }
 
     final collab = Collaboration(
       title: _title!,
@@ -88,7 +115,14 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
       fee: Fee(amount: 0, currency: 'EUR'),
       //state: CollabState.Accepted,
       requirements: Requirements(requirements: [_notes ?? '']),
-      partner: _partner,
+      partner: _partner ?? Partner(
+        name: '',
+        email: '',
+        phone: '',
+        companyName: '',
+        industry: '',
+        customerNumber: '',
+      ),
       script: Script(content: _scriptContent ?? ''),
     );
     _collaborationsRepository.createCollaboration(collab);
@@ -96,12 +130,19 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
     Navigator.of(context).pop();
   }
 
-  void _handleScriptStep({
+  void _handleScriptStep( {
     required String scriptContent,
     required String notes,
+    required bool next
   }) {
     _scriptContent = scriptContent;
     _notes = notes;
+
+    if(next ){
     _nextStep();
+    }
+    else {
+      _previousStep();
+    }
   }
 }
