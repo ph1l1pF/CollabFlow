@@ -13,5 +13,11 @@ class CollaborationsRepository extends ChangeNotifier {
     _box.add(collaboration);
     notifyListeners();
   }
+
+  void delete(String id) {
+    final collaboration = _box.values.firstWhere((collab) => collab.id == id, orElse: () => throw Exception("Collaboration not found"));
+    _box.delete(collaboration.key);
+    notifyListeners();
+  }
   
 }

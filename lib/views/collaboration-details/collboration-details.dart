@@ -14,7 +14,39 @@ class CollaborationDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(viewModel.collab.title)),
+      appBar: AppBar(
+        title: Text(viewModel.collab.title),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.delete),
+            tooltip: 'Löschen',
+            onPressed: () async {
+              // Löschen bestätigen
+              final confirmed = await showDialog<bool>(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: const Text('Kollaboration löschen?'),
+                  content: const Text('Möchtest du diese Kollaboration wirklich löschen?'),
+                  actions: [
+                    TextButton(
+                      child: const Text('Abbrechen'),
+                      onPressed: () => Navigator.of(ctx).pop(false),
+                    ),
+                    TextButton(
+                      child: const Text('Löschen'),
+                      onPressed: () => Navigator.of(ctx).pop(true),
+                    ),
+                  ],
+                ),
+              );
+              if (confirmed == true) {
+                viewModel.deleteCollaboration();
+                Navigator.of(context).pop();
+              }
+            },
+          ),
+        ],
+      ),
       body: ListView(
         padding: const EdgeInsets.all(12),
         children: [

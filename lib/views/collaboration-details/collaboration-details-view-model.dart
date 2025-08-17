@@ -15,4 +15,8 @@ class CollaborationDetailsViewModel {
       orElse: () => throw Exception("Collaboration not found"),
     );
   }
+
+  void deleteCollaboration() {
+    _collaborationsRepository.delete(collab.id);
+  }
 }

@@ -53,16 +53,29 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
 
   @override
   Widget build(BuildContext context) {
-    switch (_currentStep) {
-      case 0:
-        return BasicCollaborationStep(onNext: _handleBasicInfo);
-      case 1:
-        return ScriptStep(onNext: _handleScriptStep);
-      case 2:
-        return PartnerStep(onNext: _handlePartnerStep);
-      default:
-        throw Exception("Unknown step $_currentStep");
-    }
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Neue Kollaboration'),
+        elevation: 0,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 24.0),
+        child: Builder(
+          builder: (context) {
+            switch (_currentStep) {
+              case 0:
+                return BasicCollaborationStep(onNext: _handleBasicInfo);
+              case 1:
+                return ScriptStep(onNext: _handleScriptStep);
+              case 2:
+                return PartnerStep(onNext: _handlePartnerStep);
+              default:
+                throw Exception("Unknown step $_currentStep");
+            }
+          },
+        ),
+      ),
+    );
   }
 
   void _handlePartnerStep(Partner partner) {
