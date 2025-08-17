@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:uuid/uuid.dart';
 
 part 'collaboration.g.dart';
 
@@ -28,6 +29,9 @@ class Collaboration extends HiveObject {
 
     @HiveField(5)
     Script script;
+
+    @HiveField(6)
+    String id = Uuid().v1().toString();
 
     Collaboration({
         required this.title,

@@ -1,7 +1,11 @@
+import 'package:collabflow/repositories/collaborations-repository.dart';
+import 'package:collabflow/views/collaboration-details/collaboration-details-view-model.dart';
+import 'package:collabflow/views/collaboration-details/collboration-details.dart';
 import 'package:collabflow/views/collaborations-list/view-models/collaboration-list.dart';
 import 'package:collabflow/views/create-collaboration/create-collaboration.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class CollaborationListPage extends StatelessWidget {
   final CollaborationsListViewModel viewModel;
@@ -40,6 +44,7 @@ class CollaborationListPage extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             elevation: 2,
+            
             child: ListTile(
               title: Text(
                 collab.title,
@@ -60,7 +65,15 @@ class CollaborationListPage extends StatelessWidget {
               ),
               trailing: const Icon(Icons.chevron_right),
               onTap: () {
-                // -> später Detailseite öffnen
+                
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CollaborationDetailsPage(
+                      viewModel: CollaborationDetailsViewModel(collaborationsRepository: Provider.of<CollaborationsRepository>(context, listen: false), 
+                      collabId: collab.id)),
+                  ),
+                );
               },
             ),
           );

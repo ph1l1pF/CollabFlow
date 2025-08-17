@@ -17,6 +17,7 @@ class CollaborationsListViewModel extends ChangeNotifier{
         title: collab.title,
         deadline: collab.deadline,
         partner: collab.partner?.companyName ?? 'Unbekannte Brand',
+        id: collab.id,
       );
     }).toList());
 
@@ -26,11 +27,13 @@ class CollaborationSmallViewModel {
   final String title;
   final DateTime deadline;
   final String partner;
+  final String id;
 
   CollaborationSmallViewModel({
     required this.title,
     required this.deadline,
     required this.partner,
+    required this.id
   });
 
 }
