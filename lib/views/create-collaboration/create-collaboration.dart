@@ -67,12 +67,13 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
 
   void _handlePartnerStep(Partner partner) {
     _partner = partner;
+
     final collab = Collaboration(
       title: _title!,
       deadline: _deadline!,
-      platforms: [],
+      //platforms: [],
       fee: Fee(amount: 0, currency: 'EUR'),
-      state: CollabState.Accepted,
+      //state: CollabState.Accepted,
       requirements: Requirements(requirements: [_notes ?? '']),
       partner: _partner,
       script: Script(content: _scriptContent ?? ''),

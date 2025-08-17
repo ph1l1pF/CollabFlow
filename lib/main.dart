@@ -3,13 +3,27 @@ import 'package:collabflow/views/collaborations-list/collaborations-list.dart';
 import 'package:collabflow/views/collaborations-list/view-models/collaboration-list.dart';
 import 'package:collabflow/views/create-collaboration/create-collaboration.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter("collabflow");
+  // Adapter registrieren
+  Hive.registerAdapter(CollaborationAdapter());
+  Hive.registerAdapter(PartnerAdapter());
+  Hive.registerAdapter(ScriptAdapter());
+  Hive.registerAdapter(FeeAdapter());
+  Hive.registerAdapter(RequirementsAdapter());
+  
   runApp(
     MultiProvider(
       providers: [
-        Provider(create: (context) => CollaborationsRepository()),
+        ChangeNotifierProvider(
+      create: (_) => CollaborationsRepository(),
+      child: const MyApp(),
+    )
       ],
       child: const MyApp(),
     ),

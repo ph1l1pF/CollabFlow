@@ -2,8 +2,9 @@
 import 'dart:collection';
 
 import 'package:collabflow/repositories/collaborations-repository.dart';
+import 'package:flutter/material.dart';
 
-class CollaborationsListViewModel {
+class CollaborationsListViewModel extends ChangeNotifier{
 
   final CollaborationsRepository _collaborationsRepository;
 
