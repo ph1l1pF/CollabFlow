@@ -1,9 +1,8 @@
+import 'package:collabflow/models/collaboration.dart';
 import 'package:collabflow/repositories/collaborations-repository.dart';
 import 'package:collabflow/views/collaborations-list/collaborations-list.dart';
 import 'package:collabflow/views/collaborations-list/view-models/collaboration-list.dart';
-import 'package:collabflow/views/create-collaboration/create-collaboration.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +15,8 @@ void main() async{
   Hive.registerAdapter(ScriptAdapter());
   Hive.registerAdapter(FeeAdapter());
   Hive.registerAdapter(RequirementsAdapter());
+
+  await Hive.openBox<Collaboration>('collaborations');
   
   runApp(
     MultiProvider(

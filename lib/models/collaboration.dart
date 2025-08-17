@@ -1,5 +1,7 @@
 import 'package:hive/hive.dart';
 
+part 'collaboration.g.dart';
+
 @HiveType(typeId: 0)
 class Collaboration extends HiveObject {
 
