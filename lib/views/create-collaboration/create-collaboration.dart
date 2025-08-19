@@ -124,6 +124,7 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
         customerNumber: '',
       ),
       script: Script(content: _scriptContent ?? ''),
+      notes: _notes ?? '',
     );
     _collaborationsRepository.createCollaboration(collab);
 

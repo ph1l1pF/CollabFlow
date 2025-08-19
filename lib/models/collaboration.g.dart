@@ -23,13 +23,14 @@ class CollaborationAdapter extends TypeAdapter<Collaboration> {
       requirements: fields[3] as Requirements,
       partner: fields[4] as Partner,
       script: fields[5] as Script,
-    );
+      notes: fields[7] as String,
+    )..id = fields[6] as String;
   }
 
   @override
   void write(BinaryWriter writer, Collaboration obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -41,7 +42,11 @@ class CollaborationAdapter extends TypeAdapter<Collaboration> {
       ..writeByte(4)
       ..write(obj.partner)
       ..writeByte(5)
-      ..write(obj.script);
+      ..write(obj.script)
+      ..writeByte(6)
+      ..write(obj.id)
+      ..writeByte(7)
+      ..write(obj.notes);
   }
 
   @override

@@ -33,6 +33,9 @@ class Collaboration extends HiveObject {
     @HiveField(6)
     String id = Uuid().v1().toString();
 
+    @HiveField(7)
+    String notes;
+
     Collaboration({
         required this.title,
         required this.deadline,
@@ -41,7 +44,8 @@ class Collaboration extends HiveObject {
         //required this.state,
         required this.requirements,
         required this.partner,
-        required this.script
+        required this.script,
+        required this.notes,
     });
 }
 

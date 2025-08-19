@@ -19,4 +19,9 @@ class CollaborationDetailsViewModel {
   void deleteCollaboration() {
     _collaborationsRepository.delete(collab.id);
   }
+
+  void updateCollaboration(Collaboration updatedCollaboration){
+    _collaborationsRepository.updateCollaboration(updatedCollaboration);
+  }
+
 }

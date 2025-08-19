@@ -11,13 +11,15 @@ class BasicCollaborationStep extends StatefulWidget {
   final String initialTitle;
   final String initialDescription;
   final DateTime initialDeadline;
+  String? buttonLabel;
 
-  const BasicCollaborationStep({
+  BasicCollaborationStep({
     super.key,
     required this.onNext,
     required this.initialTitle,
     required this.initialDescription,
     required this.initialDeadline,
+    this.buttonLabel
   });
 
   @override
@@ -94,7 +96,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
               
             ),
             const SizedBox(height: 24),
-            ElevatedButton(onPressed: _goNext, child: const Text("Weiter")),
+            ElevatedButton(onPressed: _goNext, child: Text(widget.buttonLabel ?? 'Weiter')),
           ],
         ),
       ),

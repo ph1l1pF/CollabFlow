@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+  //await Hive.deleteFromDisk();
+  
   await Hive.initFlutter("collabflow");
   // Adapter registrieren
   Hive.registerAdapter(CollaborationAdapter());

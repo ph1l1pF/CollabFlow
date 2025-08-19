@@ -1,18 +1,24 @@
 import 'package:collabflow/models/collaboration.dart';
-import 'package:collabflow/repositories/collaborations-repository.dart';
 import 'package:collabflow/views/collaboration-details/collaboration-details-view-model.dart';
+import 'package:collabflow/views/create-collaboration/create-collaboration-page-2.dart';
+import 'package:collabflow/views/create-collaboration/create-collaboration-page-3.dart';
+import 'package:collabflow/views/create-collaboration/step-1-basic/create-collaboration-page-1.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
-class CollaborationDetailsPage extends StatelessWidget {
-  late CollaborationDetailsViewModel viewModel;
+class CollaborationDetailsPage extends StatefulWidget {
+  final CollaborationDetailsViewModel viewModel;
 
-  CollaborationDetailsPage({super.key, required this.viewModel}) {
-    
-  }
+  const CollaborationDetailsPage({super.key, required this.viewModel});
+
+  @override
+  State<CollaborationDetailsPage> createState() => _CollaborationDetailsPageState();
+}
+
+class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
   @override
   Widget build(BuildContext context) {
+    final viewModel = widget.viewModel;
     return Scaffold(
       appBar: AppBar(
         title: Text(viewModel.collab.title),
@@ -26,7 +32,9 @@ class CollaborationDetailsPage extends StatelessWidget {
                 context: context,
                 builder: (ctx) => AlertDialog(
                   title: const Text('Kollaboration löschen?'),
-                  content: const Text('Möchtest du diese Kollaboration wirklich löschen?'),
+                  content: const Text(
+                    'Möchtest du diese Kollaboration wirklich löschen?',
+                  ),
                   actions: [
                     TextButton(
                       child: const Text('Abbrechen'),
@@ -64,10 +72,40 @@ class CollaborationDetailsPage extends StatelessWidget {
                   fontSize: 18,
                 ),
               ),
+              trailing: IconButton(
+                icon: const Icon(Icons.edit),
+                tooltip: 'Bearbeiten',
+                onPressed: () async {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => BasicCollaborationStep(
+                        initialTitle: viewModel.collab.title,
+                        initialDeadline: viewModel.collab.deadline,
+                        initialDescription: '',
+                        buttonLabel: 'Speichern',
+                        onNext: ({
+                          required String title,
+                          required String description,
+                          required DateTime deadline,
+                        }) {
+                          _handleBasicInfo(
+                            context: context,
+                            title: title,
+                            description: description,
+                            deadline: deadline,
+                          );
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Deadline: ${DateFormat('dd.MM.yyyy').format(viewModel.collab.deadline)}"),
+                  Text(
+                    "Deadline: ${DateFormat('dd.MM.yyyy').format(viewModel.collab.deadline)}",
+                  ),
                   Text("Partner: ${viewModel.collab.partner.name}"),
                 ],
               ),
@@ -78,16 +116,43 @@ class CollaborationDetailsPage extends StatelessWidget {
           ExpansionTile(
             leading: const Icon(Icons.description),
             title: const Text("Beschreibung & Anforderungen"),
+            trailing: IconButton(
+              icon: const Icon(Icons.edit),
+              tooltip: 'Bearbeiten',
+              onPressed: () async {
+                // Beispiel: Editier-Dialog öffnen
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ScriptStep(
+                      initialNotes: viewModel.collab.notes,
+                      initialScriptContent: viewModel.collab.script.content,
+                      onNext: ({
+                        required String scriptContent,
+                        required String notes,
+                        required bool next,
+                      }) {
+                        _handleScriptStep(
+                          context: context,
+                          scriptContent: scriptContent,
+                          notes: notes,
+                          next: next,
+                        );
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
             children: [
               Padding(
                 padding: const EdgeInsets.all(12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    if (viewModel.collab.requirements.requirements.isNotEmpty)
-                      Text(
-                        "Anforderungen:\n${viewModel.collab.requirements.requirements.join("\n")}",
-                      ),
+                    
+                    Text(
+                      "Notizen:\n${viewModel.collab.notes}",
+                    ),
                     const SizedBox(height: 8),
                     if (viewModel.collab.script.content.isNotEmpty)
                       Text("Script: ${viewModel.collab.script.content}"),
@@ -101,12 +166,39 @@ class CollaborationDetailsPage extends StatelessWidget {
           ExpansionTile(
             leading: const Icon(Icons.business),
             title: const Text("Partner"),
+            trailing: IconButton(
+              icon: const Icon(Icons.edit),
+              tooltip: 'Bearbeiten',
+              onPressed: () async {
+                await Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => PartnerStep(
+                      initialCompanyName: viewModel.collab.partner.companyName,
+                      initialEmail: viewModel.collab.partner.email,
+                      initialIndustry: viewModel.collab.partner.industry,
+                      initialName: viewModel.collab.partner.name,
+                      initialPhone: viewModel.collab.partner.phone,
+                      initialCustomerNumber: viewModel.collab.partner.customerNumber,
+                      onFinish: (partner, next) {
+                        _handlePartnerStep(context, partner, next);
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
             children: [
               ListTile(title: Text("Name: ${viewModel.collab.partner.name}")),
-              ListTile(title: Text("Firma: ${viewModel.collab.partner.companyName}")),
-              ListTile(title: Text("Branche: ${viewModel.collab.partner.industry}")),
+              ListTile(
+                title: Text("Firma: ${viewModel.collab.partner.companyName}"),
+              ),
+              ListTile(
+                title: Text("Branche: ${viewModel.collab.partner.industry}"),
+              ),
               ListTile(title: Text("Email: ${viewModel.collab.partner.email}")),
-              ListTile(title: Text("Telefon: ${viewModel.collab.partner.phone}")),
+              ListTile(
+                title: Text("Telefon: ${viewModel.collab.partner.phone}"),
+              ),
             ],
           ),
 
@@ -114,14 +206,69 @@ class CollaborationDetailsPage extends StatelessWidget {
           ExpansionTile(
             leading: const Icon(Icons.euro),
             title: const Text("Konditionen"),
+            trailing: IconButton(
+              icon: const Icon(Icons.edit),
+              tooltip: 'Bearbeiten',
+              onPressed: () async {
+                // await Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (_) => EditFeePage(
+                //       initialFee: viewModel.collab.fee,
+                //       onSave: (fee) {
+                //         viewModel.collab.fee = fee;
+                //         Navigator.of(context).pop();
+                //       },
+                //     ),
+                //   ),
+                // );
+              },
+            ),
             children: [
               ListTile(
-                title: Text("Honorar: ${viewModel.collab.fee.amount} ${viewModel.collab.fee.currency}"),
+                title: Text(
+                  "Honorar: ${viewModel.collab.fee.amount} ${viewModel.collab.fee.currency}",
+                ),
               ),
             ],
           ),
         ],
       ),
     );
+  }
+
+  void _handleBasicInfo({
+    required BuildContext context,
+    required String title,
+    required String description,
+    required DateTime deadline,
+  }) {
+    setState(() {
+      widget.viewModel.collab.title = title;
+      widget.viewModel.collab.deadline = deadline;
+      widget.viewModel.updateCollaboration(widget.viewModel.collab);
+    });
+    Navigator.of(context).pop();
+  }
+
+  void _handleScriptStep({
+    required BuildContext context,
+    required String scriptContent,
+    required String notes,
+    required bool next,
+  }) {
+    setState(() {
+      widget.viewModel.collab.script.content = scriptContent;
+      widget.viewModel.collab.notes = notes;
+      widget.viewModel.updateCollaboration(widget.viewModel.collab);
+    });
+    Navigator.of(context).pop();
+  }
+
+  void _handlePartnerStep(BuildContext context, Partner partner, bool next) {
+    setState(() {
+      widget.viewModel.collab.partner = partner;
+      widget.viewModel.updateCollaboration(widget.viewModel.collab);
+    });
+    Navigator.of(context).pop();
   }
 }
