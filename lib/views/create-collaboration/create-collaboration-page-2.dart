@@ -59,21 +59,25 @@ class _ScriptStepState extends State<ScriptStep> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Form(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Skript & Notizen bearbeiten'),
+        elevation: 0,
+      ),
+      body: Form(
         key: _formKey,
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
             TextFormField(
               controller: _scriptController,
-              decoration: const InputDecoration(labelText: 'Script'),
+              decoration: const InputDecoration(labelText: 'Script (optional)'),
               maxLines: 5,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _notesController,
-              decoration: const InputDecoration(labelText: 'Notizen'),
+              decoration: const InputDecoration(labelText: 'Notizen (optional)'),
               maxLines: 3,
             ),
             const SizedBox(height: 24),

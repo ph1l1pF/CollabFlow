@@ -45,10 +45,15 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
   }
 
   void _handleBasicInfo({
+    required bool next,
     required String title,
     required String description,
     required DateTime deadline,
   }) {
+    if(!next) {
+      Navigator.of(context).pop();
+      return;
+    }
     _title = title;
     _description = description;
     _deadline = deadline;
@@ -59,10 +64,7 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Neue Kollaboration'),
-        elevation: 0,
-      ),
+      
       body: Padding(
         padding: const EdgeInsets.only(top: 24.0),
         child: Builder(

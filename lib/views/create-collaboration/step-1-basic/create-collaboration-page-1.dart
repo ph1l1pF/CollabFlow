@@ -6,12 +6,14 @@ class BasicCollaborationStep extends StatefulWidget {
     required String title,
     required String description,
     required DateTime deadline,
+    required bool next,
   })
   onNext;
   final String initialTitle;
   final String initialDescription;
   final DateTime initialDeadline;
-  String? buttonLabel;
+  String? confirmButtonLabel;
+  String? cancelButtonLabel;
 
   BasicCollaborationStep({
     super.key,
@@ -19,7 +21,7 @@ class BasicCollaborationStep extends StatefulWidget {
     required this.initialTitle,
     required this.initialDescription,
     required this.initialDeadline,
-    this.buttonLabel
+    this.confirmButtonLabel
   });
 
   @override
@@ -56,6 +58,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
     if (_formKey.currentState?.validate() ?? false) {
       _formKey.currentState?.save();
       widget.onNext(
+        next: true,
         title: _title,
         description: _description,
         deadline: _deadline,
@@ -63,17 +66,31 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
     }
   }
 
+  void _goBack() {
+    _formKey.currentState?.save();
+    widget.onNext(
+      next: false,
+      title: _title,
+      description: _description,
+      deadline: _deadline,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Form(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Basisdaten bearbeiten'),
+        elevation: 0,
+      ),
+      body: Form(
         key: _formKey,
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
             TextFormField(
               decoration: const InputDecoration(
-                labelText: 'Titel der Kooperation',
+                labelText: 'Titel der Kooperation (*)',
               ),
               validator: (val) =>
                   val == null || val.isEmpty ? 'Titel eingeben' : null,
@@ -81,22 +98,15 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
               initialValue: widget.initialTitle,
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              decoration: const InputDecoration(labelText: 'Beschreibung'),
-              maxLines: 3,
-              onSaved: (val) => _description = val ?? '',
-              initialValue: widget.initialDescription,
-            ),
-            const SizedBox(height: 16),
             ListTile(
               title: const Text("Deadline"),
-              subtitle: Text(DateFormat('yyyy-MM-dd').format(_deadline)),
+              subtitle: Text(DateFormat('dd.MM.yyyy').format(_deadline)),
               trailing: const Icon(Icons.calendar_today),
               onTap: _pickDeadline,
-              
             ),
             const SizedBox(height: 24),
-            ElevatedButton(onPressed: _goNext, child: Text(widget.buttonLabel ?? 'Weiter')),
+            ElevatedButton(onPressed: _goNext, child: Text(widget.confirmButtonLabel ?? 'Weiter')),
+            ElevatedButton(onPressed: _goBack, child: Text(widget.cancelButtonLabel ?? 'Abbrechen')),
           ],
         ),
       ),

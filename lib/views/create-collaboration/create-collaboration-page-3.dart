@@ -75,8 +75,12 @@ class _PartnerStepState extends State<PartnerStep> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Form(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Partnerdaten bearbeiten'),
+        elevation: 0,
+      ),
+      body: Form(
         key: _formKey,
         child: ListView(
           padding: const EdgeInsets.all(16),
@@ -123,7 +127,7 @@ class _PartnerStepState extends State<PartnerStep> {
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
-          labelText: label,
+          labelText: label + ' (optional)',
           border: const OutlineInputBorder(),
         ),
         keyboardType: keyboardType,
