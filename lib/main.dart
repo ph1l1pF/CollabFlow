@@ -17,6 +17,7 @@ void main() async{
   Hive.registerAdapter(ScriptAdapter());
   Hive.registerAdapter(FeeAdapter());
   Hive.registerAdapter(RequirementsAdapter());
+  Hive.registerAdapter(CollabStateAdapter());
 
   await Hive.openBox<Collaboration>('collaborations');
   

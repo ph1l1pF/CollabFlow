@@ -18,9 +18,6 @@ class Collaboration extends HiveObject {
     @HiveField(2)
     Fee fee;
 
-    // @HiveField(4)
-    // CollabState state;
-
     @HiveField(3)
     Requirements requirements;
     
@@ -36,16 +33,19 @@ class Collaboration extends HiveObject {
     @HiveField(7)
     String notes;
 
+    @HiveField(8)
+    CollabState state;
+
     Collaboration({
         required this.title,
         required this.deadline,
         //required this.platforms,
         required this.fee,
-        //required this.state,
         required this.requirements,
         required this.partner,
         required this.script,
         required this.notes,
+        required this.state,
     });
 }
 
@@ -91,10 +91,6 @@ enum Platforms {
     Instagram, Tiktok, Youtube, Facebook, LinkedIn, Snapchat, Pinterest
 }
 
-enum CollabState {
-   Accepted, Rejected, ContentCreated, ContentApproved, Completed
-}
-
 @HiveType(typeId: 3)
 class Requirements {
   @HiveField(0)
@@ -111,4 +107,22 @@ class Fee {
     @HiveField(1)
     final String currency;
     Fee({required this.amount, required this.currency});
+}
+
+@HiveType(typeId: 5)
+enum CollabState {
+  @HiveField(0)
+  FirstTalks,
+  @HiveField(1)
+  ContractToSign,
+  @HiveField(2)
+  ScriptToProduce,
+  @HiveField(3)
+  InProduction,
+  @HiveField(4)
+  ContentEditing,
+  @HiveField(5)
+  ContentFeedback,
+  @HiveField(6)
+  Finished
 }

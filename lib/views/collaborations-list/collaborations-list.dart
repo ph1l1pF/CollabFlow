@@ -53,6 +53,7 @@ class CollaborationListPage extends StatelessWidget {
                   elevation: 2,
                   
                   child: ListTile(
+                    leading: Icon(collab.stateIcon, color: Colors.blue),
                     title: Text(
                       collab.title,
                       style: const TextStyle(

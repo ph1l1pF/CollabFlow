@@ -24,13 +24,14 @@ class CollaborationAdapter extends TypeAdapter<Collaboration> {
       partner: fields[4] as Partner,
       script: fields[5] as Script,
       notes: fields[7] as String,
+      state: fields[8] as CollabState,
     )..id = fields[6] as String;
   }
 
   @override
   void write(BinaryWriter writer, Collaboration obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -46,7 +47,9 @@ class CollaborationAdapter extends TypeAdapter<Collaboration> {
       ..writeByte(6)
       ..write(obj.id)
       ..writeByte(7)
-      ..write(obj.notes);
+      ..write(obj.notes)
+      ..writeByte(8)
+      ..write(obj.state);
   }
 
   @override
@@ -210,6 +213,70 @@ class FeeAdapter extends TypeAdapter<Fee> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is FeeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class CollabStateAdapter extends TypeAdapter<CollabState> {
+  @override
+  final int typeId = 5;
+
+  @override
+  CollabState read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return CollabState.FirstTalks;
+      case 1:
+        return CollabState.ContractToSign;
+      case 2:
+        return CollabState.ScriptToProduce;
+      case 3:
+        return CollabState.InProduction;
+      case 4:
+        return CollabState.ContentEditing;
+      case 5:
+        return CollabState.ContentFeedback;
+      case 6:
+        return CollabState.Finished;
+      default:
+        return CollabState.FirstTalks;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, CollabState obj) {
+    switch (obj) {
+      case CollabState.FirstTalks:
+        writer.writeByte(0);
+        break;
+      case CollabState.ContractToSign:
+        writer.writeByte(1);
+        break;
+      case CollabState.ScriptToProduce:
+        writer.writeByte(2);
+        break;
+      case CollabState.InProduction:
+        writer.writeByte(3);
+        break;
+      case CollabState.ContentEditing:
+        writer.writeByte(4);
+        break;
+      case CollabState.ContentFeedback:
+        writer.writeByte(5);
+        break;
+      case CollabState.Finished:
+        writer.writeByte(6);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CollabStateAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

@@ -1,4 +1,5 @@
 import 'package:collabflow/models/collaboration.dart';
+import 'package:collabflow/utils/collaboration-state-utils.dart';
 import 'package:collabflow/views/collaboration-details/collaboration-details-view-model.dart';
 import 'package:collabflow/views/create-collaboration/create-collaboration-page-2.dart';
 import 'package:collabflow/views/create-collaboration/create-collaboration-page-3.dart';
@@ -53,6 +54,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                               initialTitle: viewModel.collab.title,
                               initialDeadline: viewModel.collab.deadline,
                               initialFee: viewModel.collab.fee.amount,
+                              initialState: viewModel.collab.state,
                               initialDescription: '',
                               confirmButtonLabel: 'Speichern',
                               onNext: ({
@@ -61,6 +63,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                                 required String description,
                                 required DateTime deadline,
                                 required double fee,
+                                required CollabState state,
                               }) {
                                 _handleBasicInfo(
                                   next: next,
@@ -68,7 +71,8 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                                   title: title,
                                   description: description,
                                   deadline: deadline,
-                                  fee: fee
+                                  fee: fee,
+                                  state: state,
                                 );
                               },
                             ),
@@ -79,20 +83,46 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Deadline: ${DateFormat('dd.MM.yyyy').format(viewModel.collab.deadline)}",
-                        ),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: 10), // Abstand erhöht
                         Row(
                           children: [
-                            const Icon(Icons.euro, color: Colors.green, size: 20),
+                            const Icon(Icons.calendar_today, size: 18, color: Colors.blueGrey),
                             const SizedBox(width: 6),
                             Text(
-                              "${NumberFormat("#,##0.00", "de_DE").format(viewModel.collab.fee.amount)}",
+                              "Deadline: ${DateFormat('dd.MM.yyyy').format(viewModel.collab.deadline)}",
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10), // Abstand erhöht
+                        Row(
+                          children: [
+                            const Icon(Icons.euro, color: Colors.black, size: 20),
+                            const SizedBox(width: 6),
+                            Text(
+                              "${NumberFormat("#,##0.00", "de_DE").format(viewModel.collab.fee.amount)} ${viewModel.collab.fee.currency}",
                               style: const TextStyle(
-                                fontWeight: FontWeight.bold,
                                 fontSize: 16,
+                                fontWeight: FontWeight.bold,
                                 color: Colors.black,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 10), // Abstand erhöht
+                        Row(
+                          children: [
+                            Icon(
+                              CollaborationStateUtils.getStateIcon(viewModel.collab.state),
+                              color: Colors.blue,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              CollaborationStateUtils.getStateLabel(viewModel.collab.state),
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.blueGrey,
                               ),
                             ),
                           ],
@@ -231,32 +261,6 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                     ),
                   ],
                 ),
-
-                // Accordion: Konditionen
-                ExpansionTile(
-                  leading: const Icon(Icons.euro),
-                  title: const Text("Konditionen"),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        tooltip: 'Bearbeiten',
-                        onPressed: () async {
-                          // Editier-Dialog für Konditionen öffnen
-                        },
-                      ),
-                      const Icon(Icons.expand_more), // Chevron
-                    ],
-                  ),
-                  children: [
-                    ListTile(
-                      title: Text(
-                        "Honorar: ${NumberFormat("#,##0.00", "de_DE").format(viewModel.collab.fee.amount)} ${viewModel.collab.fee.currency}",
-                      ),
-                    ),
-                  ],
-                ),
               ],
             ),
           ),
@@ -307,12 +311,14 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
     required String description,
     required DateTime deadline,
     required double fee,
+    required CollabState state,
   }) {
     if(next){
       setState(() {
         widget.viewModel.collab.title = title;
         widget.viewModel.collab.deadline = deadline;
         widget.viewModel.collab.fee = Fee(amount: fee, currency: 'EUR');
+        widget.viewModel.collab.state = state;
         widget.viewModel.updateCollaboration(widget.viewModel.collab);
       });
     }
