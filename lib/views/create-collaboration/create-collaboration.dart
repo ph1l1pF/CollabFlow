@@ -19,6 +19,7 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
   String? _title;
   String? _description;
   DateTime? _deadline;
+  double? _fee;
 
   String? _scriptContent;
   String? _notes;
@@ -49,6 +50,7 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
     required String title,
     required String description,
     required DateTime deadline,
+    required double fee,
   }) {
     if(!next) {
       Navigator.of(context).pop();
@@ -57,6 +59,7 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
     _title = title;
     _description = description;
     _deadline = deadline;
+    _fee = fee;
     
     _nextStep();
   }
@@ -76,6 +79,7 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
                   initialTitle: _title ?? '',
                   initialDescription: _description ?? '',
                   initialDeadline: _deadline ?? DateTime.now(),
+                  initialFee: _fee ?? 0,
                 );
               case 1:
                 return ScriptStep(
@@ -114,7 +118,7 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
       title: _title!,
       deadline: _deadline!,
       //platforms: [],
-      fee: Fee(amount: 0, currency: 'EUR'),
+      fee: Fee(amount: _fee ?? 0, currency: 'EUR'),
       //state: CollabState.Accepted,
       requirements: Requirements(requirements: [_notes ?? '']),
       partner: _partner ?? Partner(

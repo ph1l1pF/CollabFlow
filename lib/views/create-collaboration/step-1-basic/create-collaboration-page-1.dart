@@ -6,12 +6,14 @@ class BasicCollaborationStep extends StatefulWidget {
     required String title,
     required String description,
     required DateTime deadline,
+    required double fee,
     required bool next,
   })
   onNext;
   final String initialTitle;
   final String initialDescription;
   final DateTime initialDeadline;
+  final double initialFee;
   String? confirmButtonLabel;
   String? cancelButtonLabel;
 
@@ -21,6 +23,7 @@ class BasicCollaborationStep extends StatefulWidget {
     required this.initialTitle,
     required this.initialDescription,
     required this.initialDeadline,
+    required this.initialFee,
     this.confirmButtonLabel
   });
 
@@ -33,6 +36,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
   late String _title;
   late String _description;
   late DateTime _deadline;
+  late double _fee;
 
   @override
   void initState() {
@@ -40,6 +44,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
     _title = widget.initialTitle;
     _description = widget.initialDescription;
     _deadline = widget.initialDeadline;
+    _fee = widget.initialFee;
   }
 
   Future<void> _pickDeadline() async {
@@ -62,6 +67,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
         title: _title,
         description: _description,
         deadline: _deadline,
+        fee: _fee
       );
     }
   }
@@ -73,6 +79,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
       title: _title,
       description: _description,
       deadline: _deadline,
+      fee: _fee
     );
   }
 
@@ -103,6 +110,21 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
               subtitle: Text(DateFormat('dd.MM.yyyy').format(_deadline)),
               trailing: const Icon(Icons.calendar_today),
               onTap: _pickDeadline,
+            ),
+            const SizedBox(height: 16),
+            TextFormField(
+              decoration: const InputDecoration(
+                labelText: 'Honorar',
+                prefixText: '€ ',
+              ),
+              keyboardType: TextInputType.number,
+              validator: (val) {
+                if (val == null || val.isEmpty) return 'Honorar eingeben';
+                final fee = double.tryParse(val.replaceAll(',', '.'));
+                if (fee == null || fee < 0) return 'Gültigen Betrag eingeben';
+                return null;
+              },
+              onSaved: (val) => _fee = double.tryParse(val!.replaceAll(',', '.')) ?? 0,
             ),
             const SizedBox(height: 24),
             ElevatedButton(onPressed: _goNext, child: Text(widget.confirmButtonLabel ?? 'Weiter')),

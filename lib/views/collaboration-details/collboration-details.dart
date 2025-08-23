@@ -52,6 +52,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                             builder: (_) => BasicCollaborationStep(
                               initialTitle: viewModel.collab.title,
                               initialDeadline: viewModel.collab.deadline,
+                              initialFee: viewModel.collab.fee.amount,
                               initialDescription: '',
                               confirmButtonLabel: 'Speichern',
                               onNext: ({
@@ -59,6 +60,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                                 required String title,
                                 required String description,
                                 required DateTime deadline,
+                                required double fee,
                               }) {
                                 _handleBasicInfo(
                                   next: next,
@@ -66,6 +68,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                                   title: title,
                                   description: description,
                                   deadline: deadline,
+                                  fee: fee
                                 );
                               },
                             ),
@@ -78,6 +81,21 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                       children: [
                         Text(
                           "Deadline: ${DateFormat('dd.MM.yyyy').format(viewModel.collab.deadline)}",
+                        ),
+                        const SizedBox(height: 4),
+                        Row(
+                          children: [
+                            const Icon(Icons.euro, color: Colors.green, size: 20),
+                            const SizedBox(width: 6),
+                            Text(
+                              "${NumberFormat("#,##0.00", "de_DE").format(viewModel.collab.fee.amount)}",
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -142,7 +160,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                                       MaterialPageRoute(
                                         builder: (_) => Scaffold(
                                           appBar: AppBar(
-                                            title: const Text('Skript Vollbild'),
+                                            title: const Text('Skript'),
                                           ),
                                           body: Padding(
                                             padding: const EdgeInsets.all(16),
@@ -234,7 +252,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                   children: [
                     ListTile(
                       title: Text(
-                        "Honorar: ${viewModel.collab.fee.amount} ${viewModel.collab.fee.currency}",
+                        "Honorar: ${NumberFormat("#,##0.00", "de_DE").format(viewModel.collab.fee.amount)} ${viewModel.collab.fee.currency}",
                       ),
                     ),
                   ],
@@ -288,11 +306,13 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
     required String title,
     required String description,
     required DateTime deadline,
+    required double fee,
   }) {
     if(next){
       setState(() {
         widget.viewModel.collab.title = title;
         widget.viewModel.collab.deadline = deadline;
+        widget.viewModel.collab.fee = Fee(amount: fee, currency: 'EUR');
         widget.viewModel.updateCollaboration(widget.viewModel.collab);
       });
     }
