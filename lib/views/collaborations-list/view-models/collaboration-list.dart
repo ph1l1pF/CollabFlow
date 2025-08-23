@@ -1,4 +1,3 @@
-// --- deine Klassen vereinfachtes Beispiel ---
 import 'dart:collection';
 
 import 'package:collabflow/repositories/collaborations-repository.dart';
