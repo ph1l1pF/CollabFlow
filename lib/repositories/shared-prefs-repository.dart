@@ -2,15 +2,26 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefsRepository {
 
-    var key = 'onboardingFinished';
+    var keyOnboardingFinished = 'onboardingFinished';
+    var keyFirstCollaborationAlreadyCreated = 'firstCollaboration';
 
   getOnboardingDone() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(key) ?? false;
+    return prefs.getBool(keyOnboardingFinished) ?? false;
   }
 
-  setOnboardingDone(bool done) async {
+  setOnboardingDone() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(key, done);
+    await prefs.setBool(keyOnboardingFinished, true);
+  }
+
+  isFirstCollaboration() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(keyFirstCollaborationAlreadyCreated) ?? true;
+  }
+
+  setIsFirstCollaboration() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(keyFirstCollaborationAlreadyCreated, true);
   }
 }

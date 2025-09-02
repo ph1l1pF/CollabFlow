@@ -7,7 +7,7 @@ class BasicCollaborationStep extends StatefulWidget {
   final void Function({
     required String title,
     required String description,
-    required DateTime deadline,
+    required Deadline deadline,
     required double fee,
     required CollabState state,
     required bool next,
@@ -15,7 +15,7 @@ class BasicCollaborationStep extends StatefulWidget {
   onNext;
   final String initialTitle;
   final String initialDescription;
-  final DateTime initialDeadline;
+  final Deadline initialDeadline;
   final double initialFee;
   final CollabState initialState;
   String? confirmButtonLabel;
@@ -40,9 +40,10 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
   final _formKey = GlobalKey<FormState>();
   late String _title;
   late String _description;
-  late DateTime _deadline;
+  late Deadline _deadline;
   late double _fee;
   late CollabState _state;
+  bool _notifyOnDeadline = true;
 
   @override
   void initState() {
@@ -52,17 +53,18 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
     _deadline = widget.initialDeadline;
     _fee = widget.initialFee;
     _state = widget.initialState;
+    _notifyOnDeadline = true;
   }
 
   Future<void> _pickDeadline() async {
     final picked = await showDatePicker(
       context: context,
-      initialDate: _deadline,
+      initialDate: _deadline.date,
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
     );
     if (picked != null) {
-      setState(() => _deadline = picked);
+      setState(() => _deadline.date = picked);
     }
   }
 
@@ -75,7 +77,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
         description: _description,
         deadline: _deadline,
         fee: _fee,
-        state: _state
+        state: _state,
       );
     }
   }
@@ -114,11 +116,26 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
               initialValue: widget.initialTitle,
             ),
             const SizedBox(height: 16),
-            ListTile(
-              title: const Text("Deadline"),
-              subtitle: Text(DateFormat('dd.MM.yyyy').format(_deadline)),
-              trailing: const Icon(Icons.calendar_today),
-              onTap: _pickDeadline,
+            Row(
+              children: [
+                Expanded(
+                  child: ListTile(
+                    title: const Text("Deadline"),
+                    subtitle: Text(DateFormat('dd.MM.yyyy').format(_deadline.date)),
+                    trailing: const Icon(Icons.calendar_today),
+                    onTap: _pickDeadline,
+                  ),
+                ),
+                Switch(
+                  value: _notifyOnDeadline,
+                  onChanged: (val) {
+                    setState(() {
+                      _deadline.sendNotification = val;
+                      _deadline.notificationDate = _deadline.date;
+                      });
+                  },
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             TextFormField(

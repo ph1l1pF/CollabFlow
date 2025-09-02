@@ -15,7 +15,7 @@ class CollaborationsListViewModel extends ChangeNotifier{
     UnmodifiableListView<CollaborationSmallViewModel> get collaborations => UnmodifiableListView(_collaborationsRepository.collaborations.map((collab) {
       return CollaborationSmallViewModel(
         title: collab.title,
-        deadline: collab.deadline,
+        deadline: collab.deadline.date,
         partner: collab.partner?.companyName ?? 'Unbekannte Brand',
         id: collab.id,
         stateIcon: CollaborationStateUtils.getStateIcon(collab.state),

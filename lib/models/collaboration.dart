@@ -10,7 +10,7 @@ class Collaboration extends HiveObject {
     String title;
 
     @HiveField(1)
-    DateTime deadline;
+    Deadline deadline;
 
     // @HiveField(2)
     // List<Platforms> platforms;
@@ -125,4 +125,22 @@ enum CollabState {
   ContentFeedback,
   @HiveField(6)
   Finished
+}
+
+@HiveType(typeId: 6)
+class Deadline {
+  @HiveField(0)
+  DateTime date;
+
+  @HiveField(1)
+  bool sendNotification;
+
+  @HiveField(2)
+  DateTime? notificationDate;
+
+  Deadline({required this.date, required this.sendNotification, this.notificationDate});
+
+  static Deadline defaultDeadline() {
+    return Deadline(date: DateTime.now(), sendNotification: false, notificationDate: null);
+  }
 }

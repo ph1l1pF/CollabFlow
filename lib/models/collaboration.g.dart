@@ -18,7 +18,7 @@ class CollaborationAdapter extends TypeAdapter<Collaboration> {
     };
     return Collaboration(
       title: fields[0] as String,
-      deadline: fields[1] as DateTime,
+      deadline: fields[1] as Deadline,
       fee: fields[2] as Fee,
       requirements: fields[3] as Requirements,
       partner: fields[4] as Partner,
@@ -213,6 +213,46 @@ class FeeAdapter extends TypeAdapter<Fee> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is FeeAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class DeadlineAdapter extends TypeAdapter<Deadline> {
+  @override
+  final int typeId = 6;
+
+  @override
+  Deadline read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Deadline(
+      date: fields[0] as DateTime,
+      sendNotification: fields[1] as bool,
+      notificationDate: fields[2] as DateTime?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Deadline obj) {
+    writer
+      ..writeByte(3)
+      ..writeByte(0)
+      ..write(obj.date)
+      ..writeByte(1)
+      ..write(obj.sendNotification)
+      ..writeByte(2)
+      ..write(obj.notificationDate);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is DeadlineAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

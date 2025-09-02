@@ -30,7 +30,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Future<void> onFinish(BuildContext context) async {
     
     final repo  = Provider.of<SharedPrefsRepository>(context, listen: false);
-    await repo.setOnboardingDone(true);
+    await repo.setOnboardingDone();
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => CollaborationListPage(

@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:collabflow/models/collaboration.dart';
 import 'package:collabflow/repositories/collaborations-repository.dart';
+import 'package:collabflow/repositories/notifications-repository.dart';
+import 'package:collabflow/repositories/shared-prefs-repository.dart';
 import 'package:collabflow/views/create-collaboration/step-1-basic/create-collaboration-page-1.dart';
 import 'package:collabflow/views/create-collaboration/create-collaboration-page-2.dart';
 import 'package:collabflow/views/create-collaboration/create-collaboration-page-3.dart';
+import 'package:collabflow/views/notification-permission/notification-permission.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,12 +20,15 @@ class CollaborationWizard extends StatefulWidget {
 
 class _CollaborationWizardState extends State<CollaborationWizard> {
   late CollaborationsRepository _collaborationsRepository;
+  late NotificationsRepository _notificationsRepository;
 
   String? _title;
   String? _description;
-  DateTime? _deadline;
+  Deadline? _deadline;
   double? _fee;
   CollabState _state = CollabState.FirstTalks;
+
+  late SharedPrefsRepository _sharedPrefsRepository;
 
   String? _scriptContent;
   String? _notes;
@@ -33,6 +41,14 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
   void initState() {
     super.initState();
     _collaborationsRepository = Provider.of<CollaborationsRepository>(
+      context,
+      listen: false,
+    );
+    _sharedPrefsRepository = Provider.of<SharedPrefsRepository>(
+      context,
+      listen: false,
+    );
+    _notificationsRepository = Provider.of<NotificationsRepository>(
       context,
       listen: false,
     );
@@ -50,11 +66,11 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
     required bool next,
     required String title,
     required String description,
-    required DateTime deadline,
+    required Deadline deadline,
     required double fee,
     required CollabState state,
   }) {
-    if(!next) {
+    if (!next) {
       Navigator.of(context).pop();
       return;
     }
@@ -63,14 +79,13 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
     _deadline = deadline;
     _fee = fee;
     _state = state;
-    
+
     _nextStep();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: Padding(
         padding: const EdgeInsets.only(top: 24.0),
         child: Builder(
@@ -81,7 +96,7 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
                   onNext: _handleBasicInfo,
                   initialTitle: _title ?? '',
                   initialDescription: _description ?? '',
-                  initialDeadline: _deadline ?? DateTime.now(),
+                  initialDeadline: _deadline ?? Deadline.defaultDeadline(),
                   initialFee: _fee ?? 0,
                   initialState: _state,
                 );
@@ -100,7 +115,7 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
                   initialCompanyName: _partner?.companyName ?? '',
                   initialIndustry: _partner?.industry ?? '',
                   initialCustomerNumber: _partner?.customerNumber ?? '',
-                  );
+                );
               default:
                 throw Exception("Unknown step $_currentStep");
             }
@@ -110,10 +125,10 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
     );
   }
 
-  void _handlePartnerStep(Partner partner, bool next) {
+  void _handlePartnerStep(Partner partner, bool next) async {
     _partner = partner;
 
-    if(!next){
+    if (!next) {
       _previousStep();
       return;
     }
@@ -121,38 +136,57 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
     final collab = Collaboration(
       title: _title!,
       deadline: _deadline!,
-      //platforms: [],
       fee: Fee(amount: _fee ?? 0, currency: 'EUR'),
       state: _state,
       requirements: Requirements(requirements: [_notes ?? '']),
-      partner: _partner ?? Partner(
-        name: '',
-        email: '',
-        phone: '',
-        companyName: '',
-        industry: '',
-        customerNumber: '',
-      ),
+      partner:
+          _partner ??
+          Partner(
+            name: '',
+            email: '',
+            phone: '',
+            companyName: '',
+            industry: '',
+            customerNumber: '',
+          ),
       script: Script(content: _scriptContent ?? ''),
       notes: _notes ?? '',
     );
     _collaborationsRepository.createCollaboration(collab);
 
+    await _requestNotificationPermissionsIfNecessary();
     Navigator.of(context).pop();
   }
 
-  void _handleScriptStep( {
+  Future<void> _requestNotificationPermissionsIfNecessary() async {
+    final enabled = await _notificationsRepository.notificationsEnabled();
+    if (enabled) {
+      return;
+    }
+
+    final isFirstCollaboration = await _sharedPrefsRepository.isFirstCollaboration();
+    if (!isFirstCollaboration) {
+      return;
+    }
+    await _sharedPrefsRepository.setIsFirstCollaboration();
+      await Navigator.of(context).push<bool>(
+        MaterialPageRoute(
+          builder: (context) => NotificationPermissionScreen(),
+        ),
+      );
+  }
+
+  void _handleScriptStep({
     required String scriptContent,
     required String notes,
-    required bool next
+    required bool next,
   }) {
     _scriptContent = scriptContent;
     _notes = notes;
 
-    if(next ){
-    _nextStep();
-    }
-    else {
+    if (next) {
+      _nextStep();
+    } else {
       _previousStep();
     }
   }

@@ -1,5 +1,6 @@
 import 'package:collabflow/models/collaboration.dart';
 import 'package:collabflow/repositories/collaborations-repository.dart';
+import 'package:collabflow/repositories/notifications-repository.dart';
 import 'package:collabflow/repositories/shared-prefs-repository.dart';
 import 'package:collabflow/views/collaborations-list/collaborations-list.dart';
 import 'package:collabflow/views/collaborations-list/view-models/collaboration-list.dart';
@@ -7,6 +8,9 @@ import 'package:collabflow/views/onboarding/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:timezone/data/latest.dart' as tz;
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,9 +23,14 @@ void main() async {
   Hive.registerAdapter(FeeAdapter());
   Hive.registerAdapter(RequirementsAdapter());
   Hive.registerAdapter(CollabStateAdapter());
+  Hive.registerAdapter(DeadlineAdapter());
 
   await Hive.openBox<Collaboration>('collaborations');
 
+  tz.initializeTimeZones();
+
+  final notificationsRepo = NotificationsRepository();
+  await notificationsRepo.init();
   // Prüfe, ob Onboarding abgeschlossen ist
   final sharedPrefsRepository = SharedPrefsRepository();
   final onboardingDone = await sharedPrefsRepository.getOnboardingDone();
@@ -30,10 +39,13 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => CollaborationsRepository(),
+          create: (_) => CollaborationsRepository(notificationsRepo: notificationsRepo),
         ),
         Provider(
           create: (_) => sharedPrefsRepository,
+        ),
+        Provider(
+          create: (_) => notificationsRepo,
         ),
       ],
       child: MyApp(onboardingDone: onboardingDone),

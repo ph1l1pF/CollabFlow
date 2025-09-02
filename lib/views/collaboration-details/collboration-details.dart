@@ -61,7 +61,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                                 required bool next,
                                 required String title,
                                 required String description,
-                                required DateTime deadline,
+                                required Deadline deadline,
                                 required double fee,
                                 required CollabState state,
                               }) {
@@ -89,7 +89,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                             const Icon(Icons.calendar_today, size: 18, color: Colors.blueGrey),
                             const SizedBox(width: 6),
                             Text(
-                              "Deadline: ${DateFormat('dd.MM.yyyy').format(viewModel.collab.deadline)}",
+                              "Deadline: ${DateFormat('dd.MM.yyyy').format(viewModel.collab.deadline.date)}",
                             ),
                           ],
                         ),
@@ -309,7 +309,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
     required BuildContext context,
     required String title,
     required String description,
-    required DateTime deadline,
+    required Deadline deadline,
     required double fee,
     required CollabState state,
   }) {

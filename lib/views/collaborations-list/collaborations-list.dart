@@ -21,7 +21,6 @@ class CollaborationListPage extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
-              // hier CollaborationWizard öffnen
               Navigator.push(
                 context,
                 MaterialPageRoute(
