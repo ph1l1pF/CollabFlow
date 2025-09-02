@@ -40,6 +40,11 @@ void main() async {
         ChangeNotifierProvider(
           create: (_) => CollaborationsRepository(notificationsRepo: notificationsRepo),
         ),
+        ChangeNotifierProvider(
+              create: (context) => CollaborationsListViewModel(
+                collaborationsRepository: Provider.of<CollaborationsRepository>(context, listen: false),
+              ),
+            ),
         Provider(
           create: (_) => sharedPrefsRepository,
         ),
@@ -64,12 +69,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
       ),
       home: onboardingDone
-          ? ChangeNotifierProvider(
-              create: (context) => CollaborationsListViewModel(
-                collaborationsRepository: Provider.of<CollaborationsRepository>(context, listen: false),
-              ),
-              child: CollaborationListPage(),
-            )
+          ? CollaborationListPage()
           : OnboardingScreen(),
     );
   }

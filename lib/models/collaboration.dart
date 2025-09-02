@@ -136,11 +136,11 @@ class Deadline {
   bool sendNotification;
 
   @HiveField(2)
-  DateTime? notificationDate;
+  int? notifyDaysBefore;
 
-  Deadline({required this.date, required this.sendNotification, this.notificationDate});
+  Deadline({required this.date, required this.sendNotification, this.notifyDaysBefore});
 
   static Deadline defaultDeadline() {
-    return Deadline(date: DateTime.now(), sendNotification: false, notificationDate: null);
+    return Deadline(date: DateTime.now(), sendNotification: true, notifyDaysBefore: 1);
   }
 }

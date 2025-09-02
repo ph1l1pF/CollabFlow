@@ -7,26 +7,18 @@ class NotificationsRepository {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  Future<void> _init() async {
-    const androidInit = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const iosInit = DarwinInitializationSettings();
-    const initSettings = InitializationSettings(
-      android: androidInit,
-      iOS: iosInit,
-    );
-
-    await _flutterLocalNotificationsPlugin.initialize(initSettings);
-  }
-
   Future<void> scheduleNotification(Collaboration collaboration) async {
-    if (collaboration.deadline.notificationDate == null) {
+    if (collaboration.deadline.notifyDaysBefore == null) {
       throw Exception("No notification date set for this collaboration");
     }
+    final notificationDate = collaboration.deadline.date.subtract(
+      Duration(days: collaboration.deadline.notifyDaysBefore!),
+    ).add(Duration(hours: 9)); // notification should not come at night
     await _flutterLocalNotificationsPlugin.zonedSchedule(
       _toInt(collaboration.id),
       "Deine Collaboration: ${collaboration.title} ist bald fällig!",
       "Deine Deadline läuft ab",
-      tz.TZDateTime.from(collaboration.deadline.notificationDate!, tz.local),
+      tz.TZDateTime.from(notificationDate, tz.local),
       const NotificationDetails(
         android: AndroidNotificationDetails('collab_channel', 'Collaborations'),
         iOS: DarwinNotificationDetails(),
@@ -56,7 +48,6 @@ class NotificationsRepository {
   }
 
   Future<bool> requestPermission() async {
-    //_init();
     final result = await _flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
           IOSFlutterLocalNotificationsPlugin
@@ -71,6 +62,6 @@ class NotificationsRepository {
   }
 
   static int _toInt(String uuid) {
-    return int.parse(uuid.replaceAll('-', '').substring(0, 16), radix: 16);
+    return uuid.hashCode;
   }
 }

@@ -230,7 +230,7 @@ class DeadlineAdapter extends TypeAdapter<Deadline> {
     return Deadline(
       date: fields[0] as DateTime,
       sendNotification: fields[1] as bool,
-      notificationDate: fields[2] as DateTime?,
+      notifyDaysBefore: fields[2] as int?,
     );
   }
 
@@ -243,7 +243,7 @@ class DeadlineAdapter extends TypeAdapter<Deadline> {
       ..writeByte(1)
       ..write(obj.sendNotification)
       ..writeByte(2)
-      ..write(obj.notificationDate);
+      ..write(obj.notifyDaysBefore);
   }
 
   @override

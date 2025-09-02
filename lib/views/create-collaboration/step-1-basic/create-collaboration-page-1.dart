@@ -11,13 +11,14 @@ class BasicCollaborationStep extends StatefulWidget {
     required double fee,
     required CollabState state,
     required bool next,
-  })
-  onNext;
+  }) onNext;
+
   final String initialTitle;
   final String initialDescription;
   final Deadline initialDeadline;
   final double initialFee;
   final CollabState initialState;
+
   String? confirmButtonLabel;
   String? cancelButtonLabel;
 
@@ -29,7 +30,8 @@ class BasicCollaborationStep extends StatefulWidget {
     required this.initialDeadline,
     required this.initialFee,
     required this.initialState,
-    this.confirmButtonLabel
+    this.confirmButtonLabel,
+    this.cancelButtonLabel,
   });
 
   @override
@@ -38,6 +40,7 @@ class BasicCollaborationStep extends StatefulWidget {
 
 class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
   final _formKey = GlobalKey<FormState>();
+
   late String _title;
   late String _description;
   late Deadline _deadline;
@@ -53,7 +56,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
     _deadline = widget.initialDeadline;
     _fee = widget.initialFee;
     _state = widget.initialState;
-    _notifyOnDeadline = true;
+    _notifyOnDeadline = _deadline.sendNotification;
   }
 
   Future<void> _pickDeadline() async {
@@ -64,7 +67,9 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
       lastDate: DateTime(2100),
     );
     if (picked != null) {
-      setState(() => _deadline.date = picked);
+      setState(() {
+        _deadline.date = picked;
+      });
     }
   }
 
@@ -90,7 +95,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
       description: _description,
       deadline: _deadline,
       fee: _fee,
-      state: _state
+      state: _state,
     );
   }
 
@@ -126,15 +131,45 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
                     onTap: _pickDeadline,
                   ),
                 ),
-                Switch(
-                  value: _notifyOnDeadline,
-                  onChanged: (val) {
-                    setState(() {
-                      _deadline.sendNotification = val;
-                      _deadline.notificationDate = _deadline.date;
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: SwitchListTile(
+                    title: const Text("Benachrichtigen"),
+                    value: _notifyOnDeadline,
+                    onChanged: (val) {
+                      setState(() {
+                        _notifyOnDeadline = val;
+                        _deadline.sendNotification = val;
                       });
-                  },
+                    },
+                  ),
                 ),
+                if (_notifyOnDeadline)
+                  Expanded(
+                    child: DropdownButtonFormField<int>(
+                      decoration: const InputDecoration(
+                        labelText: "Tage vorher",
+                      ),
+                      value: _deadline.notifyDaysBefore,
+                      items: [1, 2, 3, 5, 7].map((days) {
+                        return DropdownMenuItem(
+                          value: days,
+                          child: Text("$days Tage vorher"),
+                        );
+                      }).toList(),
+                      onChanged: (days) {
+                        if (days != null) {
+                          setState(() {
+                            _deadline.notifyDaysBefore = days;
+                          });
+                        }
+                      },
+                    ),
+                  ),
               ],
             ),
             const SizedBox(height: 16),
@@ -150,7 +185,10 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
                 if (fee == null || fee < 0) return 'Gültigen Betrag eingeben';
                 return null;
               },
-              onSaved: (val) => _fee = double.tryParse(val!.replaceAll(',', '.')) ?? 0,
+              onSaved: (val) =>
+                  _fee = double.tryParse(val!.replaceAll(',', '.')) ?? 0,
+              initialValue:
+                  widget.initialFee > 0 ? widget.initialFee.toString() : null,
             ),
             const SizedBox(height: 16),
             DropdownButtonFormField<CollabState>(
@@ -210,8 +248,14 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
               },
             ),
             const SizedBox(height: 24),
-            ElevatedButton(onPressed: _goNext, child: Text(widget.confirmButtonLabel ?? 'Weiter')),
-            ElevatedButton(onPressed: _goBack, child: Text(widget.cancelButtonLabel ?? 'Abbrechen')),
+            ElevatedButton(
+              onPressed: _goNext,
+              child: Text(widget.confirmButtonLabel ?? 'Weiter'),
+            ),
+            ElevatedButton(
+              onPressed: _goBack,
+              child: Text(widget.cancelButtonLabel ?? 'Abbrechen'),
+            ),
           ],
         ),
       ),
