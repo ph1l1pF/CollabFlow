@@ -32,6 +32,13 @@ class CollaborationsRepository extends ChangeNotifier {
     _notificationsRepository.cancelNotification(collaboration);
   }
 
+  void deleteById(String id) {
+    final collaboration = _box.values.firstWhere((collab) => collab.id == id, orElse: () => throw Exception("Collaboration not found"));
+    _box.delete(collaboration.key);
+    notifyListeners();
+    _notificationsRepository.cancelNotification(collaboration);
+  }
+
   void updateCollaboration(Collaboration updatedCollaboration) {
     final index = _box.values.toList().indexWhere((collab) => collab.id == updatedCollaboration.id);
     if (index != -1) {

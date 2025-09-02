@@ -102,52 +102,88 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                   itemCount: filtered.length,
                   itemBuilder: (context, index) {
                     final collab = filtered[index];
-                    return Card(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 8,
+                    return Dismissible(
+                      key: Key(collab.id),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        alignment: Alignment.centerRight,
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        color: Colors.red,
+                        child: const Icon(Icons.delete, color: Colors.white),
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      elevation: 2,
-                      child: ListTile(
-                        leading: Icon(collab.stateIcon, color: Colors.blue),
-                        title: Text(
-                          collab.title,
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                      confirmDismiss: (direction) async {
+                        return await showDialog<bool>(
+                          context: context,
+                          builder: (ctx) => AlertDialog(
+                            title: const Text('Kollaboration löschen?'),
+                            content: const Text('Möchtest du diese Kollaboration wirklich löschen?'),
+                            actions: [
+                              TextButton(
+                                child: const Text('Abbrechen'),
+                                onPressed: () => Navigator.of(ctx).pop(false),
+                              ),
+                              TextButton(
+                                child: const Text('Löschen'),
+                                onPressed: () => Navigator.of(ctx).pop(true),
+                              ),
+                            ],
                           ),
+                        );
+                      },
+                      onDismissed: (direction) {
+                        Provider.of<CollaborationsRepository>(context, listen: false)
+                            .deleteById(collab.id);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Collaboration gelöscht')),
+                        );
+                      },
+                      child: Card(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 8,
                         ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 4),
-                            Text(
-                              "Deadline: ${DateFormat('dd.MM.yyyy').format(collab.deadline)}",
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 2,
+                        child: ListTile(
+                          leading: Icon(collab.stateIcon, color: Colors.blue),
+                          title: Text(
+                            collab.title,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
-                            Text("Brand: ${collab.partner}"),
-                          ],
-                        ),
-                        trailing: const Icon(Icons.chevron_right),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CollaborationDetailsPage(
-                                viewModel: CollaborationDetailsViewModel(
-                                  collaborationsRepository:
-                                      Provider.of<CollaborationsRepository>(
-                                        context,
-                                        listen: false,
-                                      ),
-                                  collabId: collab.id,
+                          ),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 4),
+                              Text(
+                                "Deadline: ${DateFormat('dd.MM.yyyy').format(collab.deadline)}",
+                              ),
+                              Text("Brand: ${collab.partner}"),
+                            ],
+                          ),
+                          trailing: const Icon(Icons.chevron_right),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CollaborationDetailsPage(
+                                  viewModel: CollaborationDetailsViewModel(
+                                    collaborationsRepository:
+                                        Provider.of<CollaborationsRepository>(
+                                          context,
+                                          listen: false,
+                                        ),
+                                    collabId: collab.id,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
                     );
                   },
