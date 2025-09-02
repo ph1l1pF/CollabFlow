@@ -40,6 +40,7 @@ class BasicCollaborationStep extends StatefulWidget {
 
 class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
   final _formKey = GlobalKey<FormState>();
+  final _timelineController = ScrollController();
 
   late String _title;
   late String _description;
@@ -57,6 +58,20 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
     _fee = widget.initialFee;
     _state = widget.initialState;
     _notifyOnDeadline = _deadline.sendNotification;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToSelectedState();
+    });
+  }
+
+  void _scrollToSelectedState() {
+    final index = CollabState.values.indexOf(_state);
+    final offset = (index * 160.0) - (MediaQuery.of(context).size.width / 2) + 40.0;
+    _timelineController.animateTo(
+      offset.clamp(0, _timelineController.position.maxScrollExtent),
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
+    );
   }
 
   Future<void> _pickDeadline() async {
@@ -191,61 +206,56 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
                   widget.initialFee > 0 ? widget.initialFee.toString() : null,
             ),
             const SizedBox(height: 16),
-            DropdownButtonFormField<CollabState>(
-              value: _state,
-              decoration: const InputDecoration(
-                labelText: 'Status',
+            Text(
+              'Status',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            ),
+            const SizedBox(height: 8),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              controller: _timelineController,
+              child: Row(
+                children: CollabState.values.map((state) {
+                  final isSelected = _state == state;
+                  final icon = CollaborationStateUtils.getStateIcon(state);
+                  final label = CollaborationStateUtils.getStateLabel(state);
+
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() => _state = state);
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        _scrollToSelectedState();
+                      });
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                      decoration: BoxDecoration(
+                        color: isSelected ? Colors.blue.shade100 : Colors.grey.shade200,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: isSelected ? Colors.blue : Colors.transparent,
+                          width: 2,
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Icon(icon, color: isSelected ? Colors.blue : Colors.grey),
+                          const SizedBox(height: 4),
+                          Text(
+                            label,
+                            style: TextStyle(
+                              color: isSelected ? Colors.blue : Colors.grey,
+                              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
               ),
-              items: CollabState.values.map((state) {
-                IconData icon;
-                String label;
-                switch (state) {
-                  case CollabState.FirstTalks:
-                    icon = CollaborationStateUtils.getStateIcon(CollabState.FirstTalks);
-                    label = CollaborationStateUtils.getStateLabel(CollabState.FirstTalks);
-                    break;
-                  case CollabState.ContractToSign:
-                    icon = CollaborationStateUtils.getStateIcon(CollabState.ContractToSign);
-                    label = CollaborationStateUtils.getStateLabel(CollabState.ContractToSign);
-                    break;
-                  case CollabState.ScriptToProduce:
-                    icon = CollaborationStateUtils.getStateIcon(CollabState.ScriptToProduce);
-                    label = CollaborationStateUtils.getStateLabel(CollabState.ScriptToProduce);
-                    break;
-                  case CollabState.InProduction:
-                    icon = CollaborationStateUtils.getStateIcon(CollabState.InProduction);
-                    label = CollaborationStateUtils.getStateLabel(CollabState.InProduction);
-                    break;
-                  case CollabState.ContentEditing:
-                    icon = CollaborationStateUtils.getStateIcon(CollabState.ContentEditing);
-                    label = CollaborationStateUtils.getStateLabel(CollabState.ContentEditing);
-                    break;
-                  case CollabState.ContentFeedback:
-                    icon = CollaborationStateUtils.getStateIcon(CollabState.ContentFeedback);
-                    label = CollaborationStateUtils.getStateLabel(CollabState.ContentFeedback);
-                    break;
-                  case CollabState.Finished:
-                    icon = CollaborationStateUtils.getStateIcon(CollabState.Finished);
-                    label = CollaborationStateUtils.getStateLabel(CollabState.Finished);
-                    break;
-                }
-                return DropdownMenuItem(
-                  value: state,
-                  child: Row(
-                    children: [
-                      Icon(icon, color: Colors.blue),
-                      const SizedBox(width: 8),
-                      Text(label),
-                    ],
-                  ),
-                );
-              }).toList(),
-              onChanged: (state) {
-                if (state != null) setState(() => _state = state);
-              },
-              onSaved: (state) {
-                if (state != null) _state = state;
-              },
             ),
             const SizedBox(height: 24),
             ElevatedButton(

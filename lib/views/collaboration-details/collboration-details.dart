@@ -111,6 +111,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                         const SizedBox(height: 10), // Abstand erhöht
                         Row(
                           children: [
+                            Text("Status: ", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.blueGrey.shade700)),
                             Icon(
                               CollaborationStateUtils.getStateIcon(viewModel.collab.state),
                               color: Colors.blue,
