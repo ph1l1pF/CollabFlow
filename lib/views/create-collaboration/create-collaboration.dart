@@ -152,9 +152,10 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
       script: Script(content: _scriptContent ?? ''),
       notes: _notes ?? '',
     );
-    _collaborationsRepository.createCollaboration(collab);
 
     await _requestNotificationPermissionsIfNecessary();
+    _collaborationsRepository.createCollaboration(collab);
+
     Navigator.of(context).pop();
   }
 

@@ -9,9 +9,9 @@ class NotificationPermissionScreen extends StatelessWidget {
   });
 
   Future<void> _requestPermission(BuildContext context) async {
-    final repo = Provider.of<NotificationsRepository>(context);
+    final repo = Provider.of<NotificationsRepository>(context, listen: false);
 
-    if(repo.notificationsEnabled()){
+    if(await repo.notificationsEnabled()){
       return;
     }
 

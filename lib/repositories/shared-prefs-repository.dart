@@ -22,6 +22,6 @@ class SharedPrefsRepository {
 
   setIsFirstCollaboration() async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(keyFirstCollaborationAlreadyCreated, true);
+    await prefs.setBool(keyFirstCollaborationAlreadyCreated, false);
   }
 }

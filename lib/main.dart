@@ -30,7 +30,6 @@ void main() async {
   tz.initializeTimeZones();
 
   final notificationsRepo = NotificationsRepository();
-  await notificationsRepo.init();
   // Prüfe, ob Onboarding abgeschlossen ist
   final sharedPrefsRepository = SharedPrefsRepository();
   final onboardingDone = await sharedPrefsRepository.getOnboardingDone();
@@ -65,10 +64,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
       ),
       home: onboardingDone
-          ? CollaborationListPage(
-              viewModel: CollaborationsListViewModel(
-                collaborationsRepository: Provider.of<CollaborationsRepository>(context),
+          ? ChangeNotifierProvider(
+              create: (context) => CollaborationsListViewModel(
+                collaborationsRepository: Provider.of<CollaborationsRepository>(context, listen: false),
               ),
+              child: CollaborationListPage(),
             )
           : OnboardingScreen(),
     );

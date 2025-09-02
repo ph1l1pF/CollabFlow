@@ -34,10 +34,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
         builder: (context) => CollaborationListPage(
-          viewModel: CollaborationsListViewModel(
-            collaborationsRepository:
-                Provider.of<CollaborationsRepository>(context, listen: false),
-          ),
+          
         ),
       ),
     );

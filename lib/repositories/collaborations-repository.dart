@@ -18,11 +18,11 @@ class CollaborationsRepository extends ChangeNotifier {
 
   void createCollaboration(Collaboration collaboration){
     _box.add(collaboration);
-    notifyListeners();
 
     if(collaboration.deadline.sendNotification) {
       _notificationsRepository.scheduleNotification(collaboration);
     }
+    notifyListeners();
   }
 
   void delete(Collaboration collaboration) {

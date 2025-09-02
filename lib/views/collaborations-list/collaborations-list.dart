@@ -8,9 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class CollaborationListPage extends StatelessWidget {
-  final CollaborationsListViewModel viewModel;
 
-  const CollaborationListPage({super.key, required this.viewModel});
+  const CollaborationListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,68 +23,72 @@ class CollaborationListPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      CollaborationWizard(), // dein Wizard Widget
+                  builder: (context) => CollaborationWizard(),
                 ),
               );
             },
           ),
         ],
       ),
-      body: viewModel.collaborations.isEmpty
-          ? Center(
-              child: Text(
-                "Noch keine Kollaborationen vorhanden.\nErstelle deine erste mit '+'",
-                style: TextStyle(fontSize: 16, color: Colors.grey),
-              ),
-            )
-          : ListView.builder(
-              itemCount: viewModel.collaborations.length,
-              itemBuilder: (context, index) {
-                final collab = viewModel.collaborations[index];
+      body: Consumer<CollaborationsListViewModel>(
+        builder: (context, viewModel, _) {
+          return viewModel.collaborations.isEmpty
+              ? Center(
+                  child: Text(
+                    "Noch keine Kollaborationen vorhanden.\nErstelle deine erste mit '+'",
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                )
+              : ListView.builder(
+                  itemCount: viewModel.collaborations.length,
+                  itemBuilder: (context, index) {
+                    final collab = viewModel.collaborations[index];
 
-                return Card(
-                  margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  elevation: 2,
-                  
-                  child: ListTile(
-                    leading: Icon(collab.stateIcon, color: Colors.blue),
-                    title: Text(
-                      collab.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                    return Card(
+                      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 4),
-                        Text(
-                          "Deadline: ${DateFormat('dd.MM.yyyy').format(collab.deadline)}",
+                      elevation: 2,
+                      child: ListTile(
+                        leading: Icon(collab.stateIcon, color: Colors.blue),
+                        title: Text(
+                          collab.title,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
-                        Text("Brand: ${collab.partner}"),
-                      ],
-                    ),
-                    trailing: const Icon(Icons.chevron_right),
-                    onTap: () {
-                      
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CollaborationDetailsPage(
-                            viewModel: CollaborationDetailsViewModel(collaborationsRepository: Provider.of<CollaborationsRepository>(context, listen: false), 
-                            collabId: collab.id)),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 4),
+                            Text(
+                              "Deadline: ${DateFormat('dd.MM.yyyy').format(collab.deadline)}",
+                            ),
+                            Text("Brand: ${collab.partner}"),
+                          ],
                         ),
-                      );
-                    },
-                  ),
+                        trailing: const Icon(Icons.chevron_right),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => CollaborationDetailsPage(
+                                viewModel: CollaborationDetailsViewModel(
+                                  collaborationsRepository: Provider.of<CollaborationsRepository>(context, listen: false),
+                                  collabId: collab.id,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
                 );
-              },
-            ),
+        },
+      ),
     );
   }
 }
