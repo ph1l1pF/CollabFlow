@@ -24,6 +24,21 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
     );
   }
 
+  Future<void> _openDateRangePicker() async {
+    final now = DateTime.now();
+    final picked = await showDateRangePicker(
+      context: context,
+      firstDate: DateTime(now.year - 3),
+      lastDate: DateTime(now.year + 1),
+      initialDateRange: _selectedRange ??
+          DateTimeRange(start: DateTime(now.year, 1, 1), end: now),
+    );
+    if (!mounted) return;
+    if (picked != null) {
+      setState(() => _selectedRange = picked);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<EarningsOverviewViewModel>(
@@ -63,6 +78,12 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                             title: const Text('PDF'),
                             onTap: () => Navigator.pop(context, 'pdf'),
                           ),
+                          const Divider(height: 0),
+                          ListTile(
+                            leading: const Icon(Icons.close),
+                            title: const Text('Abbrechen'),
+                            onTap: () => Navigator.pop(context, null),
+                          ),
                         ],
                       );
                     },
@@ -83,28 +104,18 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                 child: Row(
                   children: [
                     GestureDetector(
-                      onTap: () async {
-                        final now = DateTime.now();
-                        final picked = await showDateRangePicker(
-                          context: context,
-                          firstDate: DateTime(now.year - 3),
-                          lastDate: DateTime(now.year + 1),
-                          initialDateRange: _selectedRange ??
-                              DateTimeRange(start: DateTime(now.year, 1, 1), end: now),
-                        );
-                        if (!mounted) return;
-                        if (picked != null) {
-                          setState(() => _selectedRange = picked);
-                        }
-                      },
+                      onTap: _openDateRangePicker,
                       child: const Icon(Icons.date_range, size: 20),
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      _selectedRange == null
-                          ? "Alle Zeiträume"
-                          : "${DateFormat('dd.MM.yyyy').format(_selectedRange!.start)} – ${DateFormat('dd.MM.yyyy').format(_selectedRange!.end)}",
-                      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                    GestureDetector(
+                      onTap: _openDateRangePicker,
+                      child: Text(
+                        _selectedRange == null
+                            ? "Alle Zeiträume"
+                            : "${DateFormat('dd.MM.yyyy').format(_selectedRange!.start)} – ${DateFormat('dd.MM.yyyy').format(_selectedRange!.end)}",
+                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                      ),
                     ),
                   ],
                 ),

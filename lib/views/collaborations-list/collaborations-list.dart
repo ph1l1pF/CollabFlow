@@ -134,7 +134,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                                         (context as Element).markNeedsBuild();
                                       },
                                       icon: const Icon(Icons.filter_alt_off),
-                                      label: const Text('Filter entfernen'),
+                                      label: const Text('Alle entfernen'),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
@@ -288,10 +288,11 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                               Text(
                                 "Deadline: ${DateFormat('dd.MM.yyyy').format(collab.deadline)}",
                               ),
-                              Text("Brand: ${collab.partner}"),
+                              if(collab.partner != "") Text("Brand: ${collab.partner}"),
                               const SizedBox(height: 4),
                               Row(
                                 children: [
+                                  Text("Status: "),
                                   Icon(collab.stateIcon, color: Colors.blue, size: 16),
                                   const SizedBox(width: 6),
                                   Text(CollaborationStateUtils.getStateLabel(collab.state)),
