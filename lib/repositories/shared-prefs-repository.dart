@@ -4,6 +4,7 @@ class SharedPrefsRepository {
 
     var keyOnboardingFinished = 'onboardingFinished';
     var keyFirstCollaborationAlreadyCreated = 'firstCollaboration';
+    var keySelectedStates = 'selectedStates';
 
   getOnboardingDone() async {
     final prefs = await SharedPreferences.getInstance();
@@ -23,5 +24,15 @@ class SharedPrefsRepository {
   setIsFirstCollaboration() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(keyFirstCollaborationAlreadyCreated, false);
+  }
+
+  Future<void> saveSelectedStates(List<String> states) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList(keySelectedStates, states);
+  }
+
+  Future<List<String>> loadSelectedStates() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getStringList(keySelectedStates) ?? <String>[];
   }
 }

@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:collabflow/models/collaboration.dart';
 import 'package:collabflow/utils/collaboration-state-utils.dart';
+import 'package:collabflow/repositories/shared-prefs-repository.dart';
 
 class CollaborationListPage extends StatefulWidget {
   const CollaborationListPage({super.key});
@@ -20,9 +21,34 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
   String _searchText = "";
   bool _showSearch = false;
   Set<CollabState> _selectedStates = {};
+  bool _loadingPrefs = true;
 
   @override
+  void initState() {
+    super.initState();
+    _loadSelectedStates();
+  }
+
+  Future<void> _loadSelectedStates() async {
+    final prefs = Provider.of<SharedPrefsRepository>(context, listen: false);
+    final stored = await prefs.loadSelectedStates();
+    final selected = stored
+        .map((s) => int.tryParse(s))
+        .whereType<int>()
+        .where((i) => i >= 0 && i < CollabState.values.length)
+        .map((i) => CollabState.values[i])
+        .toSet();
+    if (!mounted) return;
+    setState(() {
+      _selectedStates = selected;
+      _loadingPrefs = false;
+    });
+  }
+
   Widget build(BuildContext context) {
+    if (_loadingPrefs) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
     return Scaffold(
       appBar: AppBar(
         title: _showSearch
@@ -128,6 +154,11 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                     setState(() {
                       _selectedStates = result;
                     });
+                    // persist
+                    final prefs = Provider.of<SharedPrefsRepository>(context, listen: false);
+                    await prefs.saveSelectedStates(
+                      _selectedStates.map((e) => e.index.toString()).toList(),
+                    );
                   }
                 },
               );
