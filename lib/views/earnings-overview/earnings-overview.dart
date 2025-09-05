@@ -109,44 +109,55 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                   ],
                 ),
               ),
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: DataTable(
-                    columns: const [
-                      DataColumn(label: Text("Datum")),
-                      DataColumn(label: Text("Titel")),
-                      DataColumn(label: Text("Betrag")),
-                    ],
-                    rows: filtered.map((e) {
-                      return DataRow(cells: [
-                        DataCell(Text(DateFormat("dd.MM.yyyy").format(e.date))),
-                        DataCell(Text(
-                          e.title.substring(0, e.title.length > 12 ? 12 : e.title.length) +
-                              (e.title.length > 12 ? "..." : ""),
-                        )),
-                        DataCell(Text(
-                          NumberFormat.currency(locale: locale, symbol: "€").format(e.amount),
-                        )),
-                      ]);
-                    }).toList(),
+              if (entries.isEmpty)
+                const Expanded(
+                  child: Center(
+                    child: Text(
+                      "Es gibt noch keine Collaborations.\nErstelle deine erste Collaboration.",
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                )
+              else ...[
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      columns: const [
+                        DataColumn(label: Text("Datum")),
+                        DataColumn(label: Text("Titel")),
+                        DataColumn(label: Text("Betrag")),
+                      ],
+                      rows: filtered.map((e) {
+                        return DataRow(cells: [
+                          DataCell(Text(DateFormat("dd.MM.yyyy").format(e.date))),
+                          DataCell(Text(
+                            e.title.substring(0, e.title.length > 12 ? 12 : e.title.length) +
+                                (e.title.length > 12 ? "..." : ""),
+                          )),
+                          DataCell(Text(
+                            NumberFormat.currency(locale: locale, symbol: "€").format(e.amount),
+                          )),
+                        ]);
+                      }).toList(),
+                    ),
                   ),
                 ),
-              ),
-              Container(
-                padding: const EdgeInsets.all(16),
-                color: Colors.blue.shade50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Summe: ${NumberFormat.currency(locale: locale, symbol: "€").format(total)}",
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    Text("Anzahl: ${filtered.length}"),
-                  ],
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  color: Colors.blue.shade50,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Summe: ${NumberFormat.currency(locale: locale, symbol: "€").format(total)}",
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text("Anzahl: ${filtered.length}"),
+                    ],
+                  ),
                 ),
-              ),
+              ],
             ],
           ),
         );

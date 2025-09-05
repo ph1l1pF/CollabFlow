@@ -8,6 +8,7 @@ import 'package:collabflow/views/collaborations-list/collaboration-list-view-mod
 import 'package:collabflow/views/earnings-overview/earnings-overview-view-model.dart';
 import 'package:collabflow/views/earnings-overview/earnings-overview.dart';
 import 'package:collabflow/views/onboarding/onboarding.dart';
+import 'package:collabflow/views/about/about.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -82,6 +83,7 @@ class _MyAppState extends State<MyApp> {
   final List<Widget> _pages = [
     const CollaborationListPage(),
     const EarningsOverviewPage(),
+    const AboutPage(),
   ];
 
   @override
@@ -118,6 +120,10 @@ class _MyAppState extends State<MyApp> {
             BottomNavigationBarItem(
               icon: Icon(Icons.euro),
               label: 'Einnahmen',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.info_outline),
+              label: 'About',
             ),
           ],
         ),

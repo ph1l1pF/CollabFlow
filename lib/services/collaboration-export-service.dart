@@ -7,6 +7,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 
 class CollaborationExportService {
+  
   Future<void> exportEarningsEntries(List<EarningsEntryViewModelFields> entries) async {
     final dateFormatter = DateFormat('dd.MM.yyyy');
     final buffer = StringBuffer();

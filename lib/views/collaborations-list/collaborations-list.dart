@@ -6,6 +6,8 @@ import 'package:collabflow/views/create-collaboration/create-collaboration.dart'
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:collabflow/models/collaboration.dart';
+import 'package:collabflow/utils/collaboration-state-utils.dart';
 
 class CollaborationListPage extends StatefulWidget {
   const CollaborationListPage({super.key});
@@ -17,6 +19,7 @@ class CollaborationListPage extends StatefulWidget {
 class _CollaborationListPageState extends State<CollaborationListPage> {
   String _searchText = "";
   bool _showSearch = false;
+  Set<CollabState> _selectedStates = {};
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +65,74 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                     );
             },
           ),
+          Consumer<CollaborationsListViewModel>(
+            builder: (context, viewModel, _) {
+              if (viewModel.collaborations.isEmpty) return const SizedBox.shrink();
+              return IconButton(
+                icon: Icon(_selectedStates.isEmpty ? Icons.filter_alt_outlined : Icons.filter_alt),
+                tooltip: 'Status filtern',
+                onPressed: () async {
+                  final states = CollabState.values;
+                  final tempSelected = Set<CollabState>.from(_selectedStates);
+                  final result = await showDialog<Set<CollabState>>(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Nach Status filtern'),
+                        content: SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Align(
+                                alignment: Alignment.centerRight,
+                              ),
+                              for (final s in states)
+                                CheckboxListTile(
+                                  value: tempSelected.contains(s),
+                                  title: Text(CollaborationStateUtils.getStateLabel(s)),
+                                  secondary: Icon(CollaborationStateUtils.getStateIcon(s)),
+                                  onChanged: (checked) {
+                                    if (checked == true) {
+                                      tempSelected.add(s);
+                                    } else {
+                                      tempSelected.remove(s);
+                                    }
+                                    (context as Element).markNeedsBuild();
+                                  },
+                                ),
+                            ],
+                          ),
+                        ),
+                        actions: [
+                          TextButton.icon(
+                            onPressed: () => Navigator.pop(context, <CollabState>{}),
+                            icon: const Icon(Icons.filter_alt_off),
+                            label: const Text('Filter entfernen'),
+                          ),
+                          TextButton.icon(
+                            onPressed: () => Navigator.pop(context, _selectedStates),
+                            icon: const Icon(Icons.close),
+                            label: const Text('Abbrechen'),
+                          ),
+                          TextButton.icon(
+                            onPressed: () => Navigator.pop(context, tempSelected),
+                            icon: const Icon(Icons.check),
+                            label: const Text('Übernehmen'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                  if (!mounted) return;
+                  if (result != null) {
+                    setState(() {
+                      _selectedStates = result;
+                    });
+                  }
+                },
+              );
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () {
@@ -75,9 +146,12 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
       ),
       body: Consumer<CollaborationsListViewModel>(
         builder: (context, viewModel, _) {
-          final filtered = viewModel.collaborations
+          final matchesSearch = viewModel.collaborations
               .where((c) => c.title.toLowerCase().trim().contains(_searchText.toLowerCase().trim()))
               .toList();
+          final filtered = _selectedStates.isEmpty
+              ? matchesSearch
+              : matchesSearch.where((c) => _selectedStates.contains(c.state)).toList();
 
           return filtered.isEmpty
               ? 
