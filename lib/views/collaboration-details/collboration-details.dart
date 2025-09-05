@@ -36,97 +36,98 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: ListTile(
-                    title: Text(
-                      viewModel.collab.title,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.edit),
-                      tooltip: 'Bearbeiten',
-                      onPressed: () async {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => BasicCollaborationStep(
-                              initialTitle: viewModel.collab.title,
-                              initialDeadline: viewModel.collab.deadline,
-                              initialFee: viewModel.collab.fee.amount,
-                              initialState: viewModel.collab.state,
-                              initialDescription: '',
-                              confirmButtonLabel: 'Speichern',
-                              onNext: ({
-                                required bool next,
-                                required String title,
-                                required String description,
-                                required Deadline deadline,
-                                required double fee,
-                                required CollabState state,
-                              }) {
-                                _handleBasicInfo(
-                                  next: next,
-                                  context: context,
-                                  title: title,
-                                  description: description,
-                                  deadline: deadline,
-                                  fee: fee,
-                                  state: state,
-                                );
-                              },
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    subtitle: Column(
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 10), // Abstand erhöht
-                        Row(
-                          children: [
-                            const Icon(Icons.calendar_today, size: 18, color: Colors.blueGrey),
-                            const SizedBox(width: 6),
-                            Text(
-                              "Deadline: ${DateFormat('dd.MM.yyyy').format(viewModel.collab.deadline.date)}",
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10), // Abstand erhöht
-                        Row(
-                          children: [
-                            const Icon(Icons.euro, color: Colors.black, size: 20),
-                            const SizedBox(width: 6),
-                            Text(
-                              "${NumberFormat("#,##0.00", "de_DE").format(viewModel.collab.fee.amount)} ${viewModel.collab.fee.currency}",
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                viewModel.collab.title,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10), // Abstand erhöht
-                        Row(
-                          children: [
-                            Text("Status: ", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.blueGrey.shade700)),
-                            Icon(
-                              CollaborationStateUtils.getStateIcon(viewModel.collab.state),
-                              color: Colors.blue,
-                              size: 20,
-                            ),
-                            const SizedBox(width: 6),
-                            Text(
-                              CollaborationStateUtils.getStateLabel(viewModel.collab.state),
-                              style: const TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.blueGrey,
+                              const SizedBox(height: 12),
+                              Row(
+                                children: [
+                                  const Icon(Icons.calendar_today, size: 18, color: Colors.blueGrey),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    DateFormat('dd.MM.yyyy').format(viewModel.collab.deadline.date),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  const Icon(Icons.euro, color: Colors.black, size: 20),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    "${NumberFormat("#,##0.00", "de_DE").format(viewModel.collab.fee.amount)} ${viewModel.collab.fee.currency}",
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  const Icon(Icons.flag, size: 18, color: Colors.blueGrey),
+                                  const SizedBox(width: 6),
+                                  Icon(
+                                    CollaborationStateUtils.getStateIcon(viewModel.collab.state),
+                                    color: Colors.blue,
+                                    size: 18,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    CollaborationStateUtils.getStateLabel(viewModel.collab.state),
+                                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.blueGrey),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.edit),
+                          tooltip: 'Bearbeiten',
+                          onPressed: () async {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => BasicCollaborationStep(
+                                  initialTitle: viewModel.collab.title,
+                                  initialDeadline: viewModel.collab.deadline,
+                                  initialFee: viewModel.collab.fee.amount,
+                                  initialState: viewModel.collab.state,
+                                  initialDescription: '',
+                                  confirmButtonLabel: 'Speichern',
+                                  onNext: ({
+                                    required bool next,
+                                    required String title,
+                                    required String description,
+                                    required Deadline deadline,
+                                    required double fee,
+                                    required CollabState state,
+                                  }) {
+                                    _handleBasicInfo(
+                                      next: next,
+                                      context: context,
+                                      title: title,
+                                      description: description,
+                                      deadline: deadline,
+                                      fee: fee,
+                                      state: state,
+                                    );
+                                  },
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
@@ -174,14 +175,20 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Notizen:\n${viewModel.collab.notes}"),
-                          const SizedBox(height: 8),
+                          const Text("Notizen", style: TextStyle(fontWeight: FontWeight.w600)),
+                          const SizedBox(height: 6),
+                          Text(
+                            viewModel.collab.notes.isEmpty ? "Keine Notizen." : viewModel.collab.notes,
+                          ),
+                          const Divider(height: 20),
+                          const Text("Skript", style: TextStyle(fontWeight: FontWeight.w600)),
+                          const SizedBox(height: 6),
                           if (viewModel.collab.script.content.isNotEmpty)
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
-                                  child: Text("Script: ${viewModel.collab.script.content}"),
+                                  child: Text(viewModel.collab.script.content),
                                 ),
                                 IconButton(
                                   icon: const Icon(Icons.fullscreen),
@@ -208,8 +215,8 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                                   },
                                 ),
                               ],
-                            ),
-                          if (viewModel.collab.script.content.isEmpty)
+                            )
+                          else
                             const Text("Kein Skript vorhanden."),
                         ],
                       ),
@@ -249,16 +256,30 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                     ],
                   ),
                   children: [
-                    ListTile(title: Text("Name: ${viewModel.collab.partner.name}")),
                     ListTile(
-                      title: Text("Firma: ${viewModel.collab.partner.companyName}"),
+                      leading: const Icon(Icons.person_outline),
+                      title: Text(viewModel.collab.partner.name),
+                      subtitle: const Text("Name"),
                     ),
                     ListTile(
-                      title: Text("Branche: ${viewModel.collab.partner.industry}"),
+                      leading: const Icon(Icons.apartment),
+                      title: Text(viewModel.collab.partner.companyName),
+                      subtitle: const Text("Firma"),
                     ),
-                    ListTile(title: Text("Email: ${viewModel.collab.partner.email}")),
                     ListTile(
-                      title: Text("Telefon: ${viewModel.collab.partner.phone}"),
+                      leading: const Icon(Icons.category_outlined),
+                      title: Text(viewModel.collab.partner.industry),
+                      subtitle: const Text("Branche"),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.email_outlined),
+                      title: Text(viewModel.collab.partner.email),
+                      subtitle: const Text("E-Mail"),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.phone_outlined),
+                      title: Text(viewModel.collab.partner.phone),
+                      subtitle: const Text("Telefon"),
                     ),
                   ],
                 ),

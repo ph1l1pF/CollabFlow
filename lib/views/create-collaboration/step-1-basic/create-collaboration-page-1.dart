@@ -19,8 +19,8 @@ class BasicCollaborationStep extends StatefulWidget {
   final double initialFee;
   final CollabState initialState;
 
-  String? confirmButtonLabel;
-  String? cancelButtonLabel;
+  final String? confirmButtonLabel;
+  final String? cancelButtonLabel;
 
   BasicCollaborationStep({
     super.key,
@@ -136,54 +136,64 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
               initialValue: widget.initialTitle,
             ),
             const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: ListTile(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.event, color: Colors.blueGrey),
+                      const SizedBox(width: 8),
+                      const Text(
+                        'Deadline & Benachrichtigung',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
                     title: const Text("Deadline"),
                     subtitle: Text(DateFormat('dd.MM.yyyy').format(_deadline.date)),
                     trailing: const Icon(Icons.calendar_today),
                     onTap: _pickDeadline,
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SwitchListTile(
-                  title: const Text("Benachrichtigen"),
-                  value: _notifyOnDeadline,
-                  onChanged: (val) {
-                    setState(() {
-                      _notifyOnDeadline = val;
-                      _deadline.sendNotification = val;
-                    });
-                  },
-                ),
-                DropdownButtonFormField<int>(
-                  decoration: const InputDecoration(
-                    labelText: "Tage vorher",
+                  const SizedBox(height: 8),
+                  SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text("Benachrichtigen"),
+                    value: _notifyOnDeadline,
+                    onChanged: (val) {
+                      setState(() {
+                        _notifyOnDeadline = val;
+                        _deadline.sendNotification = val;
+                      });
+                    },
                   ),
-                  value: _deadline.notifyDaysBefore,
-                  items: [1, 2, 3, 5, 7].map((days) {
-                    return DropdownMenuItem(
-                      value: days,
-                      child: Text("$days Tage vorher"),
-                    );
-                  }).toList(),
-                  onChanged: _notifyOnDeadline
-                      ? (days) {
-                          if (days != null) {
-                            setState(() {
-                              _deadline.notifyDaysBefore = days;
-                            });
+                  DropdownButtonFormField<int>(
+                    decoration: const InputDecoration(
+                      labelText: "Tage vorher",
+                    ),
+                    value: _deadline.notifyDaysBefore,
+                    items: [1, 2, 3, 5, 7].map((days) {
+                      return DropdownMenuItem(
+                        value: days,
+                        child: Text("$days Tage vorher"),
+                      );
+                    }).toList(),
+                    onChanged: _notifyOnDeadline
+                        ? (days) {
+                            if (days != null) {
+                              setState(() {
+                                _deadline.notifyDaysBefore = days;
+                              });
+                            }
                           }
-                        }
-                      : null, // Disabled wenn Switch aus
-                ),
-              ],
+                        : null,
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 16),
             TextFormField(
