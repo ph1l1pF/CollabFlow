@@ -18,6 +18,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get earnings => 'Earnings';
 
   @override
+  String get earningsMenu => 'Income';
+
+  @override
   String get about => 'About';
 
   @override
@@ -235,4 +238,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get skip => 'Skip';
+
+  @override
+  String get date => 'Date';
+
+  @override
+  String get amount => 'Amount';
+
+  @override
+  String get earningsAsCsv => 'Earnings as CSV';
+
+  @override
+  String get earningsAsPdf => 'Earnings as PDF';
 }

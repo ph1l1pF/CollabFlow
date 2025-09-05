@@ -59,7 +59,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                                   const Icon(Icons.calendar_today, size: 18, color: Colors.blueGrey),
                                   const SizedBox(width: 6),
                                   Text(
-                                    DateFormat('dd.MM.yyyy').format(viewModel.collab.deadline.date),
+                                    DateFormat.yMd(Localizations.localeOf(context).toString()).format(viewModel.collab.deadline.date),
                                   ),
                                 ],
                               ),

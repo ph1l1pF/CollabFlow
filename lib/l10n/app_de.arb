@@ -2,6 +2,7 @@
   "appTitle": "CollabFlow",
   "collaborations": "Collaborations",
   "earnings": "Einnahmen",
+  "earningsMenu": "Einnahmen",
   "about": "Über",
   "myCollaborations": "Meine Collaborations",
   "createCollaboration": "Collaboration erstellen",
@@ -72,5 +73,10 @@
   "notifications": "Werde automatisch benachrichtigt, wenn Deadlines ablaufen ⏰",
   "startNow": "Starte jetzt und spare dir Chaos und Excel-Listen 🚀",
   "letsGo": "Los geht's",
-  "skip": "Überspringen"
+  "skip": "Überspringen",
+  "date": "Datum",
+  "titleForTable": "Titel",
+  "amount": "Betrag",
+  "earningsAsCsv": "Einnahmen als CSV",
+  "earningsAsPdf": "Einnahmen als PDF"
 }

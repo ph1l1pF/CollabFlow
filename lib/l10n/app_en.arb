@@ -2,6 +2,7 @@
   "appTitle": "CollabFlow",
   "collaborations": "Collaborations",
   "earnings": "Earnings",
+  "earningsMenu": "Income",
   "about": "About",
   "myCollaborations": "My Collaborations",
   "createCollaboration": "Create Collaboration",
@@ -72,5 +73,10 @@
   "notifications": "Get automatically notified when deadlines expire ⏰",
   "startNow": "Start now and save yourself from chaos and Excel lists 🚀",
   "letsGo": "Let's go",
-  "skip": "Skip"
+  "skip": "Skip",
+  "date": "Date",
+  "titleForTable": "Title",
+  "amount": "Amount",
+  "earningsAsCsv": "Earnings as CSV",
+  "earningsAsPdf": "Earnings as PDF"
 }

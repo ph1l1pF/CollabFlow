@@ -151,30 +151,51 @@ class _MyAppState extends State<MyApp> {
         Locale('en', ''),
         Locale('de', ''),
       ],
-      home: Scaffold(
-        body: _pages[_selectedIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          items: [
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.list),
-              label: AppLocalizations.of(context)?.collaborations ?? 'Collaborations',
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.euro),
-              label: AppLocalizations.of(context)?.earnings ?? 'Earnings',
-            ),
-            BottomNavigationBarItem(
-              icon: const Icon(Icons.info_outline),
-              label: AppLocalizations.of(context)?.about ?? 'About',
-            ),
-          ],
-        ),
+      home: _MainAppContent(
+        selectedIndex: _selectedIndex,
+        onIndexChanged: (index) {
+          setState(() {
+            _selectedIndex = index;
+          });
+        },
+        pages: _pages,
+      ),
+    );
+  }
+}
+
+class _MainAppContent extends StatelessWidget {
+  final int selectedIndex;
+  final ValueChanged<int> onIndexChanged;
+  final List<Widget> pages;
+
+  const _MainAppContent({
+    required this.selectedIndex,
+    required this.onIndexChanged,
+    required this.pages,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: pages[selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: selectedIndex,
+        onTap: onIndexChanged,
+        items: [
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.list),
+            label: AppLocalizations.of(context)?.collaborations ?? 'Collaborations',
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.euro),
+            label: AppLocalizations.of(context)?.earningsMenu ?? 'Income',
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.info_outline),
+            label: AppLocalizations.of(context)?.about ?? 'About',
+          ),
+        ],
       ),
     );
   }

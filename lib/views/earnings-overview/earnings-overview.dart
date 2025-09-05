@@ -63,26 +63,27 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                 tooltip: AppLocalizations.of(context)?.export ?? 'Export',
                 onPressed: () async {
                   final csvService = Provider.of<CollaborationExportService>(context, listen: false);
+                  final l10n = AppLocalizations.of(context);
                   final choice = await showDialog<String>(
                     context: context,
                     builder: (context) {
                       return SimpleDialog(
-                        title: Text(AppLocalizations.of(context)?.exportFormat ?? 'Choose export format'),
+                        title: Text(l10n?.exportFormat ?? 'Choose export format'),
                         children: [
                           ListTile(
                             leading: const Icon(Icons.table_chart),
-                            title: Text(AppLocalizations.of(context)?.csv ?? 'CSV'),
+                            title: Text(l10n?.csv ?? 'CSV'),
                             onTap: () => Navigator.pop(context, 'csv'),
                           ),
                           ListTile(
                             leading: const Icon(Icons.picture_as_pdf),
-                            title: Text(AppLocalizations.of(context)?.pdf ?? 'PDF'),
+                            title: Text(l10n?.pdf ?? 'PDF'),
                             onTap: () => Navigator.pop(context, 'pdf'),
                           ),
                           const Divider(height: 0),
                           ListTile(
                             leading: const Icon(Icons.close),
-                            title: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
+                            title: Text(l10n?.cancel ?? 'Cancel'),
                             onTap: () => Navigator.pop(context, null),
                           ),
                         ],
@@ -90,9 +91,25 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                     },
                   );
                   if (choice == 'csv') {
-                    await csvService.exportEarningsEntries(entries);
+                    await csvService.exportEarningsEntries(
+                      entries, 
+                      locale: locale,
+                      dateHeader: l10n?.date ?? 'Date',
+                      titleHeader: l10n?.titleForTable ?? 'Title',
+                      amountHeader: l10n?.amount ?? 'Amount',
+                      shareText: l10n?.earningsAsCsv ?? 'Earnings as CSV',
+                    );
                   } else if (choice == 'pdf') {
-                    await csvService.exportEarningsEntriesPdf(filtered);
+                    await csvService.exportEarningsEntriesPdf(
+                      filtered, 
+                      locale: locale,
+                      dateHeader: l10n?.date ?? 'Date',
+                      titleHeader: l10n?.titleForTable ?? 'Title',
+                      amountHeader: l10n?.amount ?? 'Amount',
+                      earningsTitle: l10n?.earningsOverview ?? 'Earnings Overview',
+                      sumLabel: l10n?.sum ?? 'Sum',
+                      shareText: l10n?.earningsAsPdf ?? 'Earnings as PDF',
+                    );
                   }
                 },
               ),
@@ -111,10 +128,10 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                     const SizedBox(width: 8),
                     GestureDetector(
                       onTap: _openDateRangePicker,
-                      child:                     Text(
+                      child: Text(
                       _selectedRange == null
                           ? (AppLocalizations.of(context)?.allTimeframes ?? "All timeframes")
-                          : "${DateFormat('dd.MM.yyyy').format(_selectedRange!.start)} – ${DateFormat('dd.MM.yyyy').format(_selectedRange!.end)}",
+                          : "${DateFormat.yMd(Localizations.localeOf(context).toString()).format(_selectedRange!.start)} – ${DateFormat.yMd(Localizations.localeOf(context).toString()).format(_selectedRange!.end)}",
                       style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
                     ),
                     ),
@@ -142,7 +159,7 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                     ],
                       rows: filtered.map((e) {
                         return DataRow(cells: [
-                          DataCell(Text(DateFormat("dd.MM.yyyy").format(e.date))),
+                          DataCell(Text(DateFormat.yMd(Localizations.localeOf(context).toString()).format(e.date))),
                           DataCell(Text(
                             e.title.substring(0, e.title.length > 12 ? 12 : e.title.length) +
                                 (e.title.length > 12 ? "..." : ""),

@@ -116,6 +116,12 @@ abstract class AppLocalizations {
   /// **'Earnings'**
   String get earnings;
 
+  /// No description provided for @earningsMenu.
+  ///
+  /// In en, this message translates to:
+  /// **'Income'**
+  String get earningsMenu;
+
   /// No description provided for @about.
   ///
   /// In en, this message translates to:
@@ -541,6 +547,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Skip'**
   String get skip;
+
+  /// No description provided for @date.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get date;
+
+  /// No description provided for @amount.
+  ///
+  /// In en, this message translates to:
+  /// **'Amount'**
+  String get amount;
+
+  /// No description provided for @earningsAsCsv.
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings as CSV'**
+  String get earningsAsCsv;
+
+  /// No description provided for @earningsAsPdf.
+  ///
+  /// In en, this message translates to:
+  /// **'Earnings as PDF'**
+  String get earningsAsPdf;
 }
 
 class _AppLocalizationsDelegate

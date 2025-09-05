@@ -8,10 +8,16 @@ import 'package:pdf/pdf.dart';
 
 class CollaborationExportService {
   
-  Future<void> exportEarningsEntries(List<EarningsEntryViewModelFields> entries) async {
-    final dateFormatter = DateFormat('dd.MM.yyyy');
+  Future<void> exportEarningsEntries(List<EarningsEntryViewModelFields> entries, {
+    String locale = 'en',
+    String dateHeader = 'Date',
+    String titleHeader = 'Title', 
+    String amountHeader = 'Amount',
+    String shareText = 'Earnings as CSV'
+  }) async {
+    final dateFormatter = DateFormat.yMd(locale);
     final buffer = StringBuffer();
-    buffer.writeln('Datum,Titel,Betrag');
+    buffer.writeln('$dateHeader,$titleHeader,$amountHeader');
     double total = 0;
     for (final e in entries) {
       final dateStr = dateFormatter.format(e.date);
@@ -29,15 +35,23 @@ class CollaborationExportService {
     final file = File('${tempDir.path}/$fileName');
     await file.writeAsString(buffer.toString(), flush: true);
 
-    await Share.shareXFiles([XFile(file.path)], text: 'Einnahmen als CSV');
+    await Share.shareXFiles([XFile(file.path)], text: shareText);
   }
 
-  Future<void> exportEarningsEntriesPdf(List<EarningsEntryViewModelFields> entries) async {
-    final dateFormatter = DateFormat('dd.MM.yyyy');
+  Future<void> exportEarningsEntriesPdf(List<EarningsEntryViewModelFields> entries, {
+    String locale = 'en',
+    String dateHeader = 'Date',
+    String titleHeader = 'Title',
+    String amountHeader = 'Amount',
+    String earningsTitle = 'Earnings',
+    String sumLabel = 'Sum',
+    String shareText = 'Earnings as PDF'
+  }) async {
+    final dateFormatter = DateFormat.yMd(locale);
     double total = 0;
 
     final pdf = pw.Document();
-    final tableHeaders = ['Datum', 'Titel', 'Betrag'];
+    final tableHeaders = [dateHeader, titleHeader, amountHeader];
     final dataRows = <List<String>>[];
     for (final e in entries) {
       total += e.amount;
@@ -55,7 +69,7 @@ class CollaborationExportService {
           return pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.stretch,
             children: [
-              pw.Text('Einnahmen', style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
+              pw.Text(earningsTitle, style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
               pw.SizedBox(height: 12),
               pw.TableHelper.fromTextArray(
                 headers: tableHeaders,
@@ -73,7 +87,7 @@ class CollaborationExportService {
               pw.Row(
                 mainAxisAlignment: pw.MainAxisAlignment.end,
                 children: [
-                  pw.Text('Summe: ${total.toStringAsFixed(2)}', style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold)),
+                  pw.Text('$sumLabel: ${total.toStringAsFixed(2)}', style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold)),
                 ],
               )
             ],
@@ -88,7 +102,7 @@ class CollaborationExportService {
     final file = File('${tempDir.path}/$fileName');
     await file.writeAsBytes(await pdf.save(), flush: true);
 
-    await Share.shareXFiles([XFile(file.path)], text: 'Einnahmen als PDF');
+    await Share.shareXFiles([XFile(file.path)], text: shareText);
   }
 }
 

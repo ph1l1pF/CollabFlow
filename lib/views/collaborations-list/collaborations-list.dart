@@ -287,7 +287,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                             children: [
                               const SizedBox(height: 4),
                               Text(
-                                "${AppLocalizations.of(context)?.deadline ?? "Deadline"}: ${DateFormat('dd.MM.yyyy').format(collab.deadline)}",
+                                "${AppLocalizations.of(context)?.deadline ?? "Deadline"}: ${DateFormat.yMd(Localizations.localeOf(context).toString()).format(collab.deadline)}",
                               ),
                               if(collab.partner != "") Text("${AppLocalizations.of(context)?.brand ?? "Brand"}: ${collab.partner}"),
                               const SizedBox(height: 4),

@@ -156,7 +156,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
                   ListTile(
                     contentPadding: EdgeInsets.zero,
                     title: Text(AppLocalizations.of(context)?.deadline ?? "Deadline"),
-                    subtitle: Text(DateFormat('dd.MM.yyyy').format(_deadline.date)),
+                    subtitle: Text(DateFormat.yMd(Localizations.localeOf(context).toString()).format(_deadline.date)),
                     trailing: const Icon(Icons.calendar_today),
                     onTap: _pickDeadline,
                   ),
