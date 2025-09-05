@@ -95,12 +95,25 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final lightTheme = ThemeData(
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
+      useMaterial3: true,
+    );
+
+    final darkTheme = ThemeData(
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: Colors.lightBlue,
+        brightness: Brightness.dark,
+      ),
+      useMaterial3: true,
+    );
+
     if (!_onboardingDone) {
       return MaterialApp(
         title: '',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
-        ),
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        themeMode: ThemeMode.system,
         home: OnboardingScreen(
           onComplete: () {
             setState(() {
@@ -113,9 +126,9 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       title: '',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.system,
       home: Scaffold(
         body: _pages[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
