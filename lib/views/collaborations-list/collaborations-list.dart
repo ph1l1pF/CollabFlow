@@ -157,14 +157,14 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                         ),
                         actions: [
                           TextButton.icon(
-                            onPressed: () => Navigator.pop(context, _selectedStates),
-                            icon: const Icon(Icons.close),
-                            label: const Text('Abbrechen'),
-                          ),
-                          TextButton.icon(
                             onPressed: () => Navigator.pop(context, tempSelected),
                             icon: const Icon(Icons.check),
                             label: const Text('Übernehmen'),
+                          ),
+                          TextButton.icon(
+                            onPressed: () => Navigator.pop(context, _selectedStates),
+                            icon: const Icon(Icons.close),
+                            label: const Text('Abbrechen'),
                           ),
                         ],
                       );
