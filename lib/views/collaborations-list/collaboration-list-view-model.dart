@@ -14,7 +14,6 @@ class CollaborationsListViewModel extends ChangeNotifier {
   }
 
   void _onRepositoryChanged() {
-    print("Repository changed, notifying listeners...");
     notifyListeners();
   }
 

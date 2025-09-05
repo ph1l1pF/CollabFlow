@@ -1,7 +1,7 @@
 import 'package:collabflow/repositories/collaborations-repository.dart';
 import 'package:collabflow/views/collaboration-details/collaboration-details-view-model.dart';
 import 'package:collabflow/views/collaboration-details/collboration-details.dart';
-import 'package:collabflow/views/collaborations-list/view-models/collaboration-list.dart';
+import 'package:collabflow/views/collaborations-list/collaboration-list-view-model.dart';
 import 'package:collabflow/views/create-collaboration/create-collaboration.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -36,7 +36,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                   });
                 },
               )
-            : const Text("Meine Kollaborationen"),
+            : const Text("Meine Collaborations"),
         actions: [
           Consumer<CollaborationsListViewModel>(
             builder: (context, viewModel, _) {
@@ -96,7 +96,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                   ),
                 )
                 : const Center(
-                  child: Text("Keine Kollaborationen gefunden"),
+                  child: Text("Keine Collaborations gefunden"),
                 )
               : ListView.builder(
                   itemCount: filtered.length,
@@ -115,8 +115,8 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                         return await showDialog<bool>(
                           context: context,
                           builder: (ctx) => AlertDialog(
-                            title: const Text('Kollaboration löschen?'),
-                            content: const Text('Möchtest du diese Kollaboration wirklich löschen?'),
+                            title: const Text('Collaboration löschen?'),
+                            content: const Text('Möchtest du diese Collaboration wirklich löschen?'),
                             actions: [
                               TextButton(
                                 child: const Text('Abbrechen'),

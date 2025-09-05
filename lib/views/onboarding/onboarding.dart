@@ -1,7 +1,5 @@
-import 'package:collabflow/repositories/collaborations-repository.dart';
 import 'package:collabflow/repositories/shared-prefs-repository.dart';
 import 'package:collabflow/views/collaborations-list/collaborations-list.dart';
-import 'package:collabflow/views/collaborations-list/view-models/collaboration-list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -72,7 +70,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     ),
                     const SizedBox(height: 16),
                     const Text(
-                      "Hast du genug davon, deine Kollaborationen in Excel, "
+                      "Hast du genug davon, deine Collaborations in Excel, "
                       "Notiz-Apps und Kalendern zu verwalten?",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 18, color: Colors.black87),

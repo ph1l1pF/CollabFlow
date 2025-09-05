@@ -149,42 +149,40 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
               ],
             ),
             const SizedBox(height: 8),
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                  child: SwitchListTile(
-                    title: const Text("Benachrichtigen"),
-                    value: _notifyOnDeadline,
-                    onChanged: (val) {
-                      setState(() {
-                        _notifyOnDeadline = val;
-                        _deadline.sendNotification = val;
-                      });
-                    },
-                  ),
+                SwitchListTile(
+                  title: const Text("Benachrichtigen"),
+                  value: _notifyOnDeadline,
+                  onChanged: (val) {
+                    setState(() {
+                      _notifyOnDeadline = val;
+                      _deadline.sendNotification = val;
+                    });
+                  },
                 ),
-                if (_notifyOnDeadline)
-                  Expanded(
-                    child: DropdownButtonFormField<int>(
-                      decoration: const InputDecoration(
-                        labelText: "Tage vorher",
-                      ),
-                      value: _deadline.notifyDaysBefore,
-                      items: [1, 2, 3, 5, 7].map((days) {
-                        return DropdownMenuItem(
-                          value: days,
-                          child: Text("$days Tage vorher"),
-                        );
-                      }).toList(),
-                      onChanged: (days) {
-                        if (days != null) {
-                          setState(() {
-                            _deadline.notifyDaysBefore = days;
-                          });
-                        }
-                      },
-                    ),
+                DropdownButtonFormField<int>(
+                  decoration: const InputDecoration(
+                    labelText: "Tage vorher",
                   ),
+                  value: _deadline.notifyDaysBefore,
+                  items: [1, 2, 3, 5, 7].map((days) {
+                    return DropdownMenuItem(
+                      value: days,
+                      child: Text("$days Tage vorher"),
+                    );
+                  }).toList(),
+                  onChanged: _notifyOnDeadline
+                      ? (days) {
+                          if (days != null) {
+                            setState(() {
+                              _deadline.notifyDaysBefore = days;
+                            });
+                          }
+                        }
+                      : null, // Disabled wenn Switch aus
+                ),
               ],
             ),
             const SizedBox(height: 16),

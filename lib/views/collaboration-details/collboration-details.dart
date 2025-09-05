@@ -269,7 +269,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: ElevatedButton.icon(
               icon: const Icon(Icons.delete),
-              label: const Text('Kollaboration löschen'),
+              label: const Text('Collaboration löschen'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
                 foregroundColor: Colors.white,
@@ -279,8 +279,8 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                 final confirmed = await showDialog<bool>(
                   context: context,
                   builder: (ctx) => AlertDialog(
-                    title: const Text('Kollaboration löschen?'),
-                    content: const Text('Möchtest du diese Kollaboration wirklich löschen?'),
+                    title: const Text('Collaboration löschen?'),
+                    content: const Text('Möchtest du diese Collaboration wirklich löschen?'),
                     actions: [
                       TextButton(
                         child: const Text('Abbrechen'),
