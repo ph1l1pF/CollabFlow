@@ -5,7 +5,9 @@ import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
+  final VoidCallback? onComplete;
+  
+  const OnboardingScreen({super.key, this.onComplete});
 
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
@@ -26,16 +28,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Future<void> onFinish(BuildContext context) async {
-    
-    final repo  = Provider.of<SharedPrefsRepository>(context, listen: false);
+    final repo = Provider.of<SharedPrefsRepository>(context, listen: false);
     await repo.setOnboardingDone();
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => CollaborationListPage(
-          
+    
+    if (widget.onComplete != null) {
+      widget.onComplete!();
+    } else {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const CollaborationListPage(),
         ),
-      ),
-    );
+      );
+    }
   }
 
   @override
@@ -180,7 +184,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pushReplacementNamed("/collaborations");
+                    onFinish(context);
                   },
                   child: const Text("Überspringen"),
                 ),

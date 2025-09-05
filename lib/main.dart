@@ -7,8 +7,8 @@ import 'package:collabflow/views/collaborations-list/collaborations-list.dart';
 import 'package:collabflow/views/collaborations-list/collaboration-list-view-model.dart';
 import 'package:collabflow/views/earnings-overview/earnings-overview-view-model.dart';
 import 'package:collabflow/views/earnings-overview/earnings-overview.dart';
-import 'package:collabflow/views/onboarding/onboarding.dart';
 import 'package:collabflow/views/about/about.dart';
+import 'package:collabflow/views/onboarding/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -79,6 +79,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
+  bool _onboardingDone = false;
 
   final List<Widget> _pages = [
     const CollaborationListPage(),
@@ -87,14 +88,26 @@ class _MyAppState extends State<MyApp> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _onboardingDone = widget.onboardingDone;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (!widget.onboardingDone) {
+    if (!_onboardingDone) {
       return MaterialApp(
         title: '',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
         ),
-        home: const OnboardingScreen(),
+        home: OnboardingScreen(
+          onComplete: () {
+            setState(() {
+              _onboardingDone = true;
+            });
+          },
+        ),
       );
     }
 
