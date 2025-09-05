@@ -58,6 +58,7 @@
   "notify": "Notify",
   "daysBefore": "Days before",
   "fee": "Fee (optional)",
+  "feeForTable": "Fee",
   "title": "Title (*)",
   "titleForTable": "Title",
   "enterTitle": "Enter title",

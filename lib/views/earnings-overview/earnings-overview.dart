@@ -137,8 +137,8 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                     child: DataTable(
                                           columns: [
                       DataColumn(label: Text(AppLocalizations.of(context)?.deadline ?? "Deadline")),
-                      DataColumn(label: Text(AppLocalizations.of(context)?.title ?? "Title")),
-                      DataColumn(label: Text(AppLocalizations.of(context)?.fee ?? "Amount")),
+                      DataColumn(label: Text(AppLocalizations.of(context)?.titleForTable ?? "Title")),
+                      DataColumn(label: Text(AppLocalizations.of(context)?.feeForTable ?? "Amount")),
                     ],
                       rows: filtered.map((e) {
                         return DataRow(cells: [

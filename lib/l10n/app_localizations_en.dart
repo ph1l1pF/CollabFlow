@@ -188,7 +188,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fee => 'Fee (optional)';
 
   @override
-  String get title => 'Collaboration title (*)';
+  String get feeForTable => 'Fee';
+
+  @override
+  String get title => 'Title (*)';
+
+  @override
+  String get titleForTable => 'Title';
 
   @override
   String get enterTitle => 'Enter title';

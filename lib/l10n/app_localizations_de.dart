@@ -188,7 +188,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get fee => 'Honorar (optional)';
 
   @override
-  String get title => 'Titel der Kooperation (*)';
+  String get feeForTable => 'Einnahme';
+
+  @override
+  String get title => 'Titel(*)';
+
+  @override
+  String get titleForTable => 'Titel';
 
   @override
   String get enterTitle => 'Titel eingeben';

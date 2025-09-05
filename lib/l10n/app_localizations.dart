@@ -452,11 +452,23 @@ abstract class AppLocalizations {
   /// **'Fee (optional)'**
   String get fee;
 
+  /// No description provided for @feeForTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Fee'**
+  String get feeForTable;
+
   /// No description provided for @title.
   ///
   /// In en, this message translates to:
-  /// **'Collaboration title (*)'**
+  /// **'Title (*)'**
   String get title;
+
+  /// No description provided for @titleForTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get titleForTable;
 
   /// No description provided for @enterTitle.
   ///

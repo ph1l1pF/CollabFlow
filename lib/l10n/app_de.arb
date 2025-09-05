@@ -58,6 +58,7 @@
   "notify": "Benachrichtigen",
   "daysBefore": "Tage vorher",
   "fee": "Honorar (optional)",
+  "feeForTable": "Einnahme",
   "title": "Titel(*)",
   "titleForTable": "Titel",
   "enterTitle": "Titel eingeben",
