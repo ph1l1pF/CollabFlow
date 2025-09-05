@@ -185,7 +185,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get notify => 'Benachrichtigen';
 
   @override
-  String get daysBefore => 'Tage vorher';
+  String get daysBefore => 'Tag(e) vorher';
 
   @override
   String get fee => 'Honorar (optional)';

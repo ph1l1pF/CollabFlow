@@ -57,7 +57,7 @@
   "unknown": "Unknown",
   "deadlineAndNotification": "Deadline & Notification",
   "notify": "Notify",
-  "daysBefore": "Days before",
+  "daysBefore": "Day(s) before",
   "fee": "Fee (optional)",
   "feeForTable": "Fee",
   "title": "Title (*)",

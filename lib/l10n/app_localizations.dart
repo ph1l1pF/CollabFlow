@@ -449,7 +449,7 @@ abstract class AppLocalizations {
   /// No description provided for @daysBefore.
   ///
   /// In en, this message translates to:
-  /// **'Days before'**
+  /// **'Day(s) before'**
   String get daysBefore;
 
   /// No description provided for @fee.

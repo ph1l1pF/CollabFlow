@@ -77,7 +77,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     Text(
                       AppLocalizations.of(context)?.welcomeMessage ?? "Tired of managing your collaborations in Excel, note apps and calendars?",
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 18, color: Colors.black87),
+                      style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.onSurface),
                     ),
                     const SizedBox(height: 40),
                     ElevatedButton(
@@ -109,7 +109,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   children: [
                     Text(
                       AppLocalizations.of(context)?.keepTrack ?? "Keep track of all your collaborations in one place 📊",
-                      style: const TextStyle(fontSize: 22),
+                      style: TextStyle(fontSize: 22, color: Theme.of(context).colorScheme.onSurface),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 40),
@@ -130,7 +130,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   children: [
                     Text(
                       AppLocalizations.of(context)?.notifications ?? "Get automatically notified when deadlines expire ⏰",
-                      style: const TextStyle(fontSize: 22),
+                      style: TextStyle(fontSize: 22, color: Theme.of(context).colorScheme.onSurface),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 40),
@@ -151,7 +151,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   children: [
                     Text(
                       AppLocalizations.of(context)?.startNow ?? "Start now and save yourself from chaos and Excel lists 🚀",
-                      style: const TextStyle(fontSize: 22),
+                      style: TextStyle(fontSize: 22, color: Theme.of(context).colorScheme.onSurface),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 40),

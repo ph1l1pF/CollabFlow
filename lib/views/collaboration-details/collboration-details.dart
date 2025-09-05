@@ -21,6 +21,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
   @override
   Widget build(BuildContext context) {
     final viewModel = widget.viewModel;
+    final locale = Localizations.localeOf(context).toString();
     return Scaffold(
       appBar: AppBar(
         title: Text(viewModel.collab.title),
@@ -66,10 +67,10 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                               const SizedBox(height: 8),
                               Row(
                                 children: [
-                                  const Icon(Icons.euro, color: Colors.black, size: 20),
+                                  Icon(Icons.euro, color: Theme.of(context).colorScheme.onSurface, size: 20),
                                   const SizedBox(width: 6),
                                   Text(
-                                    "${NumberFormat("#,##0.00", "de_DE").format(viewModel.collab.fee.amount)} ${viewModel.collab.fee.currency}",
+                                    NumberFormat.decimalPatternDigits(locale: locale, decimalDigits: 2).format(viewModel.collab.fee.amount),
                                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                   ),
                                 ],

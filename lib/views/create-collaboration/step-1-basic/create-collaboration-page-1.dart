@@ -174,13 +174,13 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
                   ),
                   DropdownButtonFormField<int>(
                     decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)?.daysBefore ?? "Days before",
+                      labelText: AppLocalizations.of(context)?.daysBefore ?? "Days(s) before",
                     ),
                     value: _deadline.notifyDaysBefore,
                     items: [1, 2, 3, 5, 7].map((days) {
                       return DropdownMenuItem(
                         value: days,
-                        child: Text("$days ${AppLocalizations.of(context)?.daysBefore ?? "days before"}"),
+                        child: Text("$days ${AppLocalizations.of(context)?.daysBefore ?? "days(s) before"}"),
                       );
                     }).toList(),
                     onChanged: _notifyOnDeadline
