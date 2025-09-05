@@ -7,7 +7,7 @@ class AboutPage extends StatelessWidget {
 
   static const String developerName = 'Philip Frerk';
   static const String developerEmail = 'philip.frerk@gmail.com';
-  static const String appStoreLink = 'https://example.com/app';
+  static const String appStoreLink = 'https://testflight.apple.com/join/QQc1cXU6';
 
   Future<void> _sendEmail() async {
     final uri = Uri(
