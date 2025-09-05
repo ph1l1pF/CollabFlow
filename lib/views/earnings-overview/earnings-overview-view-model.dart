@@ -18,7 +18,7 @@ class EarningsOverviewViewModel extends ChangeNotifier {
         .map((collab) => EarningsEntryViewModelFields(
               date: collab.deadline.date,
               title: collab.title,
-              brand: collab.partner?.companyName ?? '',
+              brand: collab.partner.companyName,
               amount: collab.fee.amount,
             ))
         .toList();

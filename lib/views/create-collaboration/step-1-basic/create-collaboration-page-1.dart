@@ -2,6 +2,7 @@ import 'package:collabflow/utils/collaboration-state-utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:collabflow/models/collaboration.dart';
+import 'package:collabflow/l10n/app_localizations.dart';
 
 class BasicCollaborationStep extends StatefulWidget {
   final void Function({
@@ -118,7 +119,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Basisdaten bearbeiten'),
+        title: Text(AppLocalizations.of(context)?.edit ?? 'Edit'),
         elevation: 0,
       ),
       body: Form(
@@ -127,11 +128,11 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
           padding: const EdgeInsets.all(16),
           children: [
             TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Titel der Kooperation (*)',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)?.title ?? 'Collaboration title (*)',
               ),
               validator: (val) =>
-                  val == null || val.isEmpty ? 'Titel eingeben' : null,
+                  val == null || val.isEmpty ? (AppLocalizations.of(context)?.enterTitle ?? 'Enter title') : null,
               onSaved: (val) => _title = val ?? '',
               initialValue: widget.initialTitle,
             ),
@@ -145,16 +146,16 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
                     children: [
                       const Icon(Icons.event, color: Colors.blueGrey),
                       const SizedBox(width: 8),
-                      const Text(
-                        'Deadline & Benachrichtigung',
-                        style: TextStyle(fontWeight: FontWeight.w600),
+                      Text(
+                        AppLocalizations.of(context)?.deadlineAndNotification ?? 'Deadline & Notification',
+                        style: const TextStyle(fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
                   const SizedBox(height: 8),
                   ListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: const Text("Deadline"),
+                    title: Text(AppLocalizations.of(context)?.deadline ?? "Deadline"),
                     subtitle: Text(DateFormat('dd.MM.yyyy').format(_deadline.date)),
                     trailing: const Icon(Icons.calendar_today),
                     onTap: _pickDeadline,
@@ -162,7 +163,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
                   const SizedBox(height: 8),
                   SwitchListTile(
                     contentPadding: EdgeInsets.zero,
-                    title: const Text("Benachrichtigen"),
+                    title: Text(AppLocalizations.of(context)?.notify ?? "Notify"),
                     value: _notifyOnDeadline,
                     onChanged: (val) {
                       setState(() {
@@ -172,14 +173,14 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
                     },
                   ),
                   DropdownButtonFormField<int>(
-                    decoration: const InputDecoration(
-                      labelText: "Tage vorher",
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)?.daysBefore ?? "Days before",
                     ),
                     value: _deadline.notifyDaysBefore,
                     items: [1, 2, 3, 5, 7].map((days) {
                       return DropdownMenuItem(
                         value: days,
-                        child: Text("$days Tage vorher"),
+                        child: Text("$days ${AppLocalizations.of(context)?.daysBefore ?? "days before"}"),
                       );
                     }).toList(),
                     onChanged: _notifyOnDeadline
@@ -197,15 +198,15 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
             ),
             const SizedBox(height: 16),
             TextFormField(
-              decoration: const InputDecoration(
-                labelText: 'Honorar (optional)',
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)?.fee ?? 'Fee (optional)',
                 prefixText: '€ ',
               ),
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               validator: (val) {
                 if (val == null || val.isEmpty) return null;
                 final fee = double.tryParse(val.replaceAll(',', '.'));
-                if (fee == null || fee < 0) return 'Gültigen Betrag eingeben';
+                if (fee == null || fee < 0) return AppLocalizations.of(context)?.enterValidAmount ?? 'Enter valid amount';
                 return null;
               },
               onSaved: (val) =>
@@ -215,8 +216,8 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
             ),
             const SizedBox(height: 16),
             Text(
-              'Status',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              AppLocalizations.of(context)?.status ?? 'Status',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
             const SizedBox(height: 8),
             SingleChildScrollView(
@@ -226,7 +227,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
                 children: CollabState.values.map((state) {
                   final isSelected = _state == state;
                   final icon = CollaborationStateUtils.getStateIcon(state);
-                  final label = CollaborationStateUtils.getStateLabel(state);
+                  final label = CollaborationStateUtils.getStateLabel(state, context);
 
                   return GestureDetector(
                     onTap: () {
@@ -268,11 +269,11 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: _goNext,
-              child: Text(widget.confirmButtonLabel ?? 'Weiter'),
+              child: Text(widget.confirmButtonLabel ?? (AppLocalizations.of(context)?.next ?? 'Next')),
             ),
             ElevatedButton(
               onPressed: _goBack,
-              child: Text(widget.cancelButtonLabel ?? 'Abbrechen'),
+              child: Text(widget.cancelButtonLabel ?? (AppLocalizations.of(context)?.cancel ?? 'Cancel')),
             ),
           ],
         ),

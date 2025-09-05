@@ -6,6 +6,7 @@ import 'package:collabflow/views/create-collaboration/create-collaboration-page-
 import 'package:collabflow/views/create-collaboration/step-1-basic/create-collaboration-page-1.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:collabflow/l10n/app_localizations.dart';
 
 class CollaborationDetailsPage extends StatefulWidget {
   final CollaborationDetailsViewModel viewModel;
@@ -85,7 +86,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                                   ),
                                   const SizedBox(width: 6),
                                   Text(
-                                    CollaborationStateUtils.getStateLabel(viewModel.collab.state),
+                                    CollaborationStateUtils.getStateLabel(viewModel.collab.state, context),
                                     style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.blueGrey),
                                   ),
                                 ],
@@ -95,7 +96,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.edit),
-                          tooltip: 'Bearbeiten',
+                          tooltip: AppLocalizations.of(context)?.edit ?? 'Edit',
                           onPressed: () async {
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -105,7 +106,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                                   initialFee: viewModel.collab.fee.amount,
                                   initialState: viewModel.collab.state,
                                   initialDescription: '',
-                                  confirmButtonLabel: 'Speichern',
+                                  confirmButtonLabel: AppLocalizations.of(context)?.save ?? 'Save',
                                   onNext: ({
                                     required bool next,
                                     required String title,
@@ -136,13 +137,13 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
 
                 ExpansionTile(
                   leading: const Icon(Icons.description),
-                  title: const Text("Skript & Notizen"),
+                  title: Text(AppLocalizations.of(context)?.scriptAndNotes ?? "Script & Notes"),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
                         icon: const Icon(Icons.edit),
-                        tooltip: 'Bearbeiten',
+                        tooltip: AppLocalizations.of(context)?.edit ?? 'Edit',
                         onPressed: () async {
                           await Navigator.of(context).push(
                             MaterialPageRoute(
@@ -175,13 +176,13 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("Notizen", style: TextStyle(fontWeight: FontWeight.w600)),
+                          Text(AppLocalizations.of(context)?.notes ?? "Notes", style: const TextStyle(fontWeight: FontWeight.w600)),
                           const SizedBox(height: 6),
                           Text(
-                            viewModel.collab.notes.isEmpty ? "Keine Notizen." : viewModel.collab.notes,
+                            viewModel.collab.notes.isEmpty ? (AppLocalizations.of(context)?.noNotes ?? "No notes.") : viewModel.collab.notes,
                           ),
                           const Divider(height: 20),
-                          const Text("Skript", style: TextStyle(fontWeight: FontWeight.w600)),
+                          Text(AppLocalizations.of(context)?.script ?? "Script", style: const TextStyle(fontWeight: FontWeight.w600)),
                           const SizedBox(height: 6),
                           if (viewModel.collab.script.content.isNotEmpty)
                             Row(
@@ -192,13 +193,13 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                                 ),
                                 IconButton(
                                   icon: const Icon(Icons.fullscreen),
-                                  tooltip: 'Skript im Vollbild',
+                                  tooltip: AppLocalizations.of(context)?.fullscreen ?? 'Script in fullscreen',
                                   onPressed: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (_) => Scaffold(
                                           appBar: AppBar(
-                                            title: const Text('Skript'),
+                                            title: Text(AppLocalizations.of(context)?.script ?? 'Script'),
                                           ),
                                           body: Padding(
                                             padding: const EdgeInsets.all(16),
@@ -217,7 +218,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                               ],
                             )
                           else
-                            const Text("Kein Skript vorhanden."),
+                            Text(AppLocalizations.of(context)?.noScript ?? "No script available."),
                         ],
                       ),
                     ),
@@ -227,13 +228,13 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                 // Accordion: Partnerdaten
                 ExpansionTile(
                   leading: const Icon(Icons.business),
-                  title: const Text("Partner"),
+                  title: Text(AppLocalizations.of(context)?.partner ?? "Partner"),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       IconButton(
                         icon: const Icon(Icons.edit),
-                        tooltip: 'Bearbeiten',
+                        tooltip: AppLocalizations.of(context)?.edit ?? 'Edit',
                         onPressed: () async {
                           await Navigator.of(context).push(
                             MaterialPageRoute(
@@ -259,27 +260,27 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                     ListTile(
                       leading: const Icon(Icons.person_outline),
                       title: Text(viewModel.collab.partner.name),
-                      subtitle: const Text("Name"),
+                      subtitle: Text(AppLocalizations.of(context)?.name ?? "Name"),
                     ),
                     ListTile(
                       leading: const Icon(Icons.apartment),
                       title: Text(viewModel.collab.partner.companyName),
-                      subtitle: const Text("Firma"),
+                      subtitle: Text(AppLocalizations.of(context)?.company ?? "Company"),
                     ),
                     ListTile(
                       leading: const Icon(Icons.category_outlined),
                       title: Text(viewModel.collab.partner.industry),
-                      subtitle: const Text("Branche"),
+                      subtitle: Text(AppLocalizations.of(context)?.industry ?? "Industry"),
                     ),
                     ListTile(
                       leading: const Icon(Icons.email_outlined),
                       title: Text(viewModel.collab.partner.email),
-                      subtitle: const Text("E-Mail"),
+                      subtitle: Text(AppLocalizations.of(context)?.email ?? "Email"),
                     ),
                     ListTile(
                       leading: const Icon(Icons.phone_outlined),
                       title: Text(viewModel.collab.partner.phone),
-                      subtitle: const Text("Telefon"),
+                      subtitle: Text(AppLocalizations.of(context)?.phone ?? "Phone"),
                     ),
                   ],
                 ),
@@ -290,7 +291,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: ElevatedButton.icon(
               icon: const Icon(Icons.delete),
-              label: const Text('Collaboration löschen'),
+              label: Text(AppLocalizations.of(context)?.deleteCollaboration ?? 'Delete Collaboration'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
                 foregroundColor: Colors.white,
@@ -300,15 +301,15 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                 final confirmed = await showDialog<bool>(
                   context: context,
                   builder: (ctx) => AlertDialog(
-                    title: const Text('Collaboration löschen?'),
-                    content: const Text('Möchtest du diese Collaboration wirklich löschen?'),
+                    title: Text(AppLocalizations.of(context)?.deleteCollaboration ?? 'Delete Collaboration'),
+                    content: Text(AppLocalizations.of(context)?.deleteCollaborationConfirm ?? 'Do you really want to delete this collaboration?'),
                     actions: [
                       TextButton(
-                        child: const Text('Abbrechen'),
+                        child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
                         onPressed: () => Navigator.of(ctx).pop(false),
                       ),
                       TextButton(
-                        child: const Text('Löschen'),
+                        child: Text(AppLocalizations.of(context)?.delete ?? 'Delete'),
                         onPressed: () => Navigator.of(ctx).pop(true),
                       ),
                     ],

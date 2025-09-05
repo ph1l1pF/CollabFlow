@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:collabflow/services/collaboration-export-service.dart';
 import 'package:collabflow/views/earnings-overview/earnings-overview-view-model.dart';
+import 'package:collabflow/l10n/app_localizations.dart';
 
 class EarningsOverviewPage extends StatefulWidget {
   const EarningsOverviewPage({super.key});
@@ -55,33 +56,33 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text("Einnahmen-Übersicht"),
+            title: Text(AppLocalizations.of(context)?.earningsOverview ?? "Earnings Overview"),
             actions: [
               IconButton(
                 icon: const Icon(Icons.download),
-                tooltip: 'Exportieren',
+                tooltip: AppLocalizations.of(context)?.export ?? 'Export',
                 onPressed: () async {
                   final csvService = Provider.of<CollaborationExportService>(context, listen: false);
                   final choice = await showDialog<String>(
                     context: context,
                     builder: (context) {
                       return SimpleDialog(
-                        title: const Text('Exportformat wählen'),
+                        title: Text(AppLocalizations.of(context)?.exportFormat ?? 'Choose export format'),
                         children: [
                           ListTile(
                             leading: const Icon(Icons.table_chart),
-                            title: const Text('CSV'),
+                            title: Text(AppLocalizations.of(context)?.csv ?? 'CSV'),
                             onTap: () => Navigator.pop(context, 'csv'),
                           ),
                           ListTile(
                             leading: const Icon(Icons.picture_as_pdf),
-                            title: const Text('PDF'),
+                            title: Text(AppLocalizations.of(context)?.pdf ?? 'PDF'),
                             onTap: () => Navigator.pop(context, 'pdf'),
                           ),
                           const Divider(height: 0),
                           ListTile(
                             leading: const Icon(Icons.close),
-                            title: const Text('Abbrechen'),
+                            title: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
                             onTap: () => Navigator.pop(context, null),
                           ),
                         ],
@@ -110,21 +111,21 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                     const SizedBox(width: 8),
                     GestureDetector(
                       onTap: _openDateRangePicker,
-                      child: Text(
-                        _selectedRange == null
-                            ? "Alle Zeiträume"
-                            : "${DateFormat('dd.MM.yyyy').format(_selectedRange!.start)} – ${DateFormat('dd.MM.yyyy').format(_selectedRange!.end)}",
-                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                      ),
+                      child:                     Text(
+                      _selectedRange == null
+                          ? (AppLocalizations.of(context)?.allTimeframes ?? "All timeframes")
+                          : "${DateFormat('dd.MM.yyyy').format(_selectedRange!.start)} – ${DateFormat('dd.MM.yyyy').format(_selectedRange!.end)}",
+                      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                    ),
                     ),
                   ],
                 ),
               ),
               if (entries.isEmpty)
-                const Expanded(
+                Expanded(
                   child: Center(
                     child: Text(
-                      "Es gibt noch keine Collaborations.\nErstelle deine erste Collaboration.",
+                      AppLocalizations.of(context)?.noCollaborationsYet ?? "There are no collaborations yet.\nCreate your first collaboration.",
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -134,11 +135,11 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: DataTable(
-                      columns: const [
-                        DataColumn(label: Text("Datum")),
-                        DataColumn(label: Text("Titel")),
-                        DataColumn(label: Text("Betrag")),
-                      ],
+                                          columns: [
+                      DataColumn(label: Text(AppLocalizations.of(context)?.deadline ?? "Deadline")),
+                      DataColumn(label: Text(AppLocalizations.of(context)?.title ?? "Title")),
+                      DataColumn(label: Text(AppLocalizations.of(context)?.fee ?? "Amount")),
+                    ],
                       rows: filtered.map((e) {
                         return DataRow(cells: [
                           DataCell(Text(DateFormat("dd.MM.yyyy").format(e.date))),
@@ -164,7 +165,7 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Summe: ${NumberFormat.currency(locale: locale, symbol: "€").format(total)}",
+                      "${AppLocalizations.of(context)?.sum ?? "Sum"}: ${NumberFormat.currency(locale: locale, symbol: "€").format(total)}",
                       style: TextStyle(
                         fontSize: 18, 
                         fontWeight: FontWeight.bold,
@@ -172,7 +173,7 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                       ),
                     ),
                     Text(
-                      "Anzahl: ${filtered.length}",
+                      "${AppLocalizations.of(context)?.count ?? "Count"}: ${filtered.length}",
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onSurface,
                       ),

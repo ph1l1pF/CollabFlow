@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:collabflow/models/collaboration.dart';
 import 'package:collabflow/utils/collaboration-state-utils.dart';
 import 'package:collabflow/repositories/shared-prefs-repository.dart';
+import 'package:collabflow/l10n/app_localizations.dart';
 
 class CollaborationListPage extends StatefulWidget {
   const CollaborationListPage({super.key});
@@ -54,10 +55,10 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
         title: _showSearch
             ? TextField(
                 autofocus: true,
-                decoration: const InputDecoration(
-                  hintText: "Suchen...",
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)?.search ?? "Search...",
                   border: InputBorder.none,
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: const Icon(Icons.search),
                 ),
                 onChanged: (val) {
                   setState(() {
@@ -65,7 +66,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                   });
                 },
               )
-            : const Text("Meine Collaborations"),
+            : Text(AppLocalizations.of(context)?.myCollaborations ?? "My Collaborations"),
         actions: [
           Consumer<CollaborationsListViewModel>(
             builder: (context, viewModel, _) {
@@ -96,7 +97,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
               if (viewModel.collaborations.isEmpty) return const SizedBox.shrink();
               return IconButton(
                 icon: Icon(_selectedStates.isEmpty ? Icons.filter_alt_outlined : Icons.filter_alt),
-                tooltip: 'Status filtern',
+                tooltip: AppLocalizations.of(context)?.filterByStatus ?? 'Filter by status',
                 onPressed: () async {
                   final states = CollabState.values;
                   final tempSelected = Set<CollabState>.from(_selectedStates);
@@ -104,7 +105,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: const Text('Nach Status filtern'),
+                        title: Text(AppLocalizations.of(context)?.filterByStatusTitle ?? 'Filter by status'),
                         content: SingleChildScrollView(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
@@ -114,7 +115,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                               for (final s in states)
                                 CheckboxListTile(
                                   value: tempSelected.contains(s),
-                                  title: Text(CollaborationStateUtils.getStateLabel(s)),
+                                  title: Text(CollaborationStateUtils.getStateLabel(s, context)),
                                   secondary: Icon(CollaborationStateUtils.getStateIcon(s)),
                                   onChanged: (checked) {
                                     if (checked == true) {
@@ -134,7 +135,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                                         (context as Element).markNeedsBuild();
                                       },
                                       icon: const Icon(Icons.filter_alt_off),
-                                      label: const Text('Alle entfernen'),
+                                      label: Text(AppLocalizations.of(context)?.removeFilters ?? 'Remove filters'),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
@@ -147,7 +148,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                                         (context as Element).markNeedsBuild();
                                       },
                                       icon: const Icon(Icons.select_all),
-                                      label: const Text('Alle auswählen'),
+                                      label: Text(AppLocalizations.of(context)?.selectAll ?? 'Select all'),
                                     ),
                                   ),
                                 ],
@@ -159,12 +160,12 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                           TextButton.icon(
                             onPressed: () => Navigator.pop(context, tempSelected),
                             icon: const Icon(Icons.check),
-                            label: const Text('Übernehmen'),
+                            label: Text(AppLocalizations.of(context)?.apply ?? 'Apply'),
                           ),
                           TextButton.icon(
                             onPressed: () => Navigator.pop(context, _selectedStates),
                             icon: const Icon(Icons.close),
-                            label: const Text('Abbrechen'),
+                            label: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
                           ),
                         ],
                       );
@@ -219,11 +220,11 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                         ),
                       );
                     },
-                    child: const Text("Collaboration erstellen"),
+                    child: Text(AppLocalizations.of(context)?.createCollaboration ?? "Create Collaboration"),
                   ),
                 )
-                : const Center(
-                  child: Text("Keine Collaborations gefunden"),
+                : Center(
+                  child: Text(AppLocalizations.of(context)?.noCollaborationsFound ?? "No collaborations found"),
                 )
               : ListView.builder(
                   itemCount: filtered.length,
@@ -242,15 +243,15 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                         return await showDialog<bool>(
                           context: context,
                           builder: (ctx) => AlertDialog(
-                            title: const Text('Collaboration löschen?'),
-                            content: const Text('Möchtest du diese Collaboration wirklich löschen?'),
+                            title: Text(AppLocalizations.of(context)?.deleteCollaboration ?? 'Delete Collaboration'),
+                            content: Text(AppLocalizations.of(context)?.deleteCollaborationConfirm ?? 'Do you really want to delete this collaboration?'),
                             actions: [
                               TextButton(
-                                child: const Text('Abbrechen'),
+                                child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
                                 onPressed: () => Navigator.of(ctx).pop(false),
                               ),
                               TextButton(
-                                child: const Text('Löschen'),
+                                child: Text(AppLocalizations.of(context)?.delete ?? 'Delete'),
                                 onPressed: () => Navigator.of(ctx).pop(true),
                               ),
                             ],
@@ -261,7 +262,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                         Provider.of<CollaborationsRepository>(context, listen: false)
                             .deleteById(collab.id);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Collaboration gelöscht')),
+                          SnackBar(content: Text(AppLocalizations.of(context)?.collaborationDeleted ?? 'Collaboration deleted')),
                         );
                       },
                       child: Card(
@@ -286,16 +287,16 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                             children: [
                               const SizedBox(height: 4),
                               Text(
-                                "Deadline: ${DateFormat('dd.MM.yyyy').format(collab.deadline)}",
+                                "${AppLocalizations.of(context)?.deadline ?? "Deadline"}: ${DateFormat('dd.MM.yyyy').format(collab.deadline)}",
                               ),
-                              if(collab.partner != "") Text("Brand: ${collab.partner}"),
+                              if(collab.partner != "") Text("${AppLocalizations.of(context)?.brand ?? "Brand"}: ${collab.partner}"),
                               const SizedBox(height: 4),
                               Row(
                                 children: [
-                                  Text("Status: "),
+                                  Text("${AppLocalizations.of(context)?.status ?? "Status"}: "),
                                   Icon(collab.stateIcon, color: Colors.blue, size: 16),
                                   const SizedBox(width: 6),
-                                  Text(CollaborationStateUtils.getStateLabel(collab.state)),
+                                  Text(CollaborationStateUtils.getStateLabel(collab.state, context)),
                                 ],
                               ),
                             ],

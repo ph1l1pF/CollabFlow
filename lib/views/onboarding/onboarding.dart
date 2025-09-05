@@ -3,6 +3,7 @@ import 'package:collabflow/views/collaborations-list/collaborations-list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:collabflow/l10n/app_localizations.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final VoidCallback? onComplete;
@@ -64,20 +65,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       color: Colors.blueAccent,
                     ),
                     const SizedBox(height: 32),
-                    const Text(
-                      "Willkommen, Creator! 👋",
+                    Text(
+                      AppLocalizations.of(context)?.welcomeCreator ?? "Welcome, Creator! 👋",
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      "Hast du genug davon, deine Collaborations in Excel, "
-                      "Notiz-Apps und Kalendern zu verwalten?",
+                    Text(
+                      AppLocalizations.of(context)?.welcomeMessage ?? "Tired of managing your collaborations in Excel, note apps and calendars?",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18, color: Colors.black87),
+                      style: const TextStyle(fontSize: 18, color: Colors.black87),
                     ),
                     const SizedBox(height: 40),
                     ElevatedButton(
@@ -91,9 +91,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
-                        "Weiter",
-                        style: TextStyle(fontSize: 18),
+                      child: Text(
+                        AppLocalizations.of(context)?.next ?? "Next",
+                        style: const TextStyle(fontSize: 18),
                       ),
                     ),
                   ],
@@ -107,15 +107,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Behalte alle deine Kooperationen an einem Ort im Blick 📊",
-                      style: TextStyle(fontSize: 22),
+                    Text(
+                      AppLocalizations.of(context)?.keepTrack ?? "Keep track of all your collaborations in one place 📊",
+                      style: const TextStyle(fontSize: 22),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 40),
                     ElevatedButton(
                       onPressed: _nextPage,
-                      child: const Text("Weiter"),
+                      child: Text(AppLocalizations.of(context)?.next ?? "Next"),
                     ),
                   ],
                 ),
@@ -128,15 +128,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Werde automatisch benachrichtigt, wenn Deadlines ablaufen ⏰",
-                      style: TextStyle(fontSize: 22),
+                    Text(
+                      AppLocalizations.of(context)?.notifications ?? "Get automatically notified when deadlines expire ⏰",
+                      style: const TextStyle(fontSize: 22),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 40),
                     ElevatedButton(
                       onPressed: _nextPage,
-                      child: const Text("Weiter"),
+                      child: Text(AppLocalizations.of(context)?.next ?? "Next"),
                     ),
                   ],
                 ),
@@ -149,15 +149,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Starte jetzt und spare dir Chaos und Excel-Listen 🚀",
-                      style: TextStyle(fontSize: 22),
+                    Text(
+                      AppLocalizations.of(context)?.startNow ?? "Start now and save yourself from chaos and Excel lists 🚀",
+                      style: const TextStyle(fontSize: 22),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 40),
                     ElevatedButton(
                       onPressed: _nextPage,
-                      child: const Text("Los geht’s"),
+                      child: Text(AppLocalizations.of(context)?.letsGo ?? "Let's go"),
                     ),
                   ],
                 ),
@@ -186,7 +186,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   onPressed: () {
                     onFinish(context);
                   },
-                  child: const Text("Überspringen"),
+                  child: Text(AppLocalizations.of(context)?.skip ?? "Skip"),
                 ),
               ],
             ),

@@ -10,9 +10,11 @@ import 'package:collabflow/views/earnings-overview/earnings-overview.dart';
 import 'package:collabflow/views/about/about.dart';
 import 'package:collabflow/views/onboarding/onboarding.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
+import 'package:collabflow/l10n/app_localizations.dart';
 
 
 
@@ -114,6 +116,16 @@ class _MyAppState extends State<MyApp> {
         theme: lightTheme,
         darkTheme: darkTheme,
         themeMode: ThemeMode.system,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', ''),
+          Locale('de', ''),
+        ],
         home: OnboardingScreen(
           onComplete: () {
             setState(() {
@@ -129,6 +141,16 @@ class _MyAppState extends State<MyApp> {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.system,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('en', ''),
+        Locale('de', ''),
+      ],
       home: Scaffold(
         body: _pages[_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
@@ -138,18 +160,18 @@ class _MyAppState extends State<MyApp> {
               _selectedIndex = index;
             });
           },
-          items: const [
+          items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.list),
-              label: 'Collaborations',
+              icon: const Icon(Icons.list),
+              label: AppLocalizations.of(context)?.collaborations ?? 'Collaborations',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.euro),
-              label: 'Einnahmen',
+              icon: const Icon(Icons.euro),
+              label: AppLocalizations.of(context)?.earnings ?? 'Earnings',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.info_outline),
-              label: 'About',
+              icon: const Icon(Icons.info_outline),
+              label: AppLocalizations.of(context)?.about ?? 'About',
             ),
           ],
         ),

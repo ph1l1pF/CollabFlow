@@ -1,5 +1,6 @@
 import 'package:collabflow/models/collaboration.dart';
 import 'package:flutter/material.dart';
+import 'package:collabflow/l10n/app_localizations.dart';
 
 class CollaborationStateUtils {
   static IconData getStateIcon(CollabState state) {
@@ -18,29 +19,26 @@ class CollaborationStateUtils {
         return Icons.rate_review;
       case CollabState.Finished:
         return Icons.verified;
-      default:
-        return Icons.help_outline;
     }
   }
 
-  static String getStateLabel(CollabState state) {
+  static String getStateLabel(CollabState state, BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     switch (state) {
       case CollabState.FirstTalks:
-        return "Erstgespräch";
+        return l10n?.firstTalks ?? "First talks";
       case CollabState.ContractToSign:
-        return "Vertrag zu unterschreiben";
+        return l10n?.contractToSign ?? "Contract to sign";
       case CollabState.ScriptToProduce:
-        return "Skript erstellen";
+        return l10n?.scriptToProduce ?? "Create script";
       case CollabState.InProduction:
-        return "In Produktion";
+        return l10n?.inProduction ?? "In production";
       case CollabState.ContentEditing:
-        return "Content bearbeiten";
+        return l10n?.contentEditing ?? "Content editing";
       case CollabState.ContentFeedback:
-        return "Feedback für Content";
+        return l10n?.contentFeedback ?? "Content feedback";
       case CollabState.Finished:
-        return "Abgeschlossen";
-      default:
-        return "Unbekannt";
+        return l10n?.finished ?? "Finished";
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:collabflow/l10n/app_localizations.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
@@ -26,20 +27,20 @@ class AboutPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('CollabFlow'),
+        title: Text(AppLocalizations.of(context)?.appTitle ?? 'CollabFlow'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Entwickler:'),
+            Text(AppLocalizations.of(context)?.developer ?? 'Developer:'),
             Text(
               developerName,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 8),
-            const Text('Feedback an:'),
+            Text(AppLocalizations.of(context)?.feedbackTo ?? 'Feedback to:'),
             Text(
               developerEmail,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
@@ -50,13 +51,13 @@ class AboutPage extends StatelessWidget {
                 ElevatedButton.icon(
                   onPressed: _sendEmail,
                   icon: const Icon(Icons.mail),
-                  label: const Text('E-Mail senden'),
+                  label: Text(AppLocalizations.of(context)?.sendEmail ?? 'Send Email'),
                 ),
                 const SizedBox(width: 12),
                 ElevatedButton.icon(
                   onPressed: _shareApp,
                   icon: const Icon(Icons.share),
-                  label: const Text('App teilen'),
+                  label: Text(AppLocalizations.of(context)?.shareApp ?? 'Share App'),
                 ),
               ],
             ),
