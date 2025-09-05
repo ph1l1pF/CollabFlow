@@ -109,9 +109,8 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Align(
-                                alignment: Alignment.centerRight,
-                              ),
+                              
+                              const SizedBox(height: 8),
                               for (final s in states)
                                 CheckboxListTile(
                                   value: tempSelected.contains(s),
@@ -126,15 +125,37 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                                     (context as Element).markNeedsBuild();
                                   },
                                 ),
+                                Row(
+                                children: [
+                                  Expanded(
+                                    child: TextButton.icon(
+                                      onPressed: () {
+                                        tempSelected.clear();
+                                        (context as Element).markNeedsBuild();
+                                      },
+                                      icon: const Icon(Icons.filter_alt_off),
+                                      label: const Text('Filter entfernen'),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: TextButton.icon(
+                                      onPressed: () {
+                                        tempSelected
+                                          ..clear()
+                                          ..addAll(states);
+                                        (context as Element).markNeedsBuild();
+                                      },
+                                      icon: const Icon(Icons.select_all),
+                                      label: const Text('Alle auswählen'),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
                         actions: [
-                          TextButton.icon(
-                            onPressed: () => Navigator.pop(context, <CollabState>{}),
-                            icon: const Icon(Icons.filter_alt_off),
-                            label: const Text('Filter entfernen'),
-                          ),
                           TextButton.icon(
                             onPressed: () => Navigator.pop(context, _selectedStates),
                             icon: const Icon(Icons.close),
@@ -180,9 +201,10 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
           final matchesSearch = viewModel.collaborations
               .where((c) => c.title.toLowerCase().trim().contains(_searchText.toLowerCase().trim()))
               .toList();
-          final filtered = _selectedStates.isEmpty
-              ? matchesSearch
-              : matchesSearch.where((c) => _selectedStates.contains(c.state)).toList();
+          final filtered = (_selectedStates.isEmpty
+                  ? matchesSearch
+                  : matchesSearch.where((c) => _selectedStates.contains(c.state)).toList())
+              ..sort((a, b) => a.deadline.compareTo(b.deadline));
 
           return filtered.isEmpty
               ? 
@@ -252,7 +274,6 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                         ),
                         elevation: 2,
                         child: ListTile(
-                          leading: Icon(collab.stateIcon, color: Colors.blue),
                           title: Text(
                             collab.title,
                             style: const TextStyle(
@@ -268,6 +289,14 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                                 "Deadline: ${DateFormat('dd.MM.yyyy').format(collab.deadline)}",
                               ),
                               Text("Brand: ${collab.partner}"),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  Icon(collab.stateIcon, color: Colors.blue, size: 16),
+                                  const SizedBox(width: 6),
+                                  Text(CollaborationStateUtils.getStateLabel(collab.state)),
+                                ],
+                              ),
                             ],
                           ),
                           trailing: const Icon(Icons.chevron_right),
