@@ -259,4 +259,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationSubtitle => 'Your deadline is expiring';
+
+  @override
+  String get betaDisclaimer =>
+      'Note: In this beta version, your data is only stored locally on your device. Data may be lost when switching apps or reinstalling. In the final version, your data will be securely stored in the cloud.';
+
+  @override
+  String get betaDisclaimerTitle => 'Beta Version Notice';
 }

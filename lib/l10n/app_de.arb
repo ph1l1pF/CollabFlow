@@ -81,5 +81,7 @@
   "earningsAsPdf": "Einnahmen als PDF",
   "notificationTitle": "Deine Collaboration",
   "notificationDue": "ist am",
-  "notificationSubtitle": "Deine Deadline läuft ab"
+  "notificationSubtitle": "Deine Deadline läuft ab",
+  "betaDisclaimer": "Hinweis: In dieser Beta-Version werden deine Daten nur lokal auf deinem Gerät gespeichert. Bei einem App-Wechsel oder einer Neuinstallation können Daten verloren gehen. In der finalen Version werden deine Daten sicher in der Cloud gespeichert.",
+  "betaDisclaimerTitle": "Beta-Version Hinweis"
 }

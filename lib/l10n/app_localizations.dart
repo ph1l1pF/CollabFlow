@@ -589,6 +589,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your deadline is expiring'**
   String get notificationSubtitle;
+
+  /// No description provided for @betaDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Note: In this beta version, your data is only stored locally on your device. Data may be lost when switching apps or reinstalling. In the final version, your data will be securely stored in the cloud.'**
+  String get betaDisclaimer;
+
+  /// No description provided for @betaDisclaimerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Beta Version Notice'**
+  String get betaDisclaimerTitle;
 }
 
 class _AppLocalizationsDelegate

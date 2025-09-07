@@ -258,4 +258,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get notificationSubtitle => 'Deine Deadline läuft ab';
+
+  @override
+  String get betaDisclaimer =>
+      'Hinweis: In dieser Beta-Version werden deine Daten nur lokal auf deinem Gerät gespeichert. Bei einem App-Wechsel oder einer Neuinstallation können Daten verloren gehen. In der finalen Version werden deine Daten sicher in der Cloud gespeichert.';
+
+  @override
+  String get betaDisclaimerTitle => 'Beta-Version Hinweis';
 }

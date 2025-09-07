@@ -81,5 +81,7 @@
   "earningsAsPdf": "Earnings as PDF",
   "notificationTitle": "Your collaboration",
   "notificationDue": "is due on",
-  "notificationSubtitle": "Your deadline is expiring"
+  "notificationSubtitle": "Your deadline is expiring",
+  "betaDisclaimer": "Note: In this beta version, your data is only stored locally on your device. Data may be lost when switching apps or reinstalling. In the final version, your data will be securely stored in the cloud.",
+  "betaDisclaimerTitle": "Beta Version Notice"
 }
