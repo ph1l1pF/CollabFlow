@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:collabflow/l10n/app_localizations.dart';
+import 'package:collabflow/constants/app_colors.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final VoidCallback? onComplete;
@@ -62,7 +63,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     const Icon(
                       Icons.handshake,
                       size: 100,
-                      color: Colors.blueAccent,
+                      color: AppColors.primaryPink,
                     ),
                     const SizedBox(height: 32),
                     Text(
@@ -176,7 +177,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   controller: _controller,
                   count: 4, // jetzt 4 Seiten!
                   effect: const ExpandingDotsEffect(
-                    activeDotColor: Colors.blueAccent,
+                    activeDotColor: AppColors.primaryPink,
                     dotHeight: 8,
                     dotWidth: 8,
                   ),

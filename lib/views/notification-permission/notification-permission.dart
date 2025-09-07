@@ -1,6 +1,7 @@
 import 'package:collabflow/repositories/notifications-repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:collabflow/constants/app_colors.dart';
 
 class NotificationPermissionScreen extends StatelessWidget {
 
@@ -39,7 +40,7 @@ class NotificationPermissionScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.celebration, size: 80, color: Colors.blueAccent),
+              const Icon(Icons.celebration, size: 80, color: AppColors.primaryPink),
               const SizedBox(height: 24),
               const Text(
                 "Glückwunsch 🎉",

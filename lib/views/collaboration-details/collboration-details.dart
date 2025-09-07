@@ -7,6 +7,7 @@ import 'package:collabflow/views/create-collaboration/step-1-basic/create-collab
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:collabflow/l10n/app_localizations.dart';
+import 'package:collabflow/constants/app_colors.dart';
 
 class CollaborationDetailsPage extends StatefulWidget {
   final CollaborationDetailsViewModel viewModel;
@@ -57,7 +58,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                               const SizedBox(height: 12),
                               Row(
                                 children: [
-                                  const Icon(Icons.calendar_today, size: 18, color: Colors.blueGrey),
+                                  const Icon(Icons.calendar_today, size: 18, color: AppColors.primaryPink),
                                   const SizedBox(width: 6),
                                   Text(
                                     DateFormat.yMd(Localizations.localeOf(context).toString()).format(viewModel.collab.deadline.date),
@@ -78,17 +79,17 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                               const SizedBox(height: 8),
                               Row(
                                 children: [
-                                  const Icon(Icons.flag, size: 18, color: Colors.blueGrey),
+                                  const Icon(Icons.flag, size: 18, color: AppColors.primaryPink),
                                   const SizedBox(width: 6),
                                   Icon(
                                     CollaborationStateUtils.getStateIcon(viewModel.collab.state),
-                                    color: Colors.blue,
+                                    color: AppColors.primaryPink,
                                     size: 18,
                                   ),
                                   const SizedBox(width: 6),
                                   Text(
                                     CollaborationStateUtils.getStateLabel(viewModel.collab.state, context),
-                                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: Colors.blueGrey),
+                                    style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: AppColors.primaryPink),
                                   ),
                                 ],
                               ),

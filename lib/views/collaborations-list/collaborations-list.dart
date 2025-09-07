@@ -10,6 +10,7 @@ import 'package:collabflow/models/collaboration.dart';
 import 'package:collabflow/utils/collaboration-state-utils.dart';
 import 'package:collabflow/repositories/shared-prefs-repository.dart';
 import 'package:collabflow/l10n/app_localizations.dart';
+import 'package:collabflow/constants/app_colors.dart';
 
 class CollaborationListPage extends StatefulWidget {
   const CollaborationListPage({super.key});
@@ -294,7 +295,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                               Row(
                                 children: [
                                   Text("${AppLocalizations.of(context)?.status ?? "Status"}: "),
-                                  Icon(collab.stateIcon, color: Colors.blue, size: 16),
+                                  Icon(collab.stateIcon, color: AppColors.primaryPink, size: 16),
                                   const SizedBox(width: 6),
                                   Text(CollaborationStateUtils.getStateLabel(collab.state, context)),
                                 ],

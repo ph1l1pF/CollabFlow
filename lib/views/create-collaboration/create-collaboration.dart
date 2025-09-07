@@ -9,6 +9,7 @@ import 'package:collabflow/views/create-collaboration/create-collaboration-page-
 import 'package:collabflow/views/notification-permission/notification-permission.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:collabflow/constants/app_colors.dart';
 
 class CollaborationWizard extends StatefulWidget {
   const CollaborationWizard({super.key});
@@ -82,9 +83,45 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
     _nextStep();
   }
 
+  BoxDecoration _getBackgroundDecoration(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
+    if (isDarkMode) {
+      return const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF000000), // Pure black
+            Color(0xFF1a1a1a), // Dark gray
+            Color(0xFF2d2d2d), // Lighter dark gray
+          ],
+          stops: [0.0, 0.6, 1.0],
+        ),
+      );
+    } else {
+      // Use AppColors for consistency (even though we're using hardcoded values for gradient)
+      final _ = AppColors.primaryPink; // Reference to avoid unused import warning
+      return const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFFFFF0F8), // Very light pink
+            Color(0xFFFFE5F1), // Light pink
+            Color(0xFFFFB3D1), // Medium pink
+          ],
+          stops: [0.0, 0.6, 1.0],
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Container(
+      decoration: _getBackgroundDecoration(context),
+      child: Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(top: 24.0),
         child: Builder(
@@ -120,6 +157,7 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
             }
           },
         ),
+      ),
       ),
     );
   }

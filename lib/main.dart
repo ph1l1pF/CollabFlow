@@ -15,6 +15,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:collabflow/l10n/app_localizations.dart';
+import 'package:collabflow/constants/app_colors.dart';
 
 
 
@@ -95,19 +96,53 @@ class _MyAppState extends State<MyApp> {
     _onboardingDone = widget.onboardingDone;
   }
 
+  BoxDecoration _getBackgroundDecoration(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    
+    if (isDarkMode) {
+      return const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFF000000), // Pure black
+            Color(0xFF1a1a1a), // Dark gray
+            Color(0xFF2d2d2d), // Lighter dark gray
+          ],
+          stops: [0.0, 0.6, 1.0],
+        ),
+      );
+    } else {
+      return const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            Color(0xFFFFF0F8), // Very light pink
+            Color(0xFFFFE5F1), // Light pink
+            Color(0xFFFFB3D1), // Medium pink
+          ],
+          stops: [0.0, 0.6, 1.0],
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final lightTheme = ThemeData(
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
+      colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primaryPink),
       useMaterial3: true,
+      scaffoldBackgroundColor: Colors.transparent,
     );
 
     final darkTheme = ThemeData(
       colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.lightBlue,
+        seedColor: AppColors.primaryPink,
         brightness: Brightness.dark,
       ),
       useMaterial3: true,
+      scaffoldBackgroundColor: Colors.transparent,
     );
 
     if (!_onboardingDone) {
@@ -126,12 +161,17 @@ class _MyAppState extends State<MyApp> {
           Locale('en', ''),
           Locale('de', ''),
         ],
-        home: OnboardingScreen(
-          onComplete: () {
-            setState(() {
-              _onboardingDone = true;
-            });
-          },
+        home: Builder(
+          builder: (context) => Container(
+            decoration: _getBackgroundDecoration(context),
+            child: OnboardingScreen(
+              onComplete: () {
+                setState(() {
+                  _onboardingDone = true;
+                });
+              },
+            ),
+          ),
         ),
       );
     }
@@ -151,14 +191,19 @@ class _MyAppState extends State<MyApp> {
         Locale('en', ''),
         Locale('de', ''),
       ],
-      home: _MainAppContent(
-        selectedIndex: _selectedIndex,
-        onIndexChanged: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        pages: _pages,
+      home: Builder(
+        builder: (context) => Container(
+          decoration: _getBackgroundDecoration(context),
+          child: _MainAppContent(
+            selectedIndex: _selectedIndex,
+            onIndexChanged: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            pages: _pages,
+          ),
+        ),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:collabflow/models/collaboration.dart';
 import 'package:collabflow/l10n/app_localizations.dart';
+import 'package:collabflow/constants/app_colors.dart';
 
 class BasicCollaborationStep extends StatefulWidget {
   final void Function({
@@ -144,7 +145,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
                 children: [
                   Row(
                     children: [
-                      const Icon(Icons.event, color: Colors.blueGrey),
+                      const Icon(Icons.event, color: AppColors.primaryPink),
                       const SizedBox(width: 8),
                       Text(
                         AppLocalizations.of(context)?.deadlineAndNotification ?? 'Deadline & Notification',
@@ -240,21 +241,21 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
                       margin: const EdgeInsets.symmetric(horizontal: 8),
                       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                       decoration: BoxDecoration(
-                        color: isSelected ? Colors.blue.shade100 : Colors.grey.shade200,
+                        color: isSelected ? AppColors.primaryPinkWithOpacity : Colors.grey.shade200,
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: isSelected ? Colors.blue : Colors.transparent,
+                          color: isSelected ? AppColors.primaryPink : Colors.transparent,
                           width: 2,
                         ),
                       ),
                       child: Column(
                         children: [
-                          Icon(icon, color: isSelected ? Colors.blue : Colors.grey),
+                          Icon(icon, color: isSelected ? AppColors.primaryPink : Colors.grey),
                           const SizedBox(height: 4),
                           Text(
                             label,
                             style: TextStyle(
-                              color: isSelected ? Colors.blue : Colors.grey,
+                              color: isSelected ? AppColors.primaryPink : Colors.grey,
                               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                               fontSize: 13,
                             ),
