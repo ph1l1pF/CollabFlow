@@ -249,4 +249,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get earningsAsPdf => 'Einnahmen als PDF';
+
+  @override
+  String get notificationTitle => 'Deine Collaboration';
+
+  @override
+  String get notificationDue => 'ist am';
+
+  @override
+  String get notificationSubtitle => 'Deine Deadline läuft ab';
 }

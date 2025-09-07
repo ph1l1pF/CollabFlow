@@ -344,7 +344,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
         widget.viewModel.collab.deadline = deadline;
         widget.viewModel.collab.fee = Fee(amount: fee, currency: 'EUR');
         widget.viewModel.collab.state = state;
-        widget.viewModel.updateCollaboration(widget.viewModel.collab);
+        widget.viewModel.updateCollaboration(widget.viewModel.collab, context: context);
       });
     }
     Navigator.of(context).pop();
@@ -360,7 +360,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
       setState(() {
         widget.viewModel.collab.script.content = scriptContent;
         widget.viewModel.collab.notes = notes;
-        widget.viewModel.updateCollaboration(widget.viewModel.collab);
+        widget.viewModel.updateCollaboration(widget.viewModel.collab, context: context);
       });
     }
     Navigator.of(context).pop();
@@ -370,7 +370,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
     if(next){
       setState(() {
         widget.viewModel.collab.partner = partner;
-        widget.viewModel.updateCollaboration(widget.viewModel.collab);
+        widget.viewModel.updateCollaboration(widget.viewModel.collab, context: context);
       });
     }
     Navigator.of(context).pop();

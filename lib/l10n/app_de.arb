@@ -78,5 +78,8 @@
   "titleForTable": "Titel",
   "amount": "Betrag",
   "earningsAsCsv": "Einnahmen als CSV",
-  "earningsAsPdf": "Einnahmen als PDF"
+  "earningsAsPdf": "Einnahmen als PDF",
+  "notificationTitle": "Deine Collaboration",
+  "notificationDue": "ist am",
+  "notificationSubtitle": "Deine Deadline läuft ab"
 }

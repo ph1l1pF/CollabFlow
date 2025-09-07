@@ -191,7 +191,7 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
     );
 
     await _requestNotificationPermissionsIfNecessary();
-    _collaborationsRepository.createCollaboration(collab);
+    _collaborationsRepository.createCollaboration(collab, context: context);
 
     Navigator.of(context).pop();
   }

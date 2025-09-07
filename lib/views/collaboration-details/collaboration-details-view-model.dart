@@ -1,5 +1,6 @@
 import 'package:collabflow/models/collaboration.dart';
 import 'package:collabflow/repositories/collaborations-repository.dart';
+import 'package:flutter/material.dart';
 
 class CollaborationDetailsViewModel {
   late Collaboration collab;
@@ -20,8 +21,8 @@ class CollaborationDetailsViewModel {
     _collaborationsRepository.delete(collab);
   }
 
-  void updateCollaboration(Collaboration updatedCollaboration){
-    _collaborationsRepository.updateCollaboration(updatedCollaboration);
+  void updateCollaboration(Collaboration updatedCollaboration, {BuildContext? context}){
+    _collaborationsRepository.updateCollaboration(updatedCollaboration, context: context);
   }
 
 }

@@ -16,11 +16,11 @@ class CollaborationsRepository extends ChangeNotifier {
   final Box<Collaboration> _box = Hive.box<Collaboration>('collaborations');
   List<Collaboration> get collaborations => List.unmodifiable(_box.values.toList());
 
-  void createCollaboration(Collaboration collaboration){
+  void createCollaboration(Collaboration collaboration, {BuildContext? context}){
     _box.add(collaboration);
 
-    if(collaboration.deadline.sendNotification) {
-      _notificationsRepository.scheduleNotification(collaboration);
+    if(collaboration.deadline.sendNotification && context != null) {
+      _notificationsRepository.scheduleNotification(collaboration, context);
     }
     notifyListeners();
   }
@@ -39,7 +39,7 @@ class CollaborationsRepository extends ChangeNotifier {
     _notificationsRepository.cancelNotification(collaboration);
   }
 
-  void updateCollaboration(Collaboration updatedCollaboration) {
+  void updateCollaboration(Collaboration updatedCollaboration, {BuildContext? context}) {
     final index = _box.values.toList().indexWhere((collab) => collab.id == updatedCollaboration.id);
     if (index != -1) {
       _box.putAt(index, updatedCollaboration);
@@ -49,8 +49,8 @@ class CollaborationsRepository extends ChangeNotifier {
     }
 
     _notificationsRepository.cancelNotification(updatedCollaboration);
-    if(updatedCollaboration.deadline.sendNotification) {
-      _notificationsRepository.scheduleNotification(updatedCollaboration);
+    if(updatedCollaboration.deadline.sendNotification && context != null) {
+      _notificationsRepository.scheduleNotification(updatedCollaboration, context);
     }
   }
   

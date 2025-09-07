@@ -571,6 +571,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Earnings as PDF'**
   String get earningsAsPdf;
+
+  /// No description provided for @notificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your collaboration'**
+  String get notificationTitle;
+
+  /// No description provided for @notificationDue.
+  ///
+  /// In en, this message translates to:
+  /// **'is due on'**
+  String get notificationDue;
+
+  /// No description provided for @notificationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your deadline is expiring'**
+  String get notificationSubtitle;
 }
 
 class _AppLocalizationsDelegate

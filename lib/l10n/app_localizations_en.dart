@@ -250,4 +250,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get earningsAsPdf => 'Earnings as PDF';
+
+  @override
+  String get notificationTitle => 'Your collaboration';
+
+  @override
+  String get notificationDue => 'is due on';
+
+  @override
+  String get notificationSubtitle => 'Your deadline is expiring';
 }

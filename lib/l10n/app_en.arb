@@ -78,5 +78,8 @@
   "titleForTable": "Title",
   "amount": "Amount",
   "earningsAsCsv": "Earnings as CSV",
-  "earningsAsPdf": "Earnings as PDF"
+  "earningsAsPdf": "Earnings as PDF",
+  "notificationTitle": "Your collaboration",
+  "notificationDue": "is due on",
+  "notificationSubtitle": "Your deadline is expiring"
 }
