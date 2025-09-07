@@ -2,13 +2,14 @@ import 'package:collabflow/repositories/notifications-repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:collabflow/constants/app_colors.dart';
+import 'package:collabflow/utils/theme_utils.dart';
 
 class NotificationPermissionScreen extends StatelessWidget {
 
   const NotificationPermissionScreen({
     super.key
   });
-
+  
   Future<void> _requestPermission(BuildContext context) async {
     final repo = Provider.of<NotificationsRepository>(context, listen: false);
 
@@ -33,8 +34,11 @@ class NotificationPermissionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+    return Container(
+      decoration: ThemeUtils.getBackgroundDecoration(context),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
           child: Column(
@@ -74,6 +78,7 @@ class NotificationPermissionScreen extends StatelessWidget {
             ],
           ),
         ),
+      ),
       ),
     );
   }

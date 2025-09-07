@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:collabflow/l10n/app_localizations.dart';
 import 'package:collabflow/constants/app_colors.dart';
+import 'package:collabflow/utils/theme_utils.dart';
 
 class CollaborationDetailsPage extends StatefulWidget {
   final CollaborationDetailsViewModel viewModel;
@@ -19,15 +20,20 @@ class CollaborationDetailsPage extends StatefulWidget {
 }
 
 class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
+
   @override
   Widget build(BuildContext context) {
     final viewModel = widget.viewModel;
     final locale = Localizations.localeOf(context).toString();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(viewModel.collab.title),
-      ),
-      body: Column(
+    return Container(
+      decoration: ThemeUtils.getBackgroundDecoration(context),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: Text(viewModel.collab.title),
+        ),
+        body: Column(
         children: [
           Expanded(
             child: ListView(
@@ -79,7 +85,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                               const SizedBox(height: 8),
                               Row(
                                 children: [
-                                  const Icon(Icons.flag, size: 18, color: AppColors.primaryPink),
+                                  Text('${AppLocalizations.of(context)?.status ?? 'Status'}: '),
                                   const SizedBox(width: 6),
                                   Icon(
                                     CollaborationStateUtils.getStateIcon(viewModel.collab.state),
@@ -325,6 +331,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
             ),
           ),
         ],
+      ),
       ),
     );
   }

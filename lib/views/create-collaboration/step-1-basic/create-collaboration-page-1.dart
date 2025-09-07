@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:collabflow/models/collaboration.dart';
 import 'package:collabflow/l10n/app_localizations.dart';
 import 'package:collabflow/constants/app_colors.dart';
+import 'package:collabflow/utils/theme_utils.dart';
 
 class BasicCollaborationStep extends StatefulWidget {
   final void Function({
@@ -118,12 +119,16 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)?.edit ?? 'Edit'),
-        elevation: 0,
-      ),
-      body: Form(
+    return Container(
+      decoration: ThemeUtils.getBackgroundDecoration(context),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: Text(AppLocalizations.of(context)?.edit ?? 'Edit'),
+          elevation: 0,
+        ),
+        body: Form(
         key: _formKey,
         child: ListView(
           padding: const EdgeInsets.all(16),
@@ -278,6 +283,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

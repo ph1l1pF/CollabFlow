@@ -31,7 +31,8 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
       context: context,
       firstDate: DateTime(now.year - 3),
       lastDate: DateTime(now.year + 1),
-      initialDateRange: _selectedRange ??
+      initialDateRange:
+          _selectedRange ??
           DateTimeRange(start: DateTime(now.year, 1, 1), end: now),
     );
     if (!mounted) return;
@@ -48,7 +49,7 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
         final filtered = entries.where((e) {
           if (_selectedRange == null) return true;
           return e.date.isAfter(_selectedRange!.start) &&
-                 e.date.isBefore(_selectedRange!.end);
+              e.date.isBefore(_selectedRange!.end);
         }).toList();
 
         final total = filtered.fold<double>(0, (sum, e) => sum + e.amount);
@@ -56,19 +57,27 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
 
         return Scaffold(
           appBar: AppBar(
-            title: Text(AppLocalizations.of(context)?.earningsOverview ?? "Earnings Overview"),
+            title: Text(
+              AppLocalizations.of(context)?.earningsOverview ??
+                  "Earnings Overview",
+            ),
             actions: [
               IconButton(
                 icon: const Icon(Icons.download),
                 tooltip: AppLocalizations.of(context)?.export ?? 'Export',
                 onPressed: () async {
-                  final csvService = Provider.of<CollaborationExportService>(context, listen: false);
+                  final csvService = Provider.of<CollaborationExportService>(
+                    context,
+                    listen: false,
+                  );
                   final l10n = AppLocalizations.of(context);
                   final choice = await showDialog<String>(
                     context: context,
                     builder: (context) {
                       return SimpleDialog(
-                        title: Text(l10n?.exportFormat ?? 'Choose export format'),
+                        title: Text(
+                          l10n?.exportFormat ?? 'Choose export format',
+                        ),
                         children: [
                           ListTile(
                             leading: const Icon(Icons.table_chart),
@@ -92,7 +101,7 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                   );
                   if (choice == 'csv') {
                     await csvService.exportEarningsEntries(
-                      entries, 
+                      entries,
                       locale: locale,
                       dateHeader: l10n?.date ?? 'Date',
                       titleHeader: l10n?.titleForTable ?? 'Title',
@@ -101,12 +110,13 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                     );
                   } else if (choice == 'pdf') {
                     await csvService.exportEarningsEntriesPdf(
-                      filtered, 
+                      filtered,
                       locale: locale,
                       dateHeader: l10n?.date ?? 'Date',
                       titleHeader: l10n?.titleForTable ?? 'Title',
                       amountHeader: l10n?.amount ?? 'Amount',
-                      earningsTitle: l10n?.earningsOverview ?? 'Earnings Overview',
+                      earningsTitle:
+                          l10n?.earningsOverview ?? 'Earnings Overview',
                       sumLabel: l10n?.sum ?? 'Sum',
                       shareText: l10n?.earningsAsPdf ?? 'Earnings as PDF',
                     );
@@ -118,7 +128,10 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
           body: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 8,
+                  horizontal: 16,
+                ),
                 child: Row(
                   children: [
                     GestureDetector(
@@ -129,11 +142,15 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                     GestureDetector(
                       onTap: _openDateRangePicker,
                       child: Text(
-                      _selectedRange == null
-                          ? (AppLocalizations.of(context)?.allTimeframes ?? "All timeframes")
-                          : "${DateFormat.yMd(Localizations.localeOf(context).toString()).format(_selectedRange!.start)} – ${DateFormat.yMd(Localizations.localeOf(context).toString()).format(_selectedRange!.end)}",
-                      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-                    ),
+                        _selectedRange == null
+                            ? (AppLocalizations.of(context)?.allTimeframes ??
+                                  "All timeframes")
+                            : "${DateFormat.yMd(Localizations.localeOf(context).toString()).format(_selectedRange!.start)} – ${DateFormat.yMd(Localizations.localeOf(context).toString()).format(_selectedRange!.end)}",
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -142,7 +159,8 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                 Expanded(
                   child: Center(
                     child: Text(
-                      AppLocalizations.of(context)?.noCollaborationsYet ?? "There are no collaborations yet.\nCreate your first collaboration.",
+                      AppLocalizations.of(context)?.noCollaborationsYet ??
+                          "There are no collaborations yet.\nCreate your first collaboration.",
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -152,52 +170,87 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: DataTable(
-                                          columns: [
-                      DataColumn(label: Text(AppLocalizations.of(context)?.deadline ?? "Deadline")),
-                      DataColumn(label: Text(AppLocalizations.of(context)?.titleForTable ?? "Title")),
-                      DataColumn(label: Text(AppLocalizations.of(context)?.feeForTable ?? "Amount")),
-                    ],
+                      columns: [
+                        DataColumn(
+                          label: Text(
+                            AppLocalizations.of(context)?.deadline ??
+                                "Deadline",
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            AppLocalizations.of(context)?.titleForTable ??
+                                "Title",
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            AppLocalizations.of(context)?.feeForTable ??
+                                "Amount",
+                          ),
+                        ),
+                      ],
                       rows: filtered.map((e) {
-                        return DataRow(cells: [
-                          DataCell(Text(DateFormat.yMd(Localizations.localeOf(context).toString()).format(e.date))),
-                          DataCell(Text(
-                            e.title.substring(0, e.title.length > 12 ? 12 : e.title.length) +
-                                (e.title.length > 12 ? "..." : ""),
-                          )),
-                          DataCell(Text(
-                            NumberFormat.currency(locale: locale, symbol: "€").format(e.amount),
-                          )),
-                        ]);
+                        return DataRow(
+                          cells: [
+                            DataCell(
+                              Text(
+                                DateFormat.yMd(
+                                  Localizations.localeOf(context).toString(),
+                                ).format(e.date),
+                              ),
+                            ),
+                            DataCell(
+                              Text(
+                                e.title.substring(
+                                      0,
+                                      e.title.length > 12 ? 12 : e.title.length,
+                                    ) +
+                                    (e.title.length > 12 ? "..." : ""),
+                              ),
+                            ),
+                            DataCell(
+                              Text(
+                                NumberFormat.currency(
+                                  locale: locale,
+                                  symbol: "€",
+                                ).format(e.amount),
+                              ),
+                            ),
+                          ],
+                        );
                       }).toList(),
                     ),
                   ),
                 ),
-                              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "${AppLocalizations.of(context)?.sum ?? "Sum"}: ${NumberFormat.currency(locale: locale, symbol: "€").format(total)}",
-                      style: TextStyle(
-                        fontSize: 18, 
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onSurface,
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${AppLocalizations.of(context)?.sum ?? "Sum"}: ${NumberFormat.currency(locale: locale, symbol: "€").format(total)}",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                       ),
-                    ),
-                    Text(
-                      "${AppLocalizations.of(context)?.count ?? "Count"}: ${filtered.length}",
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onSurface,
+                      Text(
+                        "${AppLocalizations.of(context)?.count ?? "Count"}: ${filtered.length}",
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
               ],
             ],
           ),

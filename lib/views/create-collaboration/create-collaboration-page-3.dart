@@ -1,5 +1,6 @@
 import 'package:collabflow/models/collaboration.dart';
 import 'package:flutter/material.dart';
+import 'package:collabflow/utils/theme_utils.dart';
 
 class PartnerStep extends StatefulWidget {
   final void Function(Partner partner, bool next) onFinish;
@@ -75,12 +76,16 @@ class _PartnerStepState extends State<PartnerStep> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Partnerdaten bearbeiten'),
-        elevation: 0,
-      ),
-      body: Form(
+    return Container(
+      decoration: ThemeUtils.getBackgroundDecoration(context),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: const Text('Partnerdaten bearbeiten'),
+          elevation: 0,
+        ),
+        body: Form(
         key: _formKey,
         child: ListView(
           padding: const EdgeInsets.all(16),
@@ -113,6 +118,7 @@ class _PartnerStepState extends State<PartnerStep> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

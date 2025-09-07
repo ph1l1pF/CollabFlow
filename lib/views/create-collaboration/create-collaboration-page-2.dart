@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:collabflow/utils/theme_utils.dart';
 
 class ScriptStep extends StatefulWidget {
   final void Function({
@@ -59,12 +60,16 @@ class _ScriptStepState extends State<ScriptStep> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Skript & Notizen bearbeiten'),
-        elevation: 0,
-      ),
-      body: Form(
+    return Container(
+      decoration: ThemeUtils.getBackgroundDecoration(context),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: const Text('Skript & Notizen bearbeiten'),
+          elevation: 0,
+        ),
+        body: Form(
         key: _formKey,
         child: ListView(
           padding: const EdgeInsets.all(16),
@@ -91,6 +96,7 @@ class _ScriptStepState extends State<ScriptStep> {
             ),
           ],
         ),
+      ),
       ),
     );
   }
