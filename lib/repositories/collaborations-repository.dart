@@ -17,6 +17,7 @@ class CollaborationsRepository extends ChangeNotifier {
   List<Collaboration> get collaborations => List.unmodifiable(_box.values.toList());
 
   void createCollaboration(Collaboration collaboration, {BuildContext? context}){
+    collaboration.isDirty = true;
     _box.add(collaboration);
 
     if(collaboration.deadline.sendNotification && context != null) {
@@ -39,9 +40,12 @@ class CollaborationsRepository extends ChangeNotifier {
     _notificationsRepository.cancelNotification(collaboration);
   }
 
-  void updateCollaboration(Collaboration updatedCollaboration, {BuildContext? context}) {
+  void updateCollaboration(Collaboration updatedCollaboration, {BuildContext? context, bool setIsDirty = true}) {
     final index = _box.values.toList().indexWhere((collab) => collab.id == updatedCollaboration.id);
     if (index != -1) {
+      if (setIsDirty) {
+        updatedCollaboration.isDirty = true;
+      }
       _box.putAt(index, updatedCollaboration);
       notifyListeners();
     } else {

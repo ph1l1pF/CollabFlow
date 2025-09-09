@@ -601,6 +601,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Beta Version Notice'**
   String get betaDisclaimerTitle;
+
+  /// No description provided for @cloudSyncTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync your data in the cloud ☁️'**
+  String get cloudSyncTitle;
+
+  /// No description provided for @cloudSyncMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Apple to securely store your collaborations in the cloud. Your data will be safe and accessible across all your devices.'**
+  String get cloudSyncMessage;
+
+  /// No description provided for @loggedInWithApple.
+  ///
+  /// In en, this message translates to:
+  /// **'Logged in with Apple'**
+  String get loggedInWithApple;
 }
 
 class _AppLocalizationsDelegate

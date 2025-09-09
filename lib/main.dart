@@ -2,7 +2,10 @@ import 'package:collabflow/models/collaboration.dart';
 import 'package:collabflow/repositories/collaborations-repository.dart';
 import 'package:collabflow/repositories/notifications-repository.dart';
 import 'package:collabflow/repositories/shared-prefs-repository.dart';
+import 'package:collabflow/services/auth-service.dart';
 import 'package:collabflow/services/collaboration-export-service.dart';
+import 'package:collabflow/services/secure-storage-service.dart';
+import 'package:collabflow/services/collaborations-api-service.dart';
 import 'package:collabflow/views/collaborations-list/collaborations-list.dart';
 import 'package:collabflow/views/collaborations-list/collaboration-list-view-model.dart';
 import 'package:collabflow/views/earnings-overview/earnings-overview-view-model.dart';
@@ -67,6 +70,18 @@ void main() async {
         Provider(
           create: (_) => CollaborationExportService(),
         ),
+        Provider(
+          create: (_) => AuthService(),
+        ),
+        Provider(
+          create: (_) => SecureStorageService(),
+        ),
+        Provider(
+          create: (context) => CollaborationsApiService(
+            secureStorageService: Provider.of<SecureStorageService>(context, listen: false),
+            collaborationsRepository: Provider.of<CollaborationsRepository>(context, listen: false),
+          ),
+        ),
       ],
       child: MyApp(onboardingDone: onboardingDone),
     ),
@@ -95,6 +110,20 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _onboardingDone = widget.onboardingDone;
+    
+    // Start periodic sync after the widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final apiService = Provider.of<CollaborationsApiService>(context, listen: false);
+      apiService.startPeriodicSync();
+    });
+  }
+
+  @override
+  void dispose() {
+    // Stop periodic sync when app is disposed
+    final apiService = Provider.of<CollaborationsApiService>(context, listen: false);
+    apiService.dispose();
+    super.dispose();
   }
 
 

@@ -83,5 +83,9 @@
   "notificationDue": "ist am",
   "notificationSubtitle": "Deine Deadline läuft ab",
   "betaDisclaimer": "Hinweis: In dieser Beta-Version werden deine Daten nur lokal auf deinem Gerät gespeichert. Bei einem App-Wechsel oder einer Neuinstallation können Daten verloren gehen. In der finalen Version werden deine Daten sicher in der Cloud gespeichert.",
-  "betaDisclaimerTitle": "Beta-Version Hinweis"
+  "betaDisclaimerTitle": "Beta-Version Hinweis",
+  "cloudSyncTitle": "Synchronisiere deine Daten in der Cloud ☁️",
+  "cloudSyncMessage": "Melde dich mit Apple an, um deine Collaborations sicher in der Cloud zu speichern. Deine Daten sind sicher und auf allen deinen Geräten verfügbar.",
+  "skip": "Überspringen",
+  "loggedInWithApple": "Eingeloggt mit Apple"
 }

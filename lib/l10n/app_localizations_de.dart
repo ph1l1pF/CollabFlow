@@ -265,4 +265,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get betaDisclaimerTitle => 'Beta-Version Hinweis';
+
+  @override
+  String get cloudSyncTitle => 'Synchronisiere deine Daten in der Cloud ☁️';
+
+  @override
+  String get cloudSyncMessage =>
+      'Melde dich mit Apple an, um deine Collaborations sicher in der Cloud zu speichern. Deine Daten sind sicher und auf allen deinen Geräten verfügbar.';
+
+  @override
+  String get loggedInWithApple => 'Eingeloggt mit Apple';
 }

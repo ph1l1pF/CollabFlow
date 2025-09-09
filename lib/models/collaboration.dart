@@ -36,6 +36,9 @@ class Collaboration extends HiveObject {
     @HiveField(8)
     CollabState state;
 
+    @HiveField(9)
+    bool isDirty;
+
     Collaboration({
         required this.title,
         required this.deadline,
@@ -46,6 +49,7 @@ class Collaboration extends HiveObject {
         required this.script,
         required this.notes,
         required this.state,
+        this.isDirty = false,
     });
 }
 

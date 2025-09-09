@@ -25,13 +25,14 @@ class CollaborationAdapter extends TypeAdapter<Collaboration> {
       script: fields[5] as Script,
       notes: fields[7] as String,
       state: fields[8] as CollabState,
+      isDirty: fields[9] as bool,
     )..id = fields[6] as String;
   }
 
   @override
   void write(BinaryWriter writer, Collaboration obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -49,7 +50,9 @@ class CollaborationAdapter extends TypeAdapter<Collaboration> {
       ..writeByte(7)
       ..write(obj.notes)
       ..writeByte(8)
-      ..write(obj.state);
+      ..write(obj.state)
+      ..writeByte(9)
+      ..write(obj.isDirty);
   }
 
   @override
