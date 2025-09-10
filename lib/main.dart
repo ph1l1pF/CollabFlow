@@ -80,6 +80,7 @@ void main() async {
           create: (context) => CollaborationsApiService(
             secureStorageService: Provider.of<SecureStorageService>(context, listen: false),
             collaborationsRepository: Provider.of<CollaborationsRepository>(context, listen: false),
+            sharedPrefsRepository: Provider.of<SharedPrefsRepository>(context, listen: false),
           ),
         ),
       ],

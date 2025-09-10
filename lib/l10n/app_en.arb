@@ -87,5 +87,7 @@
   "cloudSyncTitle": "Sync your data in the cloud ☁️",
   "cloudSyncMessage": "Sign in with Apple to securely store your collaborations in the cloud. Your data will be safe and accessible across all your devices.",
   "skip": "Skip",
-  "loggedInWithApple": "Logged in with Apple"
+  "loggedInWithApple": "Logged in with Apple",
+  "refreshTokenExpiredTitle": "Login Required",
+  "refreshTokenExpiredMessage": "Your session has expired. Please sign in again to sync your data."
 }

@@ -1,5 +1,6 @@
 import 'package:collabflow/services/auth-service.dart';
 import 'package:collabflow/services/secure-storage-service.dart';
+import 'package:collabflow/services/collaborations-api-service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -43,6 +44,7 @@ class _AppleLoginButtonState extends State<AppleLoginButton> {
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: false);
     final secureStorageService = Provider.of<SecureStorageService>(context, listen: false);
+    final apiService = Provider.of<CollaborationsApiService>(context, listen: false);
 
     // If already logged in, show logged-in state
     if (_isLoggedIn) {
@@ -89,6 +91,14 @@ class _AppleLoginButtonState extends State<AppleLoginButton> {
           setState(() {
             _isLoggedIn = true;
           });
+          
+          try {
+            await apiService.fetchAndSyncAllCollaborations();
+            print("Successfully synced collaborations from server");
+          } catch (e) {
+            print("Error syncing collaborations: $e");
+          }
+          
           if (widget.onSuccess != null) {
             widget.onSuccess!();
           }

@@ -5,6 +5,7 @@ class SharedPrefsRepository {
     var keyOnboardingFinished = 'onboardingFinished';
     var keyFirstCollaborationAlreadyCreated = 'firstCollaboration';
     var keySelectedStates = 'selectedStates';
+    var keyRefreshTokenExpired = 'refreshTokenExpired';
 
   getOnboardingDone() async {
     final prefs = await SharedPreferences.getInstance();
@@ -34,5 +35,15 @@ class SharedPrefsRepository {
   Future<List<String>> loadSelectedStates() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getStringList(keySelectedStates) ?? <String>[];
+  }
+
+  Future<bool> isRefreshTokenExpired() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(keyRefreshTokenExpired) ?? false;
+  }
+
+  Future<void> setRefreshTokenExpired(bool expired) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(keyRefreshTokenExpired, expired);
   }
 }

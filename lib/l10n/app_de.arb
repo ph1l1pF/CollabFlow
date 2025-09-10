@@ -87,5 +87,7 @@
   "cloudSyncTitle": "Synchronisiere deine Daten in der Cloud ☁️",
   "cloudSyncMessage": "Melde dich mit Apple an, um deine Collaborations sicher in der Cloud zu speichern. Deine Daten sind sicher und auf allen deinen Geräten verfügbar.",
   "skip": "Überspringen",
-  "loggedInWithApple": "Eingeloggt mit Apple"
+  "loggedInWithApple": "Eingeloggt mit Apple",
+  "refreshTokenExpiredTitle": "Anmeldung erforderlich",
+  "refreshTokenExpiredMessage": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an, um deine Daten zu synchronisieren."
 }

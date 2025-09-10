@@ -619,6 +619,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Logged in with Apple'**
   String get loggedInWithApple;
+
+  /// No description provided for @refreshTokenExpiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Login Required'**
+  String get refreshTokenExpiredTitle;
+
+  /// No description provided for @refreshTokenExpiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has expired. Please sign in again to sync your data.'**
+  String get refreshTokenExpiredMessage;
 }
 
 class _AppLocalizationsDelegate

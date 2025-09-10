@@ -52,4 +52,10 @@ class SecureStorageService {
    Future<void> clearAll() async {
     await _storage.deleteAll();
   }
+
+  /// Debug method to clear all secure storage (for development/testing)
+  Future<void> clearAllSecureData() async {
+    await _storage.deleteAll();
+    print("All secure storage data cleared");
+  }
 }

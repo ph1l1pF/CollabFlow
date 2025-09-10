@@ -57,5 +57,9 @@ class CollaborationsRepository extends ChangeNotifier {
       _notificationsRepository.scheduleNotification(updatedCollaboration, context);
     }
   }
-  
+
+  void addCollaborationFromServer(Collaboration collaboration) {
+    _box.add(collaboration);
+    notifyListeners();
+  }
 }

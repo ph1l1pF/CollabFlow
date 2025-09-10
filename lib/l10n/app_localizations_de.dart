@@ -275,4 +275,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get loggedInWithApple => 'Eingeloggt mit Apple';
+
+  @override
+  String get refreshTokenExpiredTitle => 'Anmeldung erforderlich';
+
+  @override
+  String get refreshTokenExpiredMessage =>
+      'Deine Sitzung ist abgelaufen. Bitte melde dich erneut an, um deine Daten zu synchronisieren.';
 }

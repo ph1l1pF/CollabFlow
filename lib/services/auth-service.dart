@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:http/http.dart' as http;
+import 'package:collabflow/constants/api_config.dart';
 
 class AuthService {
-  final String backendUrl = "http://192.168.68.100:5066/auth/apple"; 
+  /// Get the backend URL from configuration
+  String get backendUrl => "${ApiConfig.baseUrl}/auth/apple"; 
 
   Future<TokenResponse?> signInWithApple() async {
     try {
@@ -33,6 +35,7 @@ class AuthService {
           message: "Kein IdentityToken von Apple erhalten",
         );
       }
+      print("Using Auth URL: $backendUrl (${ApiConfig.isDevelopment ? 'Development' : 'Production'})");
       final response = await http.post(
         Uri.parse(backendUrl),
         headers: {"Content-Type": "application/json"},
@@ -46,7 +49,7 @@ class AuthService {
         print("data: $data");
         final accessToken = data["tokenResponse"]["accessToken"] as String;
         final refreshToken = data["tokenResponse"]["refreshToken"] as String;
-        return new TokenResponse(accessToken: accessToken, refreshToken: refreshToken);
+        return TokenResponse(accessToken: accessToken, refreshToken: refreshToken);
       } else {
         throw Exception("Backend-Fehler: ${response.body}");
       }

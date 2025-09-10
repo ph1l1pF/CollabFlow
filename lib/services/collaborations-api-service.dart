@@ -4,22 +4,29 @@ import 'package:http/http.dart' as http;
 import 'package:collabflow/models/collaboration.dart';
 import 'package:collabflow/services/secure-storage-service.dart';
 import 'package:collabflow/repositories/collaborations-repository.dart';
+import 'package:collabflow/repositories/shared-prefs-repository.dart';
+import 'package:collabflow/constants/api_config.dart';
 
 class CollaborationsApiService {
-  final String baseUrl = "http://192.168.68.100:5066";
   final SecureStorageService _secureStorageService;
   final CollaborationsRepository _collaborationsRepository;
+  final SharedPrefsRepository _sharedPrefsRepository;
   Timer? _syncTimer;
   bool _isSyncing = false;
+  
+  /// Get the base URL from configuration
+  String get baseUrl => ApiConfig.baseUrl;
   
   CollaborationsApiService({
     required SecureStorageService secureStorageService,
     required CollaborationsRepository collaborationsRepository,
+    required SharedPrefsRepository sharedPrefsRepository,
   }) : _secureStorageService = secureStorageService,
-       _collaborationsRepository = collaborationsRepository;
+       _collaborationsRepository = collaborationsRepository,
+       _sharedPrefsRepository = sharedPrefsRepository;
 
   /// Start periodic sync of dirty collaborations
-  void startPeriodicSync({Duration interval = const Duration(seconds: 5)}) {
+  void startPeriodicSync({Duration interval = const Duration(minutes: 5)}) {
     _syncTimer?.cancel();
     _syncTimer = Timer.periodic(interval, (_) {
       if (_getDirtyCount() > 0) {
@@ -131,6 +138,7 @@ class CollaborationsApiService {
       final refreshToken = await _secureStorageService.getAuthRefreshToken();
       if (refreshToken == null) {
         print("No refresh token available");
+        await _sharedPrefsRepository.setRefreshTokenExpired(true);
         return false;
       }
 
@@ -148,19 +156,82 @@ class CollaborationsApiService {
         await _secureStorageService.storeAccessToken(newAccessToken);
         await _secureStorageService.storeRefreshToken(newRefreshToken);
         
+        // Clear the expired flag since we successfully refreshed
+        await _sharedPrefsRepository.setRefreshTokenExpired(false);
+        
         print("Token refreshed successfully");
         return true;
+      } else if (response.statusCode == 401) {
+        // Refresh token is expired
+        print("Refresh token expired, user needs to re-login");
+        await _sharedPrefsRepository.setRefreshTokenExpired(true);
+        return false;
       } else {
         print("Failed to refresh token: ${response.statusCode} - ${response.body}");
         return false;
       }
     } catch (e) {
       print("Error refreshing token: $e");
+      await _sharedPrefsRepository.setRefreshTokenExpired(true);
       return false;
     }
   }
 
-  /// Convert Collaboration object to JSON for API
+  /// Convert server JSON to Collaboration object
+  Collaboration _jsonToCollaboration(Map<String, dynamic> json) {
+    return Collaboration(
+      title: json['title'] as String,
+      deadline: Deadline(
+        date: DateTime.parse(json['deadline']['date'] as String),
+        sendNotification: json['deadline']['sendNotification'] as bool,
+        notifyDaysBefore: json['deadline']['notifyDaysBefore'] as int?,
+      ),
+      fee: Fee(
+        amount: (json['fee']['amount'] as num).toDouble(),
+        currency: json['fee']['currency'] as String,
+      ),
+      requirements: Requirements(
+        requirements: [],
+      ),
+      partner: Partner(
+        name: json['partner']['name'] as String,
+        email: json['partner']['email'] as String,
+        phone: json['partner']['phone'] as String,
+        companyName: json['partner']['companyName'] ?? '',
+        industry: json['partner']['industry'] ?? '',
+        customerNumber: json['partner']['customerNumber'] ?? '',
+      ),
+      script: Script(
+        content: json['script']['content'] as String,
+      ),
+      notes: json['notes'] as String,
+      state: _parseCollabState(json['state'] as String),
+      isDirty: false, // Server data is clean
+    )..id = json['id'] as String; // Set the ID from server
+  }
+
+  /// Parse CollabState from string
+  CollabState _parseCollabState(String stateString) {
+    switch (stateString) {
+      case 'FirstTalks':
+        return CollabState.FirstTalks;
+      case 'ContractToSign':
+        return CollabState.ContractToSign;
+      case 'ScriptToProduce':
+        return CollabState.ScriptToProduce;
+      case 'InProduction':
+        return CollabState.InProduction;
+      case 'ContentEditing':
+        return CollabState.ContentEditing;
+      case 'ContentFeedback':
+        return CollabState.ContentFeedback;
+      case 'Finished':
+        return CollabState.Finished;
+      default:
+        return CollabState.FirstTalks; // Default fallback
+    }
+  }
+
   Map<String, dynamic> _collaborationToJson(Collaboration collaboration) {
     return {
       'id': collaboration.id,
@@ -197,6 +268,82 @@ class CollaborationsApiService {
       await _syncDirtyCollaborations();
     } else {
       print("Sync already in progress, skipping manual sync");
+    }
+  }
+
+  Future<void> fetchAndSyncAllCollaborations() async {
+    try {
+      final accessToken = await _secureStorageService.getAuthAccessToken();
+      if (accessToken == null) {
+        print("No access token available for fetching collaborations");
+        return;
+      }
+
+      final headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      print("Fetching all collaborations from server...");
+      print("Using API URL: $baseUrl/collaborations (${ApiConfig.isDevelopment ? 'Development' : 'Production'})");
+      final response = await http.get(
+        Uri.parse('$baseUrl/collaborations'),
+        headers: headers,
+      ).timeout(const Duration(seconds: 30));
+
+      if (response.statusCode == 200) {
+        final List<dynamic> serverCollaborations = jsonDecode(response.body);
+        print("Fetched ${serverCollaborations.length} collaborations from server");
+        
+        await _syncServerCollaborations(serverCollaborations);
+      } else if (response.statusCode == 401) {
+        print("Token expired while fetching collaborations, attempting refresh...");
+        final refreshSuccess = await _refreshToken();
+        if (refreshSuccess) {
+          // Retry the request with new token
+          await fetchAndSyncAllCollaborations();
+        }
+      } else {
+        print("Failed to fetch collaborations: ${response.statusCode} - ${response.body}");
+      }
+    } on TimeoutException {
+      print("Timeout fetching collaborations from server");
+    } catch (e) {
+      print("Error fetching collaborations: $e");
+    }
+  }
+
+  Future<void> _syncServerCollaborations(List<dynamic> serverCollaborations) async {
+    try {
+      final localCollaborations = _collaborationsRepository.collaborations;
+      final localIds = localCollaborations.map((c) => c.id).toSet();
+      
+      int addedCount = 0;
+      
+      for (final serverCollabData in serverCollaborations) {
+        final serverId = serverCollabData['id'] as String;
+        
+        // Only add if not already exists locally
+        if (!localIds.contains(serverId)) {
+          try {
+            final collaboration = _jsonToCollaboration(serverCollabData);
+            // Mark as clean since it came from server
+            collaboration.isDirty = false;
+            
+            // Add to local repository
+            _collaborationsRepository.addCollaborationFromServer(collaboration);
+            addedCount++;
+            
+            print("Added collaboration from server: ${collaboration.title}");
+          } catch (e) {
+            print("Error parsing server collaboration $serverId: $e");
+          }
+        }
+      }
+      
+      print("Sync completed: Added $addedCount new collaborations from server");
+    } catch (e) {
+      print("Error syncing server collaborations: $e");
     }
   }
 
