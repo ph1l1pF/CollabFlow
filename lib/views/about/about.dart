@@ -135,44 +135,6 @@ class _AboutPageState extends State<AboutPage> {
               },
             ),
             
-            // Debug info (only in debug mode)
-            if (const bool.fromEnvironment('dart.vm.product') == false) ...[
-              const SizedBox(height: 24),
-              const Divider(),
-              const SizedBox(height: 16),
-              Text(
-                'Debug Info',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.grey.withValues(alpha: 0.1),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Environment: ${ApiConfig.isDevelopment ? 'Development' : 'Production'}',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 4),
-                    Text('API URL: ${ApiConfig.baseUrl}'),
-                    const SizedBox(height: 4),
-                    Text('Dev URL: ${ApiConfig.devUrl}'),
-                    const SizedBox(height: 4),
-                    Text('Prod URL: ${ApiConfig.prodUrl}'),
-                  ],
-                ),
-              ),
-            ],
-            
             // Debug button (only in debug mode)
             if (const bool.fromEnvironment('dart.vm.product') == false) ...[
               const SizedBox(height: 24),

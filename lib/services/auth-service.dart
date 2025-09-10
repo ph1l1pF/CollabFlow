@@ -35,7 +35,6 @@ class AuthService {
           message: "Kein IdentityToken von Apple erhalten",
         );
       }
-      print("Using Auth URL: $backendUrl (${ApiConfig.isDevelopment ? 'Development' : 'Production'})");
       final response = await http.post(
         Uri.parse(backendUrl),
         headers: {"Content-Type": "application/json"},

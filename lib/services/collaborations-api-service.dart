@@ -14,8 +14,6 @@ class CollaborationsApiService {
   Timer? _syncTimer;
   bool _isSyncing = false;
   
-  /// Get the base URL from configuration
-  String get baseUrl => ApiConfig.baseUrl;
   
   CollaborationsApiService({
     required SecureStorageService secureStorageService,
@@ -102,7 +100,7 @@ class CollaborationsApiService {
 
       final collaborationData = _collaborationToJson(collaboration);
       
-      // Try to create/update the collaboration with timeout
+      final baseUrl = await ApiConfig.baseUrl;
       final response = await http.put(
         Uri.parse('$baseUrl/collaborations'),
         headers: headers,
@@ -142,6 +140,7 @@ class CollaborationsApiService {
         return false;
       }
 
+      final baseUrl = await ApiConfig.baseUrl;
       final response = await http.post(
         Uri.parse('$baseUrl/auth/refresh'),
         headers: {'Content-Type': 'application/json'},
@@ -284,8 +283,7 @@ class CollaborationsApiService {
         'Authorization': 'Bearer $accessToken',
       };
 
-      print("Fetching all collaborations from server...");
-      print("Using API URL: $baseUrl/collaborations (${ApiConfig.isDevelopment ? 'Development' : 'Production'})");
+      final baseUrl = await ApiConfig.baseUrl;
       final response = await http.get(
         Uri.parse('$baseUrl/collaborations'),
         headers: headers,
@@ -293,18 +291,15 @@ class CollaborationsApiService {
 
       if (response.statusCode == 200) {
         final List<dynamic> serverCollaborations = jsonDecode(response.body);
-        print("Fetched ${serverCollaborations.length} collaborations from server");
         
         await _syncServerCollaborations(serverCollaborations);
       } else if (response.statusCode == 401) {
-        print("Token expired while fetching collaborations, attempting refresh...");
         final refreshSuccess = await _refreshToken();
         if (refreshSuccess) {
           // Retry the request with new token
           await fetchAndSyncAllCollaborations();
         }
       } else {
-        print("Failed to fetch collaborations: ${response.statusCode} - ${response.body}");
       }
     } on TimeoutException {
       print("Timeout fetching collaborations from server");
