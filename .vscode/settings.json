@@ -7,7 +7,7 @@
             "driver": "PostgreSQL",
             "name": "CollabFlowDev",
             "group": "CollabFlow",
-            "connectString": "postgres://u2bhpbufib596m:p5ca421919e6350c2039699535f17b35c9b587365aaf40a19c4fca08b1379ad53@c4uljrch9k8rpm.cluster-czz5s0kz4scl.eu-west-1.rds.amazonaws.com:5432/d7i7dracv1q9oi"
+
         }
     ]
 }
