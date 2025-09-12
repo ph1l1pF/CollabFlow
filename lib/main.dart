@@ -10,7 +10,7 @@ import 'package:collabflow/views/collaborations-list/collaborations-list.dart';
 import 'package:collabflow/views/collaborations-list/collaboration-list-view-model.dart';
 import 'package:collabflow/views/earnings-overview/earnings-overview-view-model.dart';
 import 'package:collabflow/views/earnings-overview/earnings-overview.dart';
-import 'package:collabflow/views/about/about.dart';
+import 'package:collabflow/views/about/settings.dart';
 import 'package:collabflow/views/onboarding/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -104,7 +104,7 @@ class _MyAppState extends State<MyApp> {
   final List<Widget> _pages = [
     const CollaborationListPage(),
     const EarningsOverviewPage(),
-    const AboutPage(),
+    const SettingsPage(),
   ];
 
   @override
@@ -237,8 +237,8 @@ class _MainAppContent extends StatelessWidget {
             label: AppLocalizations.of(context)?.earningsMenu ?? 'Income',
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.info_outline),
-            label: AppLocalizations.of(context)?.about ?? 'About',
+            icon: const Icon(Icons.settings),
+            label: AppLocalizations.of(context)?.settings ?? 'Settings',
           ),
         ],
       ),

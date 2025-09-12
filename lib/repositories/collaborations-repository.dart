@@ -62,4 +62,15 @@ class CollaborationsRepository extends ChangeNotifier {
     _box.add(collaboration);
     notifyListeners();
   }
+
+  void clearAll() {
+    // Cancel all notifications before clearing
+    for (final collaboration in _box.values) {
+      _notificationsRepository.cancelNotification(collaboration);
+    }
+    
+    // Clear all collaborations from Hive
+    _box.clear();
+    notifyListeners();
+  }
 }

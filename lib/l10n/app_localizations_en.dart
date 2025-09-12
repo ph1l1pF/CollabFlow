@@ -283,4 +283,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get refreshTokenExpiredMessage =>
       'Your session has expired. Please sign in again to sync your data.';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get deleteAccount => 'Delete Account';
+
+  @override
+  String get accountDeleted => 'Account deleted successfully';
 }

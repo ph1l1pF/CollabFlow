@@ -162,52 +162,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.all(24),
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.info_outline,
-                      size: 80,
-                      color: AppColors.primaryPink,
-                    ),
-                    const SizedBox(height: 32),
-                    Text(
-                      AppLocalizations.of(context)?.betaDisclaimerTitle ?? "Beta Version Notice",
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      AppLocalizations.of(context)?.betaDisclaimer ?? "Note: In this beta version, your data is only stored locally on your device. Data may be lost when switching apps or reinstalling. In the final version, your data will be securely stored in the cloud.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.onSurface),
-                    ),
-                    const SizedBox(height: 40),
-                    ElevatedButton(
-                      onPressed: _nextPage,
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 32,
-                          vertical: 14,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)?.next ?? "Next",
-                        style: const TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
 
               // 👉 Apple Sign-In Seite
               Container(
@@ -288,7 +242,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: [
                 SmoothPageIndicator(
                   controller: _controller,
-                  count: 6, 
+                  count: 5, 
                   effect: const ExpandingDotsEffect(
                     activeDotColor: AppColors.primaryPink,
                     dotHeight: 8,

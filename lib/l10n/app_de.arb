@@ -89,5 +89,8 @@
   "skip": "Überspringen",
   "loggedInWithApple": "Eingeloggt mit Apple",
   "refreshTokenExpiredTitle": "Anmeldung erforderlich",
-  "refreshTokenExpiredMessage": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an, um deine Daten zu synchronisieren."
+  "refreshTokenExpiredMessage": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an, um deine Daten zu synchronisieren.",
+  "settings": "Einstellungen",
+  "deleteAccount": "Account löschen",
+  "accountDeleted": "Account erfolgreich gelöscht"
 }

@@ -5,8 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:collabflow/constants/api_config.dart';
 
 class AuthService {
-  /// Get the backend URL from configuration
-  String get backendUrl => "${ApiConfig.baseUrl}/auth/apple"; 
 
   Future<TokenResponse?> signInWithApple() async {
     try {
@@ -35,6 +33,8 @@ class AuthService {
           message: "Kein IdentityToken von Apple erhalten",
         );
       }
+      final backendUrl = "${await ApiConfig.baseUrl}/auth/apple"; 
+
       final response = await http.post(
         Uri.parse(backendUrl),
         headers: {"Content-Type": "application/json"},
@@ -45,7 +45,6 @@ class AuthService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        print("data: $data");
         final accessToken = data["tokenResponse"]["accessToken"] as String;
         final refreshToken = data["tokenResponse"]["refreshToken"] as String;
         return TokenResponse(accessToken: accessToken, refreshToken: refreshToken);

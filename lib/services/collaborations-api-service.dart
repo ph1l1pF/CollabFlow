@@ -24,7 +24,7 @@ class CollaborationsApiService {
        _sharedPrefsRepository = sharedPrefsRepository;
 
   /// Start periodic sync of dirty collaborations
-  void startPeriodicSync({Duration interval = const Duration(minutes: 5)}) {
+  void startPeriodicSync({Duration interval = const Duration(seconds: 5)}) {
     _syncTimer?.cancel();
     _syncTimer = Timer.periodic(interval, (_) {
       if (_getDirtyCount() > 0) {
@@ -353,5 +353,47 @@ class CollaborationsApiService {
   void dispose() {
     stopPeriodicSync();
     _isSyncing = false;
+  }
+
+  Future<void> deleteAll() async {
+    try {
+      
+      final accessToken = await _secureStorageService.getAuthAccessToken();
+      if (accessToken == null) {
+        throw Exception("No access token available");
+      }
+
+      final headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $accessToken',
+      };
+
+      final baseUrl = await ApiConfig.baseUrl;
+      
+      final response = await http.delete(
+        Uri.parse('$baseUrl/collaborations'),
+        headers: headers,
+      ).timeout(const Duration(seconds: 30));
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        
+        // Clear local storage after successful API call
+        _collaborationsRepository.clearAll();
+      } else if (response.statusCode == 401) {
+        final refreshSuccess = await _refreshToken();
+        if (refreshSuccess) {
+          // Retry the delete request with new token
+          await deleteAll();
+        } else {
+          throw Exception("Token refresh failed");
+        }
+      } else {
+        throw Exception("Failed to delete collaborations: ${response.statusCode}");
+      }
+    } on TimeoutException {
+      throw Exception("Timeout deleting collaborations");
+    } catch (e) {
+      rethrow;
+    }
   }
 }

@@ -1,3 +1,4 @@
+import 'package:collabflow/services/collaborations-api-service.dart';
 import 'package:collabflow/views/apple-login/apple-login.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
@@ -5,18 +6,18 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:collabflow/l10n/app_localizations.dart';
 import 'package:collabflow/repositories/shared-prefs-repository.dart';
 import 'package:collabflow/services/secure-storage-service.dart';
-import 'package:collabflow/constants/api_config.dart';
 import 'package:provider/provider.dart';
 
-class AboutPage extends StatefulWidget {
-  const AboutPage({super.key});
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({super.key});
 
   @override
-  State<AboutPage> createState() => _AboutPageState();
+  State<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _AboutPageState extends State<AboutPage> {
+class _SettingsPageState extends State<SettingsPage> {
   bool _isRefreshTokenExpired = false;
+  bool _isAuthenticated = false;
 
   static const String developerName = 'Philip Frerk';
   static const String developerEmail = 'philip.frerk@gmail.com';
@@ -31,9 +32,12 @@ class _AboutPageState extends State<AboutPage> {
   Future<void> _checkRefreshTokenStatus() async {
     final sharedPrefsRepository = Provider.of<SharedPrefsRepository>(context, listen: false);
     final isExpired = await sharedPrefsRepository.isRefreshTokenExpired();
+    final secureStorageService = Provider.of<SecureStorageService>(context, listen: false);
+    final isAuthenticated = await secureStorageService.isAuthenticated();
     if (mounted) {
       setState(() {
         _isRefreshTokenExpired = isExpired;
+        _isAuthenticated = isAuthenticated;
       });
     }
   }
@@ -55,7 +59,7 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)?.appTitle ?? 'CollabFlow'),
+        title: Text(AppLocalizations.of(context)?.settings ?? 'Settings'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -135,22 +139,13 @@ class _AboutPageState extends State<AboutPage> {
               },
             ),
             
-            // Debug button (only in debug mode)
-            if (const bool.fromEnvironment('dart.vm.product') == false) ...[
+            if (_isAuthenticated) ...[
               const SizedBox(height: 24),
-              const Divider(),
-              const SizedBox(height: 16),
-              Text(
-                'Debug Tools',
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 8),
+              
               ElevatedButton.icon(
                 onPressed: _clearSecureStorage,
                 icon: const Icon(Icons.delete_forever, color: Colors.red),
-                label: const Text('Clear Secure Storage'),
+                label: Text(AppLocalizations.of(context)?.deleteAccount ?? 'Delete Account'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red.withValues(alpha: 0.1),
                   foregroundColor: Colors.red,
@@ -176,11 +171,12 @@ class _AboutPageState extends State<AboutPage> {
   Future<void> _clearSecureStorage() async {
     final secureStorageService = Provider.of<SecureStorageService>(context, listen: false);
     await secureStorageService.clearAllSecureData();
-    
     if (mounted) {
+    final apiService = Provider.of<CollaborationsApiService>(context, listen: false);
+    await apiService.deleteAll();
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text("Secure storage cleared successfully"),
+        SnackBar(
+          content: Text(AppLocalizations.of(context)?.accountDeleted ?? 'Account deleted successfully'),
           backgroundColor: Colors.green,
         ),
       );

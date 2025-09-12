@@ -89,5 +89,9 @@
   "skip": "Skip",
   "loggedInWithApple": "Logged in with Apple",
   "refreshTokenExpiredTitle": "Login Required",
-  "refreshTokenExpiredMessage": "Your session has expired. Please sign in again to sync your data."
+  "refreshTokenExpiredMessage": "Your session has expired. Please sign in again to sync your data.",
+  "settings": "Settings",
+  "deleteAccount": "Delete Account",
+  "accountDeleted": "Account deleted successfully"
 }
+ 
