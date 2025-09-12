@@ -291,4 +291,11 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get accountDeleted => 'Account erfolgreich gelöscht';
+
+  @override
+  String get deleteAccountConfirmation =>
+      'Bist du sicher, dass du deinen Account löschen möchtest? Alle deine Collaborations werden dauerhaft gelöscht und können nicht wiederhergestellt werden.';
+
+  @override
+  String get deleteAccountError => 'Fehler beim Löschen des Accounts';
 }

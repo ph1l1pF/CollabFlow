@@ -92,5 +92,7 @@
   "refreshTokenExpiredMessage": "Deine Sitzung ist abgelaufen. Bitte melde dich erneut an, um deine Daten zu synchronisieren.",
   "settings": "Einstellungen",
   "deleteAccount": "Account löschen",
-  "accountDeleted": "Account erfolgreich gelöscht"
+  "accountDeleted": "Account erfolgreich gelöscht",
+  "deleteAccountConfirmation": "Bist du sicher, dass du deinen Account löschen möchtest? Alle deine Collaborations werden dauerhaft gelöscht und können nicht wiederhergestellt werden.",
+  "deleteAccountError": "Fehler beim Löschen des Accounts"
 }

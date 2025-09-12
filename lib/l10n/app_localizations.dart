@@ -649,6 +649,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account deleted successfully'**
   String get accountDeleted;
+
+  /// No description provided for @deleteAccountConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete your account? All your collaborations will be permanently deleted and cannot be recovered.'**
+  String get deleteAccountConfirmation;
+
+  /// No description provided for @deleteAccountError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error deleting account'**
+  String get deleteAccountError;
 }
 
 class _AppLocalizationsDelegate

@@ -21,7 +21,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   static const String developerName = 'Philip Frerk';
   static const String developerEmail = 'philip.frerk@gmail.com';
-  static const String appStoreLink = 'https://testflight.apple.com/join/QQc1cXU6';
+  static const String appStoreLink =
+      'https://testflight.apple.com/join/QQc1cXU6';
 
   @override
   void initState() {
@@ -30,9 +31,15 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _checkRefreshTokenStatus() async {
-    final sharedPrefsRepository = Provider.of<SharedPrefsRepository>(context, listen: false);
+    final sharedPrefsRepository = Provider.of<SharedPrefsRepository>(
+      context,
+      listen: false,
+    );
     final isExpired = await sharedPrefsRepository.isRefreshTokenExpired();
-    final secureStorageService = Provider.of<SecureStorageService>(context, listen: false);
+    final secureStorageService = Provider.of<SecureStorageService>(
+      context,
+      listen: false,
+    );
     final isAuthenticated = await secureStorageService.isAuthenticated();
     if (mounted) {
       setState(() {
@@ -85,7 +92,10 @@ class _SettingsPageState extends State<SettingsPage> {
                         const Icon(Icons.warning, color: Colors.orange),
                         const SizedBox(width: 8),
                         Text(
-                          AppLocalizations.of(context)?.refreshTokenExpiredTitle ?? 'Login Required',
+                          AppLocalizations.of(
+                                context,
+                              )?.refreshTokenExpiredTitle ??
+                              'Login Required',
                           style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
@@ -96,15 +106,17 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      AppLocalizations.of(context)?.refreshTokenExpiredMessage ?? 
-                      'Your session has expired. Please sign in again to sync your data.',
+                      AppLocalizations.of(
+                            context,
+                          )?.refreshTokenExpiredMessage ??
+                          'Your session has expired. Please sign in again to sync your data.',
                       style: const TextStyle(fontSize: 14),
                     ),
                   ],
                 ),
               ),
             ],
-            
+
             Text(AppLocalizations.of(context)?.developer ?? 'Developer:'),
             Text(
               developerName,
@@ -122,13 +134,17 @@ class _SettingsPageState extends State<SettingsPage> {
                 ElevatedButton.icon(
                   onPressed: _sendEmail,
                   icon: const Icon(Icons.mail),
-                  label: Text(AppLocalizations.of(context)?.sendEmail ?? 'Send Email'),
+                  label: Text(
+                    AppLocalizations.of(context)?.sendEmail ?? 'Send Email',
+                  ),
                 ),
                 const SizedBox(width: 12),
                 ElevatedButton.icon(
                   onPressed: _shareApp,
                   icon: const Icon(Icons.share),
-                  label: Text(AppLocalizations.of(context)?.shareApp ?? 'Share App'),
+                  label: Text(
+                    AppLocalizations.of(context)?.shareApp ?? 'Share App',
+                  ),
                 ),
               ],
             ),
@@ -138,14 +154,17 @@ class _SettingsPageState extends State<SettingsPage> {
                 _clearRefreshTokenExpiredFlag();
               },
             ),
-            
+
             if (_isAuthenticated) ...[
               const SizedBox(height: 24),
-              
+
               ElevatedButton.icon(
                 onPressed: _clearSecureStorage,
                 icon: const Icon(Icons.delete_forever, color: Colors.red),
-                label: Text(AppLocalizations.of(context)?.deleteAccount ?? 'Delete Account'),
+                label: Text(
+                  AppLocalizations.of(context)?.deleteAccount ??
+                      'Delete Account',
+                ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red.withValues(alpha: 0.1),
                   foregroundColor: Colors.red,
@@ -159,7 +178,10 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _clearRefreshTokenExpiredFlag() async {
-    final sharedPrefsRepository = Provider.of<SharedPrefsRepository>(context, listen: false);
+    final sharedPrefsRepository = Provider.of<SharedPrefsRepository>(
+      context,
+      listen: false,
+    );
     await sharedPrefsRepository.setRefreshTokenExpired(false);
     if (mounted) {
       setState(() {
@@ -169,19 +191,76 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _clearSecureStorage() async {
-    final secureStorageService = Provider.of<SecureStorageService>(context, listen: false);
-    await secureStorageService.clearAllSecureData();
-    if (mounted) {
-    final apiService = Provider.of<CollaborationsApiService>(context, listen: false);
-    await apiService.deleteAll();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)?.accountDeleted ?? 'Account deleted successfully'),
-          backgroundColor: Colors.green,
-        ),
+    final bool? confirmed = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            AppLocalizations.of(context)?.deleteAccount ?? 'Delete Account',
+          ),
+          content: Text(
+            AppLocalizations.of(context)?.deleteAccountConfirmation ??
+                'Are you sure you want to delete your account? All your collaborations will be permanently deleted and cannot be recovered.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: Text(
+                AppLocalizations.of(context)?.cancel ?? 'Cancel',
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
+              child: Text(
+                AppLocalizations.of(context)?.delete ?? 'Delete',
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmed == true && mounted) {
+      final secureStorageService = Provider.of<SecureStorageService>(
+        context,
+        listen: false,
       );
+      final apiService = Provider.of<CollaborationsApiService>(
+        context,
+        listen: false,
+      );
+      
+      try {
+        await apiService.deleteAll();
+        await secureStorageService.clearAllSecureData();
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)?.accountDeleted ??
+                    'Account deleted successfully',
+              ),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)?.deleteAccountError ??
+                    'Error deleting account: $e',
+              ),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
     }
   }
 }
-
-

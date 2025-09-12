@@ -24,7 +24,7 @@ class CollaborationsApiService {
        _sharedPrefsRepository = sharedPrefsRepository;
 
   /// Start periodic sync of dirty collaborations
-  void startPeriodicSync({Duration interval = const Duration(seconds: 5)}) {
+  void startPeriodicSync({Duration interval = const Duration(minutes: 5)}) {
     _syncTimer?.cancel();
     _syncTimer = Timer.periodic(interval, (_) {
       if (_getDirtyCount() > 0) {

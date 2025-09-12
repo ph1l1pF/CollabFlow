@@ -92,6 +92,8 @@
   "refreshTokenExpiredMessage": "Your session has expired. Please sign in again to sync your data.",
   "settings": "Settings",
   "deleteAccount": "Delete Account",
-  "accountDeleted": "Account deleted successfully"
+  "accountDeleted": "Account deleted successfully",
+  "deleteAccountConfirmation": "Are you sure you want to delete your account? All your collaborations will be permanently deleted and cannot be recovered.",
+  "deleteAccountError": "Error deleting account"
 }
  
