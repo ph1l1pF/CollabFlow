@@ -299,4 +299,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deleteAccountError => 'Error deleting account';
+
+  @override
+  String get dataNotSecuredTitle => 'Data Not Secured';
+
+  @override
+  String get dataNotSecuredMessage =>
+      'Your data is stored locally and not backed up in the cloud. Sign in with Apple to secure your data.';
+
+  @override
+  String get appInfo => 'App-Infos';
+
+  @override
+  String get supportInfo => 'Support-Infos';
+
+  @override
+  String get userId => 'User ID:';
+
+  @override
+  String get copyUserId => 'Copy User ID';
+
+  @override
+  String get userIdCopied => 'User ID copied to clipboard';
+
+  @override
+  String get copyError => 'Error copying User ID';
 }

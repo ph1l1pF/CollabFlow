@@ -88,6 +88,7 @@ class _AppleLoginButtonState extends State<AppleLoginButton> {
           );
           await secureStorageService.storeAccessToken(tokenResponse!.accessToken);
           await secureStorageService.storeRefreshToken(tokenResponse.refreshToken);
+          await secureStorageService.storeUserId(tokenResponse.userId);
           setState(() {
             _isLoggedIn = true;
           });

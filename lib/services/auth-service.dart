@@ -47,7 +47,8 @@ class AuthService {
         final data = jsonDecode(response.body);
         final accessToken = data["tokenResponse"]["accessToken"] as String;
         final refreshToken = data["tokenResponse"]["refreshToken"] as String;
-        return TokenResponse(accessToken: accessToken, refreshToken: refreshToken);
+        final userId = data["tokenResponse"]["userId"] as String;
+        return TokenResponse(accessToken: accessToken, refreshToken: refreshToken, userId: userId);
       } else {
         throw Exception("Backend-Fehler: ${response.body}");
       }
@@ -67,6 +68,7 @@ class AuthService {
 class TokenResponse {
   final String accessToken;
   final String refreshToken;
+  final String userId;
 
-  TokenResponse({required this.accessToken, required this.refreshToken});
+  TokenResponse({required this.accessToken, required this.refreshToken, required this.userId});
 }

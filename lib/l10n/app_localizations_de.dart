@@ -298,4 +298,29 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get deleteAccountError => 'Fehler beim Löschen des Accounts';
+
+  @override
+  String get dataNotSecuredTitle => 'Daten nicht gesichert';
+
+  @override
+  String get dataNotSecuredMessage =>
+      'Deine Daten werden nur lokal gespeichert und nicht in der Cloud gesichert. Melde dich mit Apple an, um deine Daten zu sichern.';
+
+  @override
+  String get appInfo => 'App-Infos';
+
+  @override
+  String get supportInfo => 'Support-Infos';
+
+  @override
+  String get userId => 'Benutzer-ID:';
+
+  @override
+  String get copyUserId => 'Benutzer-ID kopieren';
+
+  @override
+  String get userIdCopied => 'Benutzer-ID in die Zwischenablage kopiert';
+
+  @override
+  String get copyError => 'Fehler beim Kopieren der Benutzer-ID';
 }

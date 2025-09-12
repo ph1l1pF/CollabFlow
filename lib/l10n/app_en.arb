@@ -94,6 +94,14 @@
   "deleteAccount": "Delete Account",
   "accountDeleted": "Account deleted successfully",
   "deleteAccountConfirmation": "Are you sure you want to delete your account? All your collaborations will be permanently deleted and cannot be recovered.",
-  "deleteAccountError": "Error deleting account"
+  "deleteAccountError": "Error deleting account",
+  "dataNotSecuredTitle": "Data Not Secured",
+  "dataNotSecuredMessage": "Your data is stored locally and not backed up in the cloud. Sign in with Apple to secure your data.",
+  "appInfo": "App-Infos",
+  "supportInfo": "Support-Infos",
+  "userId": "User ID:",
+  "copyUserId": "Copy User ID",
+  "userIdCopied": "User ID copied to clipboard",
+  "copyError": "Error copying User ID"
 }
  

@@ -1,6 +1,7 @@
 import 'package:collabflow/services/collaborations-api-service.dart';
 import 'package:collabflow/views/apple-login/apple-login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:collabflow/l10n/app_localizations.dart';
@@ -116,7 +117,140 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ),
             ],
-
+            
+            // Warning for unauthenticated users
+            if (!_isAuthenticated) ...[
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                margin: const EdgeInsets.only(bottom: 16),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withValues(alpha: 0.1),
+                  border: Border.all(color: Colors.blue),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.cloud_off, color: Colors.blue),
+                        const SizedBox(width: 8),
+                        Text(
+                          AppLocalizations.of(context)?.dataNotSecuredTitle ??
+                              'Data Not Secured',
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      AppLocalizations.of(context)?.dataNotSecuredMessage ??
+                          'Your data is stored locally and not backed up in the cloud. Sign in with Apple to secure your data.',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+            
+            AppleLoginButton(
+              onSuccess: () {
+                _clearRefreshTokenExpiredFlag();
+              },
+            ),
+            const SizedBox(height: 24),
+            if(_isAuthenticated) ...[
+            ElevatedButton.icon(
+                onPressed: _clearSecureStorage,
+                icon: const Icon(Icons.delete_forever, color: Colors.red),
+                label: Text(
+                  AppLocalizations.of(context)?.deleteAccount ??
+                      'Delete Account',
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red.withValues(alpha: 0.1),
+                  foregroundColor: Colors.red,
+                ),
+              ),
+            ],
+            // Support-Infos section (only when logged in)
+            if (_isAuthenticated) ...[
+              const SizedBox(height: 24),
+              Text(
+                AppLocalizations.of(context)?.supportInfo ?? 'Support-Infos',
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.grey.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context)?.userId ?? 'User ID:',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          FutureBuilder<String?>(
+                            future: _getUserId(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: CircularProgressIndicator(strokeWidth: 2),
+                                );
+                              }
+                              return Text(
+                                snapshot.data ?? 'Loading...',
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontFamily: 'monospace',
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: _copyUserId,
+                      icon: const Icon(Icons.copy, size: 20),
+                      tooltip: AppLocalizations.of(context)?.copyUserId ?? 'Copy User ID',
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+            ],
+            // App-Infos section
+            const SizedBox(height: 24),
+            Text(
+              AppLocalizations.of(context)?.appInfo ?? 'App-Infos',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
             Text(AppLocalizations.of(context)?.developer ?? 'Developer:'),
             Text(
               developerName,
@@ -148,29 +282,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
-            AppleLoginButton(
-              onSuccess: () {
-                _clearRefreshTokenExpiredFlag();
-              },
-            ),
-
-            if (_isAuthenticated) ...[
-              const SizedBox(height: 24),
-
-              ElevatedButton.icon(
-                onPressed: _clearSecureStorage,
-                icon: const Icon(Icons.delete_forever, color: Colors.red),
-                label: Text(
-                  AppLocalizations.of(context)?.deleteAccount ??
-                      'Delete Account',
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red.withValues(alpha: 0.1),
-                  foregroundColor: Colors.red,
-                ),
-              ),
-            ],
           ],
         ),
       ),
@@ -187,6 +298,50 @@ class _SettingsPageState extends State<SettingsPage> {
       setState(() {
         _isRefreshTokenExpired = false;
       });
+    }
+  }
+
+  Future<String?> _getUserId() async {
+    try {
+      final secureStorageService = Provider.of<SecureStorageService>(
+        context,
+        listen: false,
+      );
+      
+      var x = await secureStorageService.getUserId();
+      return x;
+    } catch (e) {
+      return 'Error loading ID';
+    }
+  }
+
+  Future<void> _copyUserId() async {
+    try {
+      final userId = await _getUserId();
+      if (userId != null && userId != 'Error loading ID') {
+        await Clipboard.setData(ClipboardData(text: userId));
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                AppLocalizations.of(context)?.userIdCopied ?? 'User ID copied to clipboard',
+              ),
+              duration: const Duration(seconds: 2),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)?.copyError ?? 'Error copying User ID',
+            ),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 

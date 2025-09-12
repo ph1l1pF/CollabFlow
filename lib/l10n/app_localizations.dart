@@ -661,6 +661,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error deleting account'**
   String get deleteAccountError;
+
+  /// No description provided for @dataNotSecuredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Data Not Secured'**
+  String get dataNotSecuredTitle;
+
+  /// No description provided for @dataNotSecuredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data is stored locally and not backed up in the cloud. Sign in with Apple to secure your data.'**
+  String get dataNotSecuredMessage;
+
+  /// No description provided for @appInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'App-Infos'**
+  String get appInfo;
+
+  /// No description provided for @supportInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Support-Infos'**
+  String get supportInfo;
+
+  /// No description provided for @userId.
+  ///
+  /// In en, this message translates to:
+  /// **'User ID:'**
+  String get userId;
+
+  /// No description provided for @copyUserId.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy User ID'**
+  String get copyUserId;
+
+  /// No description provided for @userIdCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'User ID copied to clipboard'**
+  String get userIdCopied;
+
+  /// No description provided for @copyError.
+  ///
+  /// In en, this message translates to:
+  /// **'Error copying User ID'**
+  String get copyError;
 }
 
 class _AppLocalizationsDelegate

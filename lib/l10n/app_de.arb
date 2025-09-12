@@ -94,5 +94,13 @@
   "deleteAccount": "Account löschen",
   "accountDeleted": "Account erfolgreich gelöscht",
   "deleteAccountConfirmation": "Bist du sicher, dass du deinen Account löschen möchtest? Alle deine Collaborations werden dauerhaft gelöscht und können nicht wiederhergestellt werden.",
-  "deleteAccountError": "Fehler beim Löschen des Accounts"
+  "deleteAccountError": "Fehler beim Löschen des Accounts",
+  "dataNotSecuredTitle": "Daten nicht gesichert",
+  "dataNotSecuredMessage": "Deine Daten werden nur lokal gespeichert und nicht in der Cloud gesichert. Melde dich mit Apple an, um deine Daten zu sichern.",
+  "appInfo": "App-Infos",
+  "supportInfo": "Support-Infos",
+  "userId": "Benutzer-ID:",
+  "copyUserId": "Benutzer-ID kopieren",
+  "userIdCopied": "Benutzer-ID in die Zwischenablage kopiert",
+  "copyError": "Fehler beim Kopieren der Benutzer-ID"
 }
