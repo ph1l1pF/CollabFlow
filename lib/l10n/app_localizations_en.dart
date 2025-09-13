@@ -324,4 +324,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get copyError => 'Error copying User ID';
+
+  @override
+  String get loginFailed => 'Login failed.';
 }

@@ -54,13 +54,13 @@ class AuthService {
       }
     } on SignInWithAppleAuthorizationException catch (e) {
       print("Apple Sign-In Authorization Fehler: ${e.code} - ${e.message}");
-      return null;
+      rethrow;
     } on PlatformException catch (e) {
       print("Platform Fehler: ${e.code} - ${e.message}");
-      return null;
+      throw Exception("Platform Fehler: ${e.code} - ${e.message}");
     } catch (e) {
       print("Unerwarteter Apple Sign-In Fehler: $e");
-      return null;
+      rethrow;
     }
   }
 }

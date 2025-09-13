@@ -102,5 +102,6 @@
   "userId": "Benutzer-ID:",
   "copyUserId": "Benutzer-ID kopieren",
   "userIdCopied": "Benutzer-ID in die Zwischenablage kopiert",
-  "copyError": "Fehler beim Kopieren der Benutzer-ID"
+  "copyError": "Fehler beim Kopieren der Benutzer-ID",
+  "loginFailed": "Login fehlgeschlagen."
 }

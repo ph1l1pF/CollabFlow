@@ -97,7 +97,7 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   int _selectedIndex = 0;
   bool _onboardingDone = false;
 
@@ -112,19 +112,41 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     _onboardingDone = widget.onboardingDone;
     
-    // Start periodic sync after the widget is built
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final apiService = Provider.of<CollaborationsApiService>(context, listen: false);
-      apiService.startPeriodicSync();
-    });
+    // Add lifecycle observer
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    
+    final apiService = Provider.of<CollaborationsApiService>(context, listen: false);
+    
+    switch (state) {
+      case AppLifecycleState.resumed:
+        // App is in the foreground and active
+        apiService.syncDirtyCollaborations();
+        break;
+      case AppLifecycleState.paused:
+        // App is in the background
+        apiService.syncDirtyCollaborations();
+        break;
+      case AppLifecycleState.inactive:
+        // App is in an inactive state (e.g., phone call, notification panel)
+        break;
+      case AppLifecycleState.detached:
+        // App is detached
+        break;
+      case AppLifecycleState.hidden:
+        // App is hidden
+        break;
+    }
   }
 
   @override
   void dispose() {
-    // Stop periodic sync when app is disposed
-    final apiService = Provider.of<CollaborationsApiService>(context, listen: false);
-    apiService.dispose();
-    super.dispose();
+    // Remove lifecycle observer
+    WidgetsBinding.instance.removeObserver(this);
   }
 
 

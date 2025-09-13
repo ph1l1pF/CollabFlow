@@ -81,6 +81,7 @@ class _AppleLoginButtonState extends State<AppleLoginButton> {
 
     return SignInWithAppleButton(
       onPressed: () async {
+        try {
         final tokenResponse = await authService.signInWithApple();
         if (tokenResponse?.accessToken != null && tokenResponse?.refreshToken != null) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -93,19 +94,19 @@ class _AppleLoginButtonState extends State<AppleLoginButton> {
             _isLoggedIn = true;
           });
           
-          try {
-            await apiService.fetchAndSyncAllCollaborations();
-            print("Successfully synced collaborations from server");
-          } catch (e) {
-            print("Error syncing collaborations: $e");
-          }
+          await apiService.fetchAndSyncAllCollaborations();
           
           if (widget.onSuccess != null) {
             widget.onSuccess!();
           }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Login fehlgeschlagen ❌")),
+            SnackBar(content: Text( AppLocalizations.of(context)?.loginFailed ?? "Login fehlgeschlagen ❌")),
+          );
+        }
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(e.toString())),
           );
         }
       },

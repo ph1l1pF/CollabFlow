@@ -11,8 +11,6 @@ class CollaborationsApiService {
   final SecureStorageService _secureStorageService;
   final CollaborationsRepository _collaborationsRepository;
   final SharedPrefsRepository _sharedPrefsRepository;
-  Timer? _syncTimer;
-  bool _isSyncing = false;
   
   
   CollaborationsApiService({
@@ -23,46 +21,17 @@ class CollaborationsApiService {
        _collaborationsRepository = collaborationsRepository,
        _sharedPrefsRepository = sharedPrefsRepository;
 
-  /// Start periodic sync of dirty collaborations
-  void startPeriodicSync({Duration interval = const Duration(minutes: 5)}) {
-    _syncTimer?.cancel();
-    _syncTimer = Timer.periodic(interval, (_) {
-      if (_getDirtyCount() > 0) {
-        _syncDirtyCollaborations();
-      }
-      else {
-        print("No dirty collaborations to sync");
-      }
-    });
-  }
-
-  /// Stop periodic sync
-  void stopPeriodicSync() {
-    _syncTimer?.cancel();
-    _syncTimer = null;
-  }
 
   /// Sync all dirty collaborations with the backend
-  Future<void> _syncDirtyCollaborations() async {
-    // Prevent multiple concurrent syncs
-    if (_isSyncing) {
-      print("Sync already in progress, skipping...");
-      return;
-    }
-
-    try {
-      _isSyncing = true;
-      
+  Future<void> syncDirtyCollaborations() async {
+    try {      
       final dirtyCollaborations = _collaborationsRepository.collaborations
           .where((collab) => collab.isDirty)
           .toList();
 
       if (dirtyCollaborations.isEmpty) {
-        print("No dirty collaborations to sync");
         return;
       }
-
-      print("Syncing ${dirtyCollaborations.length} dirty collaborations");
 
       // Process in batches to avoid memory issues
       const batchSize = 5;
@@ -79,9 +48,7 @@ class CollaborationsApiService {
       }
     } catch (e) {
       print("Error during sync: $e");
-    } finally {
-      _isSyncing = false;
-    }
+    } 
   }
 
   /// Sync a single collaboration with the backend
@@ -261,15 +228,6 @@ class CollaborationsApiService {
     };
   }
 
-  /// Manually trigger sync (useful for testing or immediate sync)
-  Future<void> syncNow() async {
-    if (!_isSyncing) {
-      await _syncDirtyCollaborations();
-    } else {
-      print("Sync already in progress, skipping manual sync");
-    }
-  }
-
   Future<void> fetchAndSyncAllCollaborations() async {
     try {
       final accessToken = await _secureStorageService.getAuthAccessToken();
@@ -347,12 +305,6 @@ class CollaborationsApiService {
     return _collaborationsRepository.collaborations
         .where((collab) => collab.isDirty)
         .length;
-  }
-
-  /// Dispose resources
-  void dispose() {
-    stopPeriodicSync();
-    _isSyncing = false;
   }
 
   Future<void> deleteAll() async {

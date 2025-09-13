@@ -102,6 +102,7 @@
   "userId": "User ID:",
   "copyUserId": "Copy User ID",
   "userIdCopied": "User ID copied to clipboard",
-  "copyError": "Error copying User ID"
+  "copyError": "Error copying User ID",
+  "loginFailed": "Login failed."
 }
  

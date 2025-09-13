@@ -709,6 +709,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error copying User ID'**
   String get copyError;
+
+  /// No description provided for @loginFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed.'**
+  String get loginFailed;
 }
 
 class _AppLocalizationsDelegate
