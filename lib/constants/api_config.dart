@@ -1,5 +1,4 @@
-import 'package:flutter/services.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import 'package:store_checker/store_checker.dart';
 
 class ApiConfig {
   static const String _devBaseUrl =
@@ -9,27 +8,16 @@ class ApiConfig {
       "https://collabflow-api-prod-315d413dccce.herokuapp.com";
 
   static Future<String> get baseUrl async {
-    const bool isDebugMode = bool.fromEnvironment('dart.vm.product') == false;
+    final bool isProdMode = await _isProdMode();
 
-    if (isDebugMode) {
+    if (!isProdMode) {
       return Future.value(_devBaseUrl);
     }
-    final isFromAppStore = await _isProdBuildFromAppStore();
-
-    if (isFromAppStore) {
-      return Future.value(_prodBaseUrl);
-    } else {
-      return Future.value(_devBaseUrl);
-    }
+    return Future.value(_prodBaseUrl);
   }
 
-  static Future<bool> _isProdBuildFromAppStore() async {
-    final info = await PackageInfo.fromPlatform();
-
-    if (info.buildSignature != null &&
-        info.buildSignature.contains('sandboxReceipt')) {
-      return false;
-    }
-    return true;
+  static Future<bool> _isProdMode() async{
+    var installationSource = await StoreChecker.getSource;
+    return installationSource == Source.IS_INSTALLED_FROM_APP_STORE || installationSource == Source.IS_INSTALLED_FROM_PLAY_STORE;
   }
 }
