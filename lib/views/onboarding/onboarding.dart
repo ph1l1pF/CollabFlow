@@ -20,7 +20,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _controller = PageController();
 
   void _nextPage() {
-    if (_controller.page! < 5) {
+    if (_controller.page! < 4) {
       _controller.nextPage(
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeInOut,
