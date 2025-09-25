@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:collabflow/services/collaboration-export-service.dart';
-import 'package:collabflow/views/earnings-overview/earnings-overview-view-model.dart';
-import 'package:collabflow/l10n/app_localizations.dart';
+import 'package:ugcworks/services/collaboration-export-service.dart';
+import 'package:ugcworks/views/earnings-overview/earnings-overview-view-model.dart';
+import 'package:ugcworks/l10n/app_localizations.dart';
 
 class EarningsOverviewPage extends StatefulWidget {
   const EarningsOverviewPage({super.key});

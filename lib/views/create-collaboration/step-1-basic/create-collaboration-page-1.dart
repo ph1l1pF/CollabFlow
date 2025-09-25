@@ -1,10 +1,10 @@
-import 'package:collabflow/utils/collaboration-state-utils.dart';
+import 'package:ugcworks/utils/collaboration-state-utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:collabflow/models/collaboration.dart';
-import 'package:collabflow/l10n/app_localizations.dart';
-import 'package:collabflow/constants/app_colors.dart';
-import 'package:collabflow/utils/theme_utils.dart';
+import 'package:ugcworks/models/collaboration.dart';
+import 'package:ugcworks/l10n/app_localizations.dart';
+import 'package:ugcworks/constants/app_colors.dart';
+import 'package:ugcworks/utils/theme_utils.dart';
 
 class BasicCollaborationStep extends StatefulWidget {
   final void Function({
@@ -135,7 +135,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
           children: [
             TextFormField(
               decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)?.title ?? 'Collaboration title (*)',
+                labelText: AppLocalizations.of(context)?.title ?? 'Collaboration title *',
               ),
               validator: (val) =>
                   val == null || val.isEmpty ? (AppLocalizations.of(context)?.enterTitle ?? 'Enter title') : null,
@@ -186,7 +186,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
                     items: [1, 2, 3, 5, 7].map((days) {
                       return DropdownMenuItem(
                         value: days,
-                        child: Text("$days ${AppLocalizations.of(context)?.daysBefore ?? "days(s) before"}"),
+                        child: Text("$days ${days == 1 ? (AppLocalizations.of(context)?.dayBefore ?? "day before") : (AppLocalizations.of(context)?.daysBefore ?? "days before")}"),
                       );
                     }).toList(),
                     onChanged: _notifyOnDeadline
@@ -255,12 +255,12 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
                       ),
                       child: Column(
                         children: [
-                          Icon(icon, color: isSelected ? AppColors.primaryPink : Colors.grey),
+                          Icon(icon, color: isSelected ? AppColors.primaryPink : Colors.grey[500]),
                           const SizedBox(height: 4),
                           Text(
                             label,
                             style: TextStyle(
-                              color: isSelected ? AppColors.primaryPink : Colors.grey,
+                              color: isSelected ? AppColors.primaryPink : Colors.grey[600],
                               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                               fontSize: 13,
                             ),

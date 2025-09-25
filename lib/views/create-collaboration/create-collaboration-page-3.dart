@@ -1,6 +1,6 @@
-import 'package:collabflow/models/collaboration.dart';
+import 'package:ugcworks/models/collaboration.dart';
 import 'package:flutter/material.dart';
-import 'package:collabflow/utils/theme_utils.dart';
+import 'package:ugcworks/utils/theme_utils.dart';
 
 class PartnerStep extends StatefulWidget {
   final void Function(Partner partner, bool next) onFinish;

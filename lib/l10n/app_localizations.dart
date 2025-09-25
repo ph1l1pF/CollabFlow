@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'CollabFlow'**
+  /// **'UGCWorks'**
   String get appTitle;
 
   /// No description provided for @collaborations.
@@ -449,8 +449,14 @@ abstract class AppLocalizations {
   /// No description provided for @daysBefore.
   ///
   /// In en, this message translates to:
-  /// **'Day(s) before'**
+  /// **'Days before'**
   String get daysBefore;
+
+  /// No description provided for @dayBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Day before'**
+  String get dayBefore;
 
   /// No description provided for @fee.
   ///
@@ -467,7 +473,7 @@ abstract class AppLocalizations {
   /// No description provided for @title.
   ///
   /// In en, this message translates to:
-  /// **'Title (*)'**
+  /// **'Title *'**
   String get title;
 
   /// No description provided for @titleForTable.

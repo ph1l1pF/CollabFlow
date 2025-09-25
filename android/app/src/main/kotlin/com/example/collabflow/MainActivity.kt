@@ -1,4 +1,4 @@
-package com.example.collabflow
+package com.philipfrerk.ugcworks
 
 import io.flutter.embedding.android.FlutterActivity
 

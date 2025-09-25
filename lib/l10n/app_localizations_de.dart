@@ -9,7 +9,7 @@ class AppLocalizationsDe extends AppLocalizations {
   AppLocalizationsDe([String locale = 'de']) : super(locale);
 
   @override
-  String get appTitle => 'CollabFlow';
+  String get appTitle => 'UGCWorks';
 
   @override
   String get collaborations => 'Collaborations';
@@ -185,7 +185,10 @@ class AppLocalizationsDe extends AppLocalizations {
   String get notify => 'Benachrichtigen';
 
   @override
-  String get daysBefore => 'Tag(e) vorher';
+  String get daysBefore => 'Tage vorher';
+
+  @override
+  String get dayBefore => 'Tag vorher';
 
   @override
   String get fee => 'Honorar (optional)';
@@ -194,7 +197,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get feeForTable => 'Einnahme';
 
   @override
-  String get title => 'Titel(*)';
+  String get title => 'Titel *';
 
   @override
   String get titleForTable => 'Titel';

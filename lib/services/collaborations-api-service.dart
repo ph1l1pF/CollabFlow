@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
-import 'package:collabflow/models/collaboration.dart';
-import 'package:collabflow/services/secure-storage-service.dart';
-import 'package:collabflow/repositories/collaborations-repository.dart';
-import 'package:collabflow/repositories/shared-prefs-repository.dart';
-import 'package:collabflow/constants/api_config.dart';
+import 'package:ugcworks/models/collaboration.dart';
+import 'package:ugcworks/services/secure-storage-service.dart';
+import 'package:ugcworks/repositories/collaborations-repository.dart';
+import 'package:ugcworks/repositories/shared-prefs-repository.dart';
+import 'package:ugcworks/constants/api_config.dart';
 
 class CollaborationsApiService {
   final SecureStorageService _secureStorageService;

@@ -1,5 +1,5 @@
-import 'package:collabflow/models/collaboration.dart';
-import 'package:collabflow/repositories/collaborations-repository.dart';
+import 'package:ugcworks/models/collaboration.dart';
+import 'package:ugcworks/repositories/collaborations-repository.dart';
 import 'package:flutter/material.dart';
 
 class CollaborationDetailsViewModel {

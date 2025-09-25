@@ -1,11 +1,11 @@
-import 'package:collabflow/repositories/shared-prefs-repository.dart';
-import 'package:collabflow/views/collaborations-list/collaborations-list.dart';
-import 'package:collabflow/views/apple-login/apple-login.dart';
+import 'package:ugcworks/repositories/shared-prefs-repository.dart';
+import 'package:ugcworks/views/collaborations-list/collaborations-list.dart';
+import 'package:ugcworks/views/apple-login/apple-login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:collabflow/l10n/app_localizations.dart';
-import 'package:collabflow/constants/app_colors.dart';
+import 'package:ugcworks/l10n/app_localizations.dart';
+import 'package:ugcworks/constants/app_colors.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final VoidCallback? onComplete;

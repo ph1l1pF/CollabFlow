@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:http/http.dart' as http;
-import 'package:collabflow/constants/api_config.dart';
+import 'package:ugcworks/constants/api_config.dart';
 
 class AuthService {
 

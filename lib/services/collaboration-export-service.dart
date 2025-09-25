@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:collabflow/views/earnings-overview/earnings-overview-view-model.dart';
+import 'package:ugcworks/views/earnings-overview/earnings-overview-view-model.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 

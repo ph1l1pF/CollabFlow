@@ -1,16 +1,16 @@
-import 'package:collabflow/repositories/collaborations-repository.dart';
-import 'package:collabflow/views/collaboration-details/collaboration-details-view-model.dart';
-import 'package:collabflow/views/collaboration-details/collboration-details.dart';
-import 'package:collabflow/views/collaborations-list/collaboration-list-view-model.dart';
-import 'package:collabflow/views/create-collaboration/create-collaboration.dart';
+import 'package:ugcworks/repositories/collaborations-repository.dart';
+import 'package:ugcworks/views/collaboration-details/collaboration-details-view-model.dart';
+import 'package:ugcworks/views/collaboration-details/collboration-details.dart';
+import 'package:ugcworks/views/collaborations-list/collaboration-list-view-model.dart';
+import 'package:ugcworks/views/create-collaboration/create-collaboration.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:collabflow/models/collaboration.dart';
-import 'package:collabflow/utils/collaboration-state-utils.dart';
-import 'package:collabflow/repositories/shared-prefs-repository.dart';
-import 'package:collabflow/l10n/app_localizations.dart';
-import 'package:collabflow/constants/app_colors.dart';
+import 'package:ugcworks/models/collaboration.dart';
+import 'package:ugcworks/utils/collaboration-state-utils.dart';
+import 'package:ugcworks/repositories/shared-prefs-repository.dart';
+import 'package:ugcworks/l10n/app_localizations.dart';
+import 'package:ugcworks/constants/app_colors.dart';
 
 class CollaborationListPage extends StatefulWidget {
   const CollaborationListPage({super.key});
@@ -71,8 +71,6 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
         actions: [
           Consumer<CollaborationsListViewModel>(
             builder: (context, viewModel, _) {
-              // Nur anzeigen, wenn Collaborations vorhanden sind
-              if (viewModel.collaborations.isEmpty) return const SizedBox.shrink();
               return !_showSearch
                   ? IconButton(
                       icon: const Icon(Icons.search),
@@ -95,7 +93,6 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
           ),
           Consumer<CollaborationsListViewModel>(
             builder: (context, viewModel, _) {
-              if (viewModel.collaborations.isEmpty) return const SizedBox.shrink();
               return IconButton(
                 icon: Icon(_selectedStates.isEmpty ? Icons.filter_alt_outlined : Icons.filter_alt),
                 tooltip: AppLocalizations.of(context)?.filterByStatus ?? 'Filter by status',
@@ -212,7 +209,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
               ? 
               viewModel.collaborations.isEmpty ?
               Center(
-                  child: ElevatedButton(
+                  child: ElevatedButton.icon(
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -221,7 +218,8 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                         ),
                       );
                     },
-                    child: Text(AppLocalizations.of(context)?.createCollaboration ?? "Create Collaboration"),
+                    icon: const Icon(Icons.add),
+                    label: Text(AppLocalizations.of(context)?.createCollaboration ?? "Create Collaboration"),
                   ),
                 )
                 : Center(

@@ -1,7 +1,7 @@
-# CollabFlow
+# ugcworks
 A tool for content creators to manager their deals
 
-# collabflow
+# ugcworks
 
 A new Flutter project.
 

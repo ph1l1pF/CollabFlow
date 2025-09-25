@@ -1,15 +1,15 @@
 
-import 'package:collabflow/models/collaboration.dart';
-import 'package:collabflow/repositories/collaborations-repository.dart';
-import 'package:collabflow/repositories/notifications-repository.dart';
-import 'package:collabflow/repositories/shared-prefs-repository.dart';
-import 'package:collabflow/views/create-collaboration/step-1-basic/create-collaboration-page-1.dart';
-import 'package:collabflow/views/create-collaboration/create-collaboration-page-2.dart';
-import 'package:collabflow/views/create-collaboration/create-collaboration-page-3.dart';
-import 'package:collabflow/views/notification-permission/notification-permission.dart';
+import 'package:ugcworks/models/collaboration.dart';
+import 'package:ugcworks/repositories/collaborations-repository.dart';
+import 'package:ugcworks/repositories/notifications-repository.dart';
+import 'package:ugcworks/repositories/shared-prefs-repository.dart';
+import 'package:ugcworks/views/create-collaboration/step-1-basic/create-collaboration-page-1.dart';
+import 'package:ugcworks/views/create-collaboration/create-collaboration-page-2.dart';
+import 'package:ugcworks/views/create-collaboration/create-collaboration-page-3.dart';
+import 'package:ugcworks/views/notification-permission/notification-permission.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:collabflow/utils/theme_utils.dart';
+import 'package:ugcworks/utils/theme_utils.dart';
 
 class CollaborationWizard extends StatefulWidget {
   const CollaborationWizard({super.key});

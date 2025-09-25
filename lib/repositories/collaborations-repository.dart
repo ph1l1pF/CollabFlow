@@ -1,6 +1,6 @@
 
-import 'package:collabflow/models/collaboration.dart';
-import 'package:collabflow/repositories/notifications-repository.dart';
+import 'package:ugcworks/models/collaboration.dart';
+import 'package:ugcworks/repositories/notifications-repository.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 

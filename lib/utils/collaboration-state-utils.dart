@@ -1,6 +1,6 @@
-import 'package:collabflow/models/collaboration.dart';
+import 'package:ugcworks/models/collaboration.dart';
 import 'package:flutter/material.dart';
-import 'package:collabflow/l10n/app_localizations.dart';
+import 'package:ugcworks/l10n/app_localizations.dart';
 
 class CollaborationStateUtils {
   static IconData getStateIcon(CollabState state) {

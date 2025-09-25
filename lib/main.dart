@@ -1,25 +1,25 @@
-import 'package:collabflow/models/collaboration.dart';
-import 'package:collabflow/repositories/collaborations-repository.dart';
-import 'package:collabflow/repositories/notifications-repository.dart';
-import 'package:collabflow/repositories/shared-prefs-repository.dart';
-import 'package:collabflow/services/auth-service.dart';
-import 'package:collabflow/services/collaboration-export-service.dart';
-import 'package:collabflow/services/secure-storage-service.dart';
-import 'package:collabflow/services/collaborations-api-service.dart';
-import 'package:collabflow/views/collaborations-list/collaborations-list.dart';
-import 'package:collabflow/views/collaborations-list/collaboration-list-view-model.dart';
-import 'package:collabflow/views/earnings-overview/earnings-overview-view-model.dart';
-import 'package:collabflow/views/earnings-overview/earnings-overview.dart';
-import 'package:collabflow/views/about/settings.dart';
-import 'package:collabflow/views/onboarding/onboarding.dart';
+import 'package:ugcworks/models/collaboration.dart';
+import 'package:ugcworks/repositories/collaborations-repository.dart';
+import 'package:ugcworks/repositories/notifications-repository.dart';
+import 'package:ugcworks/repositories/shared-prefs-repository.dart';
+import 'package:ugcworks/services/auth-service.dart';
+import 'package:ugcworks/services/collaboration-export-service.dart';
+import 'package:ugcworks/services/secure-storage-service.dart';
+import 'package:ugcworks/services/collaborations-api-service.dart';
+import 'package:ugcworks/views/collaborations-list/collaborations-list.dart';
+import 'package:ugcworks/views/collaborations-list/collaboration-list-view-model.dart';
+import 'package:ugcworks/views/earnings-overview/earnings-overview-view-model.dart';
+import 'package:ugcworks/views/earnings-overview/earnings-overview.dart';
+import 'package:ugcworks/views/about/settings.dart';
+import 'package:ugcworks/views/onboarding/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:collabflow/l10n/app_localizations.dart';
-import 'package:collabflow/constants/app_colors.dart';
-import 'package:collabflow/utils/theme_utils.dart';
+import 'package:ugcworks/l10n/app_localizations.dart';
+import 'package:ugcworks/constants/app_colors.dart';
+import 'package:ugcworks/utils/theme_utils.dart';
 
 
 
@@ -27,7 +27,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await Hive.deleteFromDisk();
   
-  await Hive.initFlutter("collabflow");
+  await Hive.initFlutter("ugcworks");
   Hive.registerAdapter(CollaborationAdapter());
   Hive.registerAdapter(PartnerAdapter());
   Hive.registerAdapter(ScriptAdapter());

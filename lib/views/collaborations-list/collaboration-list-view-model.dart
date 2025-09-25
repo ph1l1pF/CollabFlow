@@ -1,9 +1,9 @@
 import 'dart:collection';
 
-import 'package:collabflow/repositories/collaborations-repository.dart';
-import 'package:collabflow/utils/collaboration-state-utils.dart';
+import 'package:ugcworks/repositories/collaborations-repository.dart';
+import 'package:ugcworks/utils/collaboration-state-utils.dart';
 import 'package:flutter/material.dart';
-import 'package:collabflow/models/collaboration.dart';
+import 'package:ugcworks/models/collaboration.dart';
 
 class CollaborationsListViewModel extends ChangeNotifier {
   final CollaborationsRepository _collaborationsRepository;

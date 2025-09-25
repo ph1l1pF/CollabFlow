@@ -6,18 +6,18 @@
     "configurations": [
         
         {
-            "name": "CollabFlow",
+            "name": "ugcworks",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "CollabFlow (profile mode)",
+            "name": "ugcworks (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "CollabFlow (release mode)",
+            "name": "ugcworks (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

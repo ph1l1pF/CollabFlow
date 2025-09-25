@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/collabflow.iml" filepath="$PROJECT_DIR$/collabflow.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/collabflow_android.iml" filepath="$PROJECT_DIR$/android/collabflow_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ugcworks.iml" filepath="$PROJECT_DIR$/ugcworks.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/ugcworks.iml" filepath="$PROJECT_DIR$/android/ugcworks_android.iml" />
     </modules>
   </component>
 </project>

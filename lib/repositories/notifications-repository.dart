@@ -1,10 +1,10 @@
 import 'dart:io';
-import 'package:collabflow/models/collaboration.dart';
+import 'package:ugcworks/models/collaboration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:timezone/timezone.dart' as tz;
-import 'package:collabflow/l10n/app_localizations.dart';
+import 'package:ugcworks/l10n/app_localizations.dart';
 
 class NotificationsRepository {
   final FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin =

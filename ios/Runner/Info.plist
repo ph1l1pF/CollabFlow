@@ -10,7 +10,7 @@
 	<true/>
 	</dict>
 	<key>CFBundleDisplayName</key>
-	<string>Collabflow</string>
+	<string>ugcworks</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -18,7 +18,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>collabflow</string>
+	<string>ugcworks</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

@@ -1,14 +1,14 @@
-import 'package:collabflow/models/collaboration.dart';
-import 'package:collabflow/utils/collaboration-state-utils.dart';
-import 'package:collabflow/views/collaboration-details/collaboration-details-view-model.dart';
-import 'package:collabflow/views/create-collaboration/create-collaboration-page-2.dart';
-import 'package:collabflow/views/create-collaboration/create-collaboration-page-3.dart';
-import 'package:collabflow/views/create-collaboration/step-1-basic/create-collaboration-page-1.dart';
+import 'package:ugcworks/models/collaboration.dart';
+import 'package:ugcworks/utils/collaboration-state-utils.dart';
+import 'package:ugcworks/views/collaboration-details/collaboration-details-view-model.dart';
+import 'package:ugcworks/views/create-collaboration/create-collaboration-page-2.dart';
+import 'package:ugcworks/views/create-collaboration/create-collaboration-page-3.dart';
+import 'package:ugcworks/views/create-collaboration/step-1-basic/create-collaboration-page-1.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:collabflow/l10n/app_localizations.dart';
-import 'package:collabflow/constants/app_colors.dart';
-import 'package:collabflow/utils/theme_utils.dart';
+import 'package:ugcworks/l10n/app_localizations.dart';
+import 'package:ugcworks/constants/app_colors.dart';
+import 'package:ugcworks/utils/theme_utils.dart';
 
 class CollaborationDetailsPage extends StatefulWidget {
   final CollaborationDetailsViewModel viewModel;

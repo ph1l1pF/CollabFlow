@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:collabflow/repositories/collaborations-repository.dart';
+import 'package:ugcworks/repositories/collaborations-repository.dart';
 
 
 class EarningsOverviewViewModel extends ChangeNotifier {

@@ -1,11 +1,11 @@
-import 'package:collabflow/services/auth-service.dart';
-import 'package:collabflow/services/secure-storage-service.dart';
-import 'package:collabflow/services/collaborations-api-service.dart';
+import 'package:ugcworks/services/auth-service.dart';
+import 'package:ugcworks/services/secure-storage-service.dart';
+import 'package:ugcworks/services/collaborations-api-service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-import 'package:collabflow/constants/app_colors.dart';
-import 'package:collabflow/l10n/app_localizations.dart';
+import 'package:ugcworks/constants/app_colors.dart';
+import 'package:ugcworks/l10n/app_localizations.dart';
 
 class AppleLoginButton extends StatefulWidget {
   final VoidCallback? onSuccess;

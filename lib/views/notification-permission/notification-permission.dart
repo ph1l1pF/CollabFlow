@@ -1,8 +1,8 @@
-import 'package:collabflow/repositories/notifications-repository.dart';
+import 'package:ugcworks/repositories/notifications-repository.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:collabflow/constants/app_colors.dart';
-import 'package:collabflow/utils/theme_utils.dart';
+import 'package:ugcworks/constants/app_colors.dart';
+import 'package:ugcworks/utils/theme_utils.dart';
 
 class NotificationPermissionScreen extends StatelessWidget {
 
