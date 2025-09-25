@@ -353,6 +353,14 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
         widget.viewModel.collab.state = state;
         widget.viewModel.updateCollaboration(widget.viewModel.collab, context: context);
       });
+      
+      // Show success toast
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)?.collaborationUpdated ?? "Collaboration updated successfully! ✅"),
+          backgroundColor: Colors.green,
+        ),
+      );
     }
     Navigator.of(context).pop();
   }
@@ -369,6 +377,14 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
         widget.viewModel.collab.notes = notes;
         widget.viewModel.updateCollaboration(widget.viewModel.collab, context: context);
       });
+      
+      // Show success toast
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)?.collaborationUpdated ?? "Collaboration updated successfully! ✅"),
+          backgroundColor: Colors.green,
+        ),
+      );
     }
     Navigator.of(context).pop();
   }
@@ -379,6 +395,14 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
         widget.viewModel.collab.partner = partner;
         widget.viewModel.updateCollaboration(widget.viewModel.collab, context: context);
       });
+      
+      // Show success toast
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)?.collaborationUpdated ?? "Collaboration updated successfully! ✅"),
+          backgroundColor: Colors.green,
+        ),
+      );
     }
     Navigator.of(context).pop();
   }

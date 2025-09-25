@@ -193,6 +193,16 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
     await _requestNotificationPermissionsIfNecessary();
     _collaborationsRepository.createCollaboration(collab, context: context);
 
+    // Show success toast
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)?.collaborationCreated ?? "Collaboration created successfully! ✅"),
+          backgroundColor: Colors.green,
+        ),
+      );
+    }
+
     Navigator.of(context).pop();
   }
 

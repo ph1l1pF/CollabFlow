@@ -339,4 +339,30 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get discard => 'Verwerfen';
+
+  @override
+  String get congratulations => 'Glückwunsch 🎉';
+
+  @override
+  String get firstCollaborationMessage =>
+      'Du hast deine erste Collaboration angelegt!\n\nDamit du keine Deadline mehr verpasst, kannst du dich automatisch erinnern lassen.';
+
+  @override
+  String get yesRemindMe => 'Ja, erinnert mich';
+
+  @override
+  String get noMaybeLater => 'Nein, vielleicht später';
+
+  @override
+  String get notificationsEnabled => 'Benachrichtigungen aktiviert ✅';
+
+  @override
+  String get notificationsDenied => 'Benachrichtigungen nicht erlaubt ❌';
+
+  @override
+  String get collaborationCreated => 'Collaboration erfolgreich erstellt! ✅';
+
+  @override
+  String get collaborationUpdated =>
+      'Collaboration erfolgreich aktualisiert! ✅';
 }

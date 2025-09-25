@@ -739,6 +739,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Discard'**
   String get discard;
+
+  /// No description provided for @congratulations.
+  ///
+  /// In en, this message translates to:
+  /// **'Congratulations 🎉'**
+  String get congratulations;
+
+  /// No description provided for @firstCollaborationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have created your first collaboration!\n\nSo you don\'t miss any deadlines, you can be automatically reminded.'**
+  String get firstCollaborationMessage;
+
+  /// No description provided for @yesRemindMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, remind me'**
+  String get yesRemindMe;
+
+  /// No description provided for @noMaybeLater.
+  ///
+  /// In en, this message translates to:
+  /// **'No, maybe later'**
+  String get noMaybeLater;
+
+  /// No description provided for @notificationsEnabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications enabled ✅'**
+  String get notificationsEnabled;
+
+  /// No description provided for @notificationsDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications not allowed ❌'**
+  String get notificationsDenied;
+
+  /// No description provided for @collaborationCreated.
+  ///
+  /// In en, this message translates to:
+  /// **'Collaboration created successfully! ✅'**
+  String get collaborationCreated;
+
+  /// No description provided for @collaborationUpdated.
+  ///
+  /// In en, this message translates to:
+  /// **'Collaboration updated successfully! ✅'**
+  String get collaborationUpdated;
 }
 
 class _AppLocalizationsDelegate

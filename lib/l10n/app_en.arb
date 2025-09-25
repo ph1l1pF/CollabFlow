@@ -107,6 +107,14 @@
   "loginFailed": "Login failed.",
   "discardChanges": "Discard changes?",
   "discardChangesMessage": "All entered data will be lost. Are you sure you want to leave?",
-  "discard": "Discard"
+  "discard": "Discard",
+  "congratulations": "Congratulations 🎉",
+  "firstCollaborationMessage": "You have created your first collaboration!\n\nSo you don't miss any deadlines, you can be automatically reminded.",
+  "yesRemindMe": "Yes, remind me",
+  "noMaybeLater": "No, maybe later",
+  "notificationsEnabled": "Notifications enabled ✅",
+  "notificationsDenied": "Notifications not allowed ❌",
+  "collaborationCreated": "Collaboration created successfully! ✅",
+  "collaborationUpdated": "Collaboration updated successfully! ✅"
 }
  

@@ -340,4 +340,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get discard => 'Discard';
+
+  @override
+  String get congratulations => 'Congratulations 🎉';
+
+  @override
+  String get firstCollaborationMessage =>
+      'You have created your first collaboration!\n\nSo you don\'t miss any deadlines, you can be automatically reminded.';
+
+  @override
+  String get yesRemindMe => 'Yes, remind me';
+
+  @override
+  String get noMaybeLater => 'No, maybe later';
+
+  @override
+  String get notificationsEnabled => 'Notifications enabled ✅';
+
+  @override
+  String get notificationsDenied => 'Notifications not allowed ❌';
+
+  @override
+  String get collaborationCreated => 'Collaboration created successfully! ✅';
+
+  @override
+  String get collaborationUpdated => 'Collaboration updated successfully! ✅';
 }
