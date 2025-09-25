@@ -252,22 +252,24 @@ class _MainAppContent extends StatelessWidget {
         type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
         onTap: onIndexChanged,
+        iconSize: 35,
+        elevation: 6,
         items: [
           BottomNavigationBarItem(
-            icon: const Icon(Icons.dashboard),
-            label: 'Dashboard',
+            icon: const Icon(Icons.analytics),
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.list),
-            label: 'Collaborations',
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.euro),
-            label: 'Income',
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.settings),
-            label: 'Settings',
+            label: '',
           ),
         ],
       ),

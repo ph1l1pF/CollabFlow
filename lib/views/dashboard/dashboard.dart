@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:ugcworks/models/collaboration.dart';
 import 'package:ugcworks/repositories/collaborations-repository.dart';
+import 'package:ugcworks/views/create-collaboration/create-collaboration.dart';
 import 'package:ugcworks/l10n/app_localizations.dart';
 import 'package:ugcworks/constants/app_colors.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
@@ -51,7 +52,7 @@ class DashboardPage extends StatelessWidget {
                 .length;
 
               return Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 20), // Reduced bottom padding
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 20), // Standard bottom padding
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -81,7 +82,7 @@ class DashboardPage extends StatelessWidget {
                       crossAxisCount: 2,
                       crossAxisSpacing: 12,
                       mainAxisSpacing: 12,
-                      childAspectRatio: 1.3,
+                      childAspectRatio: 1.8,
                       children: [
                         _buildMetricTile(
                           context: context,
@@ -159,7 +160,7 @@ class DashboardPage extends StatelessWidget {
     required String subtitle,
   }) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
@@ -178,7 +179,7 @@ class DashboardPage extends StatelessWidget {
           Row(
             children: [
               Container(
-                padding: const EdgeInsets.all(4),
+                padding: const EdgeInsets.all(3),
                 decoration: BoxDecoration(
                   color: color.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(6),
@@ -186,18 +187,18 @@ class DashboardPage extends StatelessWidget {
                 child: Icon(
                   icon,
                   color: color,
-                  size: 16,
+                  size: 14,
                 ),
               ),
               const Spacer(),
             ],
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Flexible(
             child: Text(
               value,
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: Theme.of(context).colorScheme.onSurface,
               ),
@@ -205,12 +206,12 @@ class DashboardPage extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          const SizedBox(height: 2),
+          const SizedBox(height: 1),
           Flexible(
             child: Text(
               title,
               style: TextStyle(
-                fontSize: 12,
+                fontSize: 11,
                 fontWeight: FontWeight.w500,
                 color: Theme.of(context).colorScheme.onSurface,
               ),
@@ -223,7 +224,7 @@ class DashboardPage extends StatelessWidget {
             child: Text(
               subtitle,
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 9,
                 color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
               ),
               maxLines: 1,
@@ -356,6 +357,34 @@ class DashboardPage extends StatelessWidget {
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
             ),
             textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CollaborationWizard(),
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primaryPink,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              elevation: 4,
+            ),
+            icon: const Icon(Icons.add, size: 20),
+            label: Text(
+              AppLocalizations.of(context)?.createCollaboration ?? "Create Collaboration",
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ],
       ),
