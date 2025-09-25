@@ -129,26 +129,28 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  vertical: 8,
+                  vertical: 16,
                   horizontal: 16,
                 ),
                 child: Row(
                   children: [
                     GestureDetector(
                       onTap: _openDateRangePicker,
-                      child: const Icon(Icons.date_range, size: 20),
+                      child: const Icon(Icons.date_range, size: 28),
                     ),
-                    const SizedBox(width: 8),
-                    GestureDetector(
-                      onTap: _openDateRangePicker,
-                      child: Text(
-                        _selectedRange == null
-                            ? (AppLocalizations.of(context)?.allTimeframes ??
-                                  "All timeframes")
-                            : "${DateFormat.yMd(Localizations.localeOf(context).toString()).format(_selectedRange!.start)} – ${DateFormat.yMd(Localizations.localeOf(context).toString()).format(_selectedRange!.end)}",
-                        style: const TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: _openDateRangePicker,
+                        child: Text(
+                          _selectedRange == null
+                              ? (AppLocalizations.of(context)?.allTimeframes ??
+                                    "All timeframes")
+                              : "${DateFormat.yMd(Localizations.localeOf(context).toString()).format(_selectedRange!.start)} – ${DateFormat.yMd(Localizations.localeOf(context).toString()).format(_selectedRange!.end)}",
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
