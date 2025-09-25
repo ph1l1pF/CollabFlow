@@ -365,4 +365,38 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get collaborationUpdated =>
       'Collaboration erfolgreich aktualisiert! ✅';
+
+  @override
+  String get dashboard => 'Dashboard';
+
+  @override
+  String get dashboardWelcome => 'Willkommen zurück! 👋';
+
+  @override
+  String get dashboardSubtitle => 'Hier ist deine Collaboration-Übersicht';
+
+  @override
+  String get totalEarnings => 'Gesamteinnahmen';
+
+  @override
+  String get totalCollaborations => 'Alle Collaborations';
+
+  @override
+  String get activeCollaborations => 'Aktiv';
+
+  @override
+  String get completedCollaborations => 'Abgeschlossen';
+
+  @override
+  String get highestPaidCollab => 'Höchstbezahlte Collaboration';
+
+  @override
+  String get allTime => 'Gesamt';
+
+  @override
+  String get inProgress => 'In Bearbeitung';
+
+  @override
+  String get createFirstCollab =>
+      'Erstelle deine erste Collaboration, um dein Dashboard zu sehen';
 }

@@ -787,6 +787,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Collaboration updated successfully! ✅'**
   String get collaborationUpdated;
+
+  /// No description provided for @dashboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Dashboard'**
+  String get dashboard;
+
+  /// No description provided for @dashboardWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back! 👋'**
+  String get dashboardWelcome;
+
+  /// No description provided for @dashboardSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Here\'s your collaboration overview'**
+  String get dashboardSubtitle;
+
+  /// No description provided for @totalEarnings.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Earnings'**
+  String get totalEarnings;
+
+  /// No description provided for @totalCollaborations.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Collaborations'**
+  String get totalCollaborations;
+
+  /// No description provided for @activeCollaborations.
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get activeCollaborations;
+
+  /// No description provided for @completedCollaborations.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get completedCollaborations;
+
+  /// No description provided for @highestPaidCollab.
+  ///
+  /// In en, this message translates to:
+  /// **'Highest Paid Collaboration'**
+  String get highestPaidCollab;
+
+  /// No description provided for @allTime.
+  ///
+  /// In en, this message translates to:
+  /// **'All time'**
+  String get allTime;
+
+  /// No description provided for @inProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'In progress'**
+  String get inProgress;
+
+  /// No description provided for @createFirstCollab.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first collaboration to see your dashboard'**
+  String get createFirstCollab;
 }
 
 class _AppLocalizationsDelegate

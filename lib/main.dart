@@ -10,6 +10,7 @@ import 'package:ugcworks/views/collaborations-list/collaborations-list.dart';
 import 'package:ugcworks/views/collaborations-list/collaboration-list-view-model.dart';
 import 'package:ugcworks/views/earnings-overview/earnings-overview-view-model.dart';
 import 'package:ugcworks/views/earnings-overview/earnings-overview.dart';
+import 'package:ugcworks/views/dashboard/dashboard.dart';
 import 'package:ugcworks/views/about/settings.dart';
 import 'package:ugcworks/views/onboarding/onboarding.dart';
 import 'package:flutter/material.dart';
@@ -102,6 +103,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   bool _onboardingDone = false;
 
   final List<Widget> _pages = [
+    const DashboardPage(),
     const CollaborationListPage(),
     const EarningsOverviewPage(),
     const SettingsPage(),
@@ -247,20 +249,25 @@ class _MainAppContent extends StatelessWidget {
     return Scaffold(
       body: pages[selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: selectedIndex,
         onTap: onIndexChanged,
         items: [
           BottomNavigationBarItem(
+            icon: const Icon(Icons.dashboard),
+            label: 'Dashboard',
+          ),
+          BottomNavigationBarItem(
             icon: const Icon(Icons.list),
-            label: AppLocalizations.of(context)?.collaborations ?? 'Collaborations',
+            label: 'Collaborations',
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.euro),
-            label: AppLocalizations.of(context)?.earningsMenu ?? 'Income',
+            label: 'Income',
           ),
           BottomNavigationBarItem(
             icon: const Icon(Icons.settings),
-            label: AppLocalizations.of(context)?.settings ?? 'Settings',
+            label: 'Settings',
           ),
         ],
       ),

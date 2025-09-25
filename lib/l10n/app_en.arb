@@ -115,6 +115,18 @@
   "notificationsEnabled": "Notifications enabled ✅",
   "notificationsDenied": "Notifications not allowed ❌",
   "collaborationCreated": "Collaboration created successfully! ✅",
-  "collaborationUpdated": "Collaboration updated successfully! ✅"
+  "collaborationUpdated": "Collaboration updated successfully! ✅",
+  "dashboard": "Dashboard",
+  "dashboardWelcome": "Welcome back! 👋",
+  "dashboardSubtitle": "Here's your collaboration overview",
+  "totalEarnings": "Total Earnings",
+  "totalCollaborations": "Total Collaborations",
+  "activeCollaborations": "Active",
+  "completedCollaborations": "Completed",
+  "highestPaidCollab": "Highest Paid Collaboration",
+  "allTime": "All time",
+  "inProgress": "In progress",
+  "finished": "Finished",
+  "createFirstCollab": "Create your first collaboration to see your dashboard"
 }
  
