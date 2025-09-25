@@ -329,4 +329,14 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get loginFailed => 'Login fehlgeschlagen.';
+
+  @override
+  String get discardChanges => 'Änderungen verwerfen?';
+
+  @override
+  String get discardChangesMessage =>
+      'Alle eingegebenen Daten gehen verloren. Bist du sicher, dass du die Seite verlassen möchtest?';
+
+  @override
+  String get discard => 'Verwerfen';
 }

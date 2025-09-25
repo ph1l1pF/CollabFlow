@@ -104,6 +104,9 @@
   "copyUserId": "Copy User ID",
   "userIdCopied": "User ID copied to clipboard",
   "copyError": "Error copying User ID",
-  "loginFailed": "Login failed."
+  "loginFailed": "Login failed.",
+  "discardChanges": "Discard changes?",
+  "discardChangesMessage": "All entered data will be lost. Are you sure you want to leave?",
+  "discard": "Discard"
 }
  

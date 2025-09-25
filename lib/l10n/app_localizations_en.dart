@@ -330,4 +330,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loginFailed => 'Login failed.';
+
+  @override
+  String get discardChanges => 'Discard changes?';
+
+  @override
+  String get discardChangesMessage =>
+      'All entered data will be lost. Are you sure you want to leave?';
+
+  @override
+  String get discard => 'Discard';
 }

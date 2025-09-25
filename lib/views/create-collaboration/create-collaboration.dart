@@ -10,6 +10,7 @@ import 'package:ugcworks/views/notification-permission/notification-permission.d
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
+import 'package:ugcworks/l10n/app_localizations.dart';
 
 class CollaborationWizard extends StatefulWidget {
   const CollaborationWizard({super.key});
@@ -84,47 +85,79 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
   }
 
 
+  Future<bool> _onWillPop() async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context)?.discardChanges ?? 'Discard changes?'),
+        content: Text(AppLocalizations.of(context)?.discardChangesMessage ?? 'All entered data will be lost. Are you sure you want to leave?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(AppLocalizations.of(context)?.discard ?? 'Discard'),
+          ),
+        ],
+      ),
+    );
+    return result ?? false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: ThemeUtils.getBackgroundDecoration(context),
-      child: Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top: 24.0),
-        child: Builder(
-          builder: (context) {
-            switch (_currentStep) {
-              case 0:
-                return BasicCollaborationStep(
-                  onNext: _handleBasicInfo,
-                  initialTitle: _title ?? '',
-                  initialDescription: _description ?? '',
-                  initialDeadline: _deadline ?? Deadline.defaultDeadline(),
-                  initialFee: _fee ?? 0,
-                  initialState: _state,
-                );
-              case 1:
-                return ScriptStep(
-                  onNext: _handleScriptStep,
-                  initialScriptContent: _scriptContent ?? '',
-                  initialNotes: _notes ?? '',
-                );
-              case 2:
-                return PartnerStep(
-                  onFinish: _handlePartnerStep,
-                  initialName: _partner?.name ?? '',
-                  initialEmail: _partner?.email ?? '',
-                  initialPhone: _partner?.phone ?? '',
-                  initialCompanyName: _partner?.companyName ?? '',
-                  initialIndustry: _partner?.industry ?? '',
-                  initialCustomerNumber: _partner?.customerNumber ?? '',
-                );
-              default:
-                throw Exception("Unknown step $_currentStep");
-            }
-          },
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (!didPop) {
+          final shouldPop = await _onWillPop();
+          if (shouldPop && context.mounted) {
+            Navigator.of(context).pop();
+          }
+        }
+      },
+      child: Container(
+        decoration: ThemeUtils.getBackgroundDecoration(context),
+        child: Scaffold(
+        body: Padding(
+          padding: const EdgeInsets.only(top: 24.0),
+          child: Builder(
+            builder: (context) {
+              switch (_currentStep) {
+                case 0:
+                  return BasicCollaborationStep(
+                    onNext: _handleBasicInfo,
+                    initialTitle: _title ?? '',
+                    initialDescription: _description ?? '',
+                    initialDeadline: _deadline ?? Deadline.defaultDeadline(),
+                    initialFee: _fee ?? 0,
+                    initialState: _state,
+                  );
+                case 1:
+                  return ScriptStep(
+                    onNext: _handleScriptStep,
+                    initialScriptContent: _scriptContent ?? '',
+                    initialNotes: _notes ?? '',
+                  );
+                case 2:
+                  return PartnerStep(
+                    onFinish: _handlePartnerStep,
+                    initialName: _partner?.name ?? '',
+                    initialEmail: _partner?.email ?? '',
+                    initialPhone: _partner?.phone ?? '',
+                    initialCompanyName: _partner?.companyName ?? '',
+                    initialIndustry: _partner?.industry ?? '',
+                    initialCustomerNumber: _partner?.customerNumber ?? '',
+                  );
+                default:
+                  throw Exception("Unknown step $_currentStep");
+              }
+            },
+          ),
         ),
-      ),
+        ),
       ),
     );
   }
