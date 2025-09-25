@@ -273,13 +273,59 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
               ),
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: _goNext,
-              child: Text(widget.confirmButtonLabel ?? (AppLocalizations.of(context)?.next ?? 'Next')),
-            ),
-            ElevatedButton(
-              onPressed: _goBack,
-              child: Text(widget.cancelButtonLabel ?? (AppLocalizations.of(context)?.cancel ?? 'Cancel')),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _goBack,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[600],
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.arrow_back, size: 20),
+                        const SizedBox(width: 8),
+                        Text(
+                          widget.cancelButtonLabel ?? (AppLocalizations.of(context)?.cancel ?? 'Cancel'),
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _goNext,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryPink,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 4,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          widget.confirmButtonLabel ?? (AppLocalizations.of(context)?.next ?? 'Next'),
+                          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(width: 8),
+                        const Icon(Icons.arrow_forward, size: 20),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),

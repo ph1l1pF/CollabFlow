@@ -1,6 +1,7 @@
 import 'package:ugcworks/models/collaboration.dart';
 import 'package:flutter/material.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
+import 'package:ugcworks/constants/app_colors.dart';
 
 class PartnerStep extends StatefulWidget {
   final void Function(Partner partner, bool next) onFinish;
@@ -103,16 +104,56 @@ class _PartnerStepState extends State<PartnerStep> {
             _buildField("Kundennummer", controller: _customerNumberController),
             const SizedBox(height: 24),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(
-                  onPressed: () => _submit(false),
-                  child: const Text("Zurück"),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () => _submit(false),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[600],
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.arrow_back, size: 20),
+                        SizedBox(width: 8),
+                        Text(
+                          "Zurück",
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                const SizedBox(width: 8),
-                ElevatedButton(
-                  onPressed: () => _submit(true),
-                  child: const Text("Weiter"),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () => _submit(true),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryPink,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 4,
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Weiter",
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(width: 8),
+                        Icon(Icons.arrow_forward, size: 20),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),

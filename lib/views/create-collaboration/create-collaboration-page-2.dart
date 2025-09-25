@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
+import 'package:ugcworks/constants/app_colors.dart';
 
 class ScriptStep extends StatefulWidget {
   final void Function({
@@ -87,11 +88,57 @@ class _ScriptStepState extends State<ScriptStep> {
             ),
             const SizedBox(height: 24),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(onPressed: _goBack, child: const Text('Zurück')),
-                const SizedBox(width: 8),
-                ElevatedButton(onPressed: _goNext, child: const Text('Weiter')),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _goBack,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[600],
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.arrow_back, size: 20),
+                        SizedBox(width: 8),
+                        Text(
+                          'Zurück',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: _goNext,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryPink,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 4,
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Weiter',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(width: 8),
+                        Icon(Icons.arrow_forward, size: 20),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ],
