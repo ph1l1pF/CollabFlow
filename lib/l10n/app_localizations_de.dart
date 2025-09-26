@@ -376,6 +376,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get dashboardSubtitle => 'Hier ist deine Collaboration-Übersicht';
 
   @override
+  String get welcomeBack => 'Willkommen zurück';
+
+  @override
   String get totalEarnings => 'Gesamteinnahmen';
 
   @override
@@ -399,4 +402,19 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get createFirstCollab =>
       'Erstelle deine erste Collaboration, um dein Dashboard zu sehen';
+
+  @override
+  String get timePeriod => 'Zeitraum';
+
+  @override
+  String get week => 'Woche';
+
+  @override
+  String get month => 'Monat';
+
+  @override
+  String get year => 'Jahr';
+
+  @override
+  String get overall => 'Gesamt';
 }

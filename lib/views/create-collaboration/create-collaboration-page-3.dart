@@ -133,14 +133,10 @@ class _PartnerStepState extends State<PartnerStep> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () => _submit(true),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryPink,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                    style: AppColors.primaryButtonStyle.copyWith(
+                      padding: MaterialStateProperty.all(
+                        const EdgeInsets.symmetric(vertical: 16),
                       ),
-                      elevation: 4,
                     ),
                     child: const Row(
                       mainAxisAlignment: MainAxisAlignment.center,

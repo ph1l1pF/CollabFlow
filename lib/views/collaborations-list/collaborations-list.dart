@@ -67,7 +67,10 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                   });
                 },
               )
-            : Text(AppLocalizations.of(context)?.myCollaborations ?? "My Collaborations"),
+            : Text(
+                AppLocalizations.of(context)?.myCollaborations ??
+                    "My Collaborations",
+              ),
         actions: [
           Consumer<CollaborationsListViewModel>(
             builder: (context, viewModel, _) {
@@ -94,8 +97,14 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
           Consumer<CollaborationsListViewModel>(
             builder: (context, viewModel, _) {
               return IconButton(
-                icon: Icon(_selectedStates.isEmpty ? Icons.filter_alt_outlined : Icons.filter_alt),
-                tooltip: AppLocalizations.of(context)?.filterByStatus ?? 'Filter by status',
+                icon: Icon(
+                  _selectedStates.isEmpty
+                      ? Icons.filter_alt_outlined
+                      : Icons.filter_alt,
+                ),
+                tooltip:
+                    AppLocalizations.of(context)?.filterByStatus ??
+                    'Filter by status',
                 onPressed: () async {
                   final states = CollabState.values;
                   final tempSelected = Set<CollabState>.from(_selectedStates);
@@ -103,18 +112,27 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text(AppLocalizations.of(context)?.filterByStatusTitle ?? 'Filter by status'),
+                        title: Text(
+                          AppLocalizations.of(context)?.filterByStatusTitle ??
+                              'Filter by status',
+                        ),
                         content: SingleChildScrollView(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              
                               const SizedBox(height: 8),
                               for (final s in states)
                                 CheckboxListTile(
                                   value: tempSelected.contains(s),
-                                  title: Text(CollaborationStateUtils.getStateLabel(s, context)),
-                                  secondary: Icon(CollaborationStateUtils.getStateIcon(s)),
+                                  title: Text(
+                                    CollaborationStateUtils.getStateLabel(
+                                      s,
+                                      context,
+                                    ),
+                                  ),
+                                  secondary: Icon(
+                                    CollaborationStateUtils.getStateIcon(s),
+                                  ),
                                   onChanged: (checked) {
                                     if (checked == true) {
                                       tempSelected.add(s);
@@ -124,7 +142,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                                     (context as Element).markNeedsBuild();
                                   },
                                 ),
-                                Row(
+                              Row(
                                 children: [
                                   Expanded(
                                     child: TextButton.icon(
@@ -133,7 +151,12 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                                         (context as Element).markNeedsBuild();
                                       },
                                       icon: const Icon(Icons.filter_alt_off),
-                                      label: Text(AppLocalizations.of(context)?.removeFilters ?? 'Remove filters'),
+                                      label: Text(
+                                        AppLocalizations.of(
+                                              context,
+                                            )?.removeFilters ??
+                                            'Remove filters',
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
@@ -146,7 +169,12 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                                         (context as Element).markNeedsBuild();
                                       },
                                       icon: const Icon(Icons.select_all),
-                                      label: Text(AppLocalizations.of(context)?.selectAll ?? 'Select all'),
+                                      label: Text(
+                                        AppLocalizations.of(
+                                              context,
+                                            )?.selectAll ??
+                                            'Select all',
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -156,14 +184,20 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                         ),
                         actions: [
                           TextButton.icon(
-                            onPressed: () => Navigator.pop(context, tempSelected),
+                            onPressed: () =>
+                                Navigator.pop(context, tempSelected),
                             icon: const Icon(Icons.check),
-                            label: Text(AppLocalizations.of(context)?.apply ?? 'Apply'),
+                            label: Text(
+                              AppLocalizations.of(context)?.apply ?? 'Apply',
+                            ),
                           ),
                           TextButton.icon(
-                            onPressed: () => Navigator.pop(context, _selectedStates),
+                            onPressed: () =>
+                                Navigator.pop(context, _selectedStates),
                             icon: const Icon(Icons.close),
-                            label: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
+                            label: Text(
+                              AppLocalizations.of(context)?.cancel ?? 'Cancel',
+                            ),
                           ),
                         ],
                       );
@@ -175,7 +209,10 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                       _selectedStates = result;
                     });
                     // persist
-                    final prefs = Provider.of<SharedPrefsRepository>(context, listen: false);
+                    final prefs = Provider.of<SharedPrefsRepository>(
+                      context,
+                      listen: false,
+                    );
                     await prefs.saveSelectedStates(
                       _selectedStates.map((e) => e.index.toString()).toList(),
                     );
@@ -198,33 +235,46 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
       body: Consumer<CollaborationsListViewModel>(
         builder: (context, viewModel, _) {
           final matchesSearch = viewModel.collaborations
-              .where((c) => c.title.toLowerCase().trim().contains(_searchText.toLowerCase().trim()))
+              .where(
+                (c) => c.title.toLowerCase().trim().contains(
+                  _searchText.toLowerCase().trim(),
+                ),
+              )
               .toList();
-          final filtered = (_selectedStates.isEmpty
-                  ? matchesSearch
-                  : matchesSearch.where((c) => _selectedStates.contains(c.state)).toList())
-              ..sort((a, b) => a.deadline.compareTo(b.deadline));
+          final filtered =
+              (_selectedStates.isEmpty
+                    ? matchesSearch
+                    : matchesSearch
+                          .where((c) => _selectedStates.contains(c.state))
+                          .toList())
+                ..sort((a, b) => a.deadline.compareTo(b.deadline));
 
           return filtered.isEmpty
-              ? 
-              viewModel.collaborations.isEmpty ?
-              Center(
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CollaborationWizard(),
+              ? viewModel.collaborations.isEmpty
+                    ? Center(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CollaborationWizard(),
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.add),
+                          label: Text(
+                            AppLocalizations.of(context)?.createCollaboration ??
+                                "Create Collaboration",
+                          ),
+                          style: AppColors.primaryButtonStyle,
                         ),
-                      );
-                    },
-                    icon: const Icon(Icons.add),
-                    label: Text(AppLocalizations.of(context)?.createCollaboration ?? "Create Collaboration"),
-                  ),
-                )
-                : Center(
-                  child: Text(AppLocalizations.of(context)?.noCollaborationsFound ?? "No collaborations found"),
-                )
+                      )
+                    : Center(
+                        child: Text(
+                          AppLocalizations.of(context)?.noCollaborationsFound ??
+                              "No collaborations found",
+                        ),
+                      )
               : ListView.builder(
                   itemCount: filtered.length,
                   itemBuilder: (context, index) {
@@ -242,15 +292,31 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                         return await showDialog<bool>(
                           context: context,
                           builder: (ctx) => AlertDialog(
-                            title: Text(AppLocalizations.of(context)?.deleteCollaboration ?? 'Delete Collaboration'),
-                            content: Text(AppLocalizations.of(context)?.deleteCollaborationConfirm ?? 'Do you really want to delete this collaboration?'),
+                            title: Text(
+                              AppLocalizations.of(
+                                    context,
+                                  )?.deleteCollaboration ??
+                                  'Delete Collaboration',
+                            ),
+                            content: Text(
+                              AppLocalizations.of(
+                                    context,
+                                  )?.deleteCollaborationConfirm ??
+                                  'Do you really want to delete this collaboration?',
+                            ),
                             actions: [
                               TextButton(
-                                child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
+                                child: Text(
+                                  AppLocalizations.of(context)?.cancel ??
+                                      'Cancel',
+                                ),
                                 onPressed: () => Navigator.of(ctx).pop(false),
                               ),
                               TextButton(
-                                child: Text(AppLocalizations.of(context)?.delete ?? 'Delete'),
+                                child: Text(
+                                  AppLocalizations.of(context)?.delete ??
+                                      'Delete',
+                                ),
                                 onPressed: () => Navigator.of(ctx).pop(true),
                               ),
                             ],
@@ -258,10 +324,19 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                         );
                       },
                       onDismissed: (direction) {
-                        Provider.of<CollaborationsRepository>(context, listen: false)
-                            .deleteById(collab.id);
+                        Provider.of<CollaborationsRepository>(
+                          context,
+                          listen: false,
+                        ).deleteById(collab.id);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(AppLocalizations.of(context)?.collaborationDeleted ?? 'Collaboration deleted')),
+                          SnackBar(
+                            content: Text(
+                              AppLocalizations.of(
+                                    context,
+                                  )?.collaborationDeleted ??
+                                  'Collaboration deleted',
+                            ),
+                          ),
                         );
                       },
                       child: Card(
@@ -288,14 +363,28 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                               Text(
                                 "${AppLocalizations.of(context)?.deadline ?? "Deadline"}: ${DateFormat.yMd(Localizations.localeOf(context).toString()).format(collab.deadline)}",
                               ),
-                              if(collab.partner != "") Text("${AppLocalizations.of(context)?.brand ?? "Brand"}: ${collab.partner}"),
+                              if (collab.partner != "")
+                                Text(
+                                  "${AppLocalizations.of(context)?.brand ?? "Brand"}: ${collab.partner}",
+                                ),
                               const SizedBox(height: 4),
                               Row(
                                 children: [
-                                  Text("${AppLocalizations.of(context)?.status ?? "Status"}: "),
-                                  Icon(collab.stateIcon, color: AppColors.primaryPink, size: 16),
+                                  Text(
+                                    "${AppLocalizations.of(context)?.status ?? "Status"}: ",
+                                  ),
+                                  Icon(
+                                    collab.stateIcon,
+                                    color: AppColors.primaryPink,
+                                    size: 16,
+                                  ),
                                   const SizedBox(width: 6),
-                                  Text(CollaborationStateUtils.getStateLabel(collab.state, context)),
+                                  Text(
+                                    CollaborationStateUtils.getStateLabel(
+                                      collab.state,
+                                      context,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ],

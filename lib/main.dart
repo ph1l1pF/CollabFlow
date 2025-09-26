@@ -11,6 +11,7 @@ import 'package:ugcworks/views/collaborations-list/collaboration-list-view-model
 import 'package:ugcworks/views/earnings-overview/earnings-overview-view-model.dart';
 import 'package:ugcworks/views/earnings-overview/earnings-overview.dart';
 import 'package:ugcworks/views/dashboard/dashboard.dart';
+import 'package:ugcworks/views/dashboard/dashboard-view-model.dart';
 import 'package:ugcworks/views/about/settings.dart';
 import 'package:ugcworks/views/onboarding/onboarding.dart';
 import 'package:ugcworks/views/create-collaboration/create-collaboration.dart';
@@ -60,6 +61,11 @@ void main() async {
             ),
         ChangeNotifierProvider(
               create: (context) => EarningsOverviewViewModel(
+                collaborationsRepository: Provider.of<CollaborationsRepository>(context, listen: false),
+              ),
+            ),
+        ChangeNotifierProvider(
+              create: (context) => DashboardViewModel(
                 collaborationsRepository: Provider.of<CollaborationsRepository>(context, listen: false),
               ),
             ),

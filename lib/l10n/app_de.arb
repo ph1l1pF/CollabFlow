@@ -119,6 +119,7 @@
   "dashboard": "Dashboard",
   "dashboardWelcome": "Willkommen zurück! 👋",
   "dashboardSubtitle": "Hier ist deine Collaboration-Übersicht",
+  "welcomeBack": "Willkommen zurück",
   "totalEarnings": "Gesamteinnahmen",
   "totalCollaborations": "Alle Collaborations",
   "activeCollaborations": "Aktiv",
@@ -127,5 +128,10 @@
   "allTime": "Gesamt",
   "inProgress": "In Bearbeitung",
   "finished": "Abgeschlossen",
-  "createFirstCollab": "Erstelle deine erste Collaboration, um dein Dashboard zu sehen"
+  "createFirstCollab": "Erstelle deine erste Collaboration, um dein Dashboard zu sehen",
+  "timePeriod": "Zeitraum",
+  "week": "Woche",
+  "month": "Monat",
+  "year": "Jahr",
+  "overall": "Gesamt"
 }

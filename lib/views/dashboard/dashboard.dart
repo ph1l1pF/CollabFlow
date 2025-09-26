@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:ugcworks/models/collaboration.dart';
-import 'package:ugcworks/repositories/collaborations-repository.dart';
+import 'package:ugcworks/views/dashboard/dashboard-view-model.dart';
 import 'package:ugcworks/views/create-collaboration/create-collaboration.dart';
 import 'package:ugcworks/l10n/app_localizations.dart';
 import 'package:ugcworks/constants/app_colors.dart';
@@ -25,32 +24,9 @@ class DashboardPage extends StatelessWidget {
           ),
           elevation: 0,
         ),
-        body: Consumer<CollaborationsRepository>(
-          builder: (context, repository, _) {
-            final collaborations = repository.collaborations;
-            
-            // Calculate metrics
-            final totalEarnings = collaborations.fold<double>(
-              0, 
-              (sum, collab) => sum + collab.fee.amount,
-            );
-            
-            final totalCollaborations = collaborations.length;
-            
-            final highestPaidCollab = collaborations.isEmpty 
-                ? null 
-                : collaborations.reduce((a, b) => 
-                    a.fee.amount > b.fee.amount ? a : b,
-                  );
-            
-            final completedCollaborations = collaborations
-                .where((c) => c.state == CollabState.Finished)
-                .length;
-            
-            final activeCollaborations = collaborations
-                .where((c) => c.state != CollabState.Finished)
-                .length;
-
+        body: Consumer<DashboardViewModel>(
+          builder: (context, viewModel, _) {
+            if (!viewModel.hasCollaborations) {
               return Padding(
                 padding: const EdgeInsets.fromLTRB(16, 16, 16, 20), // Standard bottom padding
               child: SingleChildScrollView(
@@ -90,7 +66,7 @@ class DashboardPage extends StatelessWidget {
                           value: NumberFormat.currency(
                             locale: Localizations.localeOf(context).toString(),
                             symbol: "€",
-                          ).format(totalEarnings),
+                          ).format(viewModel.totalEarnings),
                           icon: Icons.euro,
                           color: Colors.green,
                           subtitle: AppLocalizations.of(context)?.allTime ?? "All time",
@@ -98,7 +74,7 @@ class DashboardPage extends StatelessWidget {
                         _buildMetricTile(
                           context: context,
                           title: AppLocalizations.of(context)?.totalCollaborations ?? "Total Collaborations",
-                          value: totalCollaborations.toString(),
+                          value: viewModel.totalCollaborations.toString(),
                           icon: Icons.handshake,
                           color: AppColors.primaryPink,
                           subtitle: AppLocalizations.of(context)?.allTime ?? "All time",
@@ -106,7 +82,7 @@ class DashboardPage extends StatelessWidget {
                         _buildMetricTile(
                           context: context,
                           title: AppLocalizations.of(context)?.activeCollaborations ?? "Active",
-                          value: activeCollaborations.toString(),
+                          value: viewModel.activeCollaborations.toString(),
                           icon: Icons.trending_up,
                           color: Colors.blue,
                           subtitle: AppLocalizations.of(context)?.inProgress ?? "In progress",
@@ -114,7 +90,7 @@ class DashboardPage extends StatelessWidget {
                         _buildMetricTile(
                           context: context,
                           title: AppLocalizations.of(context)?.completedCollaborations ?? "Completed",
-                          value: completedCollaborations.toString(),
+                          value: viewModel.completedCollaborations.toString(),
                           icon: Icons.check_circle,
                           color: Colors.orange,
                           subtitle: AppLocalizations.of(context)?.finished ?? "Finished",
@@ -125,7 +101,7 @@ class DashboardPage extends StatelessWidget {
                     const SizedBox(height: 20),
 
                     // Highest paid collaboration tile
-                    if (highestPaidCollab != null) ...[
+                    if (viewModel.highestPaidCollaboration != null) ...[
                       Text(
                         AppLocalizations.of(context)?.highestPaidCollab ?? "Highest Paid Collaboration",
                         style: const TextStyle(
@@ -136,7 +112,7 @@ class DashboardPage extends StatelessWidget {
                       const SizedBox(height: 12),
                       _buildCollaborationTile(
                         context: context,
-                        collaboration: highestPaidCollab,
+                        collaboration: viewModel.highestPaidCollaboration!,
                       ),
                     ] else ...[
                       _buildEmptyState(context),
@@ -145,6 +121,141 @@ class DashboardPage extends StatelessWidget {
                 ),
               ),
             );
+            } else {
+              // Show dashboard with collaborations
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Welcome message
+                      Text(
+                        AppLocalizations.of(context)?.dashboardWelcome ?? "Welcome back! 👋",
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+
+                      // Time period selector
+                      Row(
+                        children: [
+                          
+                          SizedBox(
+                            width: 120,
+                            child: DropdownButtonFormField<TimePeriod>(
+                              value: viewModel.selectedTimePeriod,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                filled: true,
+                                fillColor: Theme.of(context).colorScheme.surface,
+                              ),
+                              items: TimePeriod.values.map((period) {
+                                String label;
+                                switch (period) {
+                                  case TimePeriod.week:
+                                    label = AppLocalizations.of(context)?.week ?? "Week";
+                                    break;
+                                  case TimePeriod.month:
+                                    label = AppLocalizations.of(context)?.month ?? "Month";
+                                    break;
+                                  case TimePeriod.year:
+                                    label = AppLocalizations.of(context)?.year ?? "Year";
+                                    break;
+                                  case TimePeriod.overall:
+                                    label = AppLocalizations.of(context)?.overall ?? "Overall";
+                                    break;
+                                }
+                                return DropdownMenuItem(
+                                  value: period,
+                                  child: Text(label),
+                                );
+                              }).toList(),
+                              onChanged: (TimePeriod? newValue) {
+                                if (newValue != null) {
+                                  viewModel.setTimePeriod(newValue);
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Metrics tiles
+                      GridView.count(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: 1.8,
+                        children: [
+                          _buildMetricTile(
+                            context: context,
+                            title: AppLocalizations.of(context)?.totalEarnings ?? "Total Earnings",
+                            value: NumberFormat.currency(
+                              locale: Localizations.localeOf(context).toString(),
+                              symbol: "€",
+                            ).format(viewModel.totalEarnings),
+                            icon: Icons.euro,
+                            color: Colors.green,
+                            subtitle: AppLocalizations.of(context)?.allTime ?? "All time",
+                          ),
+                          _buildMetricTile(
+                            context: context,
+                            title: AppLocalizations.of(context)?.totalCollaborations ?? "Total Collaborations",
+                            value: viewModel.totalCollaborations.toString(),
+                            icon: Icons.handshake,
+                            color: AppColors.primaryPink,
+                            subtitle: AppLocalizations.of(context)?.allTime ?? "All time",
+                          ),
+                          _buildMetricTile(
+                            context: context,
+                            title: AppLocalizations.of(context)?.activeCollaborations ?? "Active",
+                            value: viewModel.activeCollaborations.toString(),
+                            icon: Icons.trending_up,
+                            color: Colors.blue,
+                            subtitle: AppLocalizations.of(context)?.inProgress ?? "In progress",
+                          ),
+                          _buildMetricTile(
+                            context: context,
+                            title: AppLocalizations.of(context)?.completedCollaborations ?? "Completed",
+                            value: viewModel.completedCollaborations.toString(),
+                            icon: Icons.check_circle,
+                            color: Colors.orange,
+                            subtitle: AppLocalizations.of(context)?.finished ?? "Finished",
+                          ),
+                        ],
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Highest paid collaboration tile
+                      if (viewModel.highestPaidCollaboration != null) ...[
+                        Text(
+                          AppLocalizations.of(context)?.highestPaidCollab ?? "Highest Paid Collaboration",
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        _buildCollaborationTile(
+                          context: context,
+                          collaboration: viewModel.highestPaidCollaboration!,
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              );
+            }
           },
         ),
       ),
@@ -340,15 +451,7 @@ class DashboardPage extends StatelessWidget {
             color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
           ),
           const SizedBox(height: 16),
-          Text(
-            AppLocalizations.of(context)?.noCollaborationsYet ?? "No collaborations yet",
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
-            ),
-            textAlign: TextAlign.center,
-          ),
+          
           const SizedBox(height: 8),
           Text(
             AppLocalizations.of(context)?.createFirstCollab ?? "Create your first collaboration to see your dashboard",
@@ -368,15 +471,7 @@ class DashboardPage extends StatelessWidget {
                 ),
               );
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryPink,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              elevation: 4,
-            ),
+            style: AppColors.primaryButtonStyle,
             icon: const Icon(Icons.add, size: 20),
             label: Text(
               AppLocalizations.of(context)?.createCollaboration ?? "Create Collaboration",
@@ -389,5 +484,18 @@ class DashboardPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getTimePeriodSubtitle(BuildContext context, TimePeriod period) {
+    switch (period) {
+      case TimePeriod.week:
+        return AppLocalizations.of(context)?.week ?? "Week";
+      case TimePeriod.month:
+        return AppLocalizations.of(context)?.month ?? "Month";
+      case TimePeriod.year:
+        return AppLocalizations.of(context)?.year ?? "Year";
+      case TimePeriod.overall:
+        return AppLocalizations.of(context)?.dashboardSubtitle ?? "Here's your collaboration overview";
+    }
   }
 }

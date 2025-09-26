@@ -64,15 +64,10 @@ class NotificationPermissionScreen extends StatelessWidget {
               const SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () => _requestPermission(context),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryPink,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 40, vertical: 18),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                style: AppColors.primaryButtonStyle.copyWith(
+                  padding: MaterialStateProperty.all(
+                    const EdgeInsets.symmetric(horizontal: 40, vertical: 18),
                   ),
-                  elevation: 4,
                 ),
                 child: Text(
                   AppLocalizations.of(context)?.yesRemindMe ?? "Yes, remind me",

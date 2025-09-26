@@ -806,6 +806,12 @@ abstract class AppLocalizations {
   /// **'Here\'s your collaboration overview'**
   String get dashboardSubtitle;
 
+  /// No description provided for @welcomeBack.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome back'**
+  String get welcomeBack;
+
   /// No description provided for @totalEarnings.
   ///
   /// In en, this message translates to:
@@ -853,6 +859,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Create your first collaboration to see your dashboard'**
   String get createFirstCollab;
+
+  /// No description provided for @timePeriod.
+  ///
+  /// In en, this message translates to:
+  /// **'Time Period'**
+  String get timePeriod;
+
+  /// No description provided for @week.
+  ///
+  /// In en, this message translates to:
+  /// **'Week'**
+  String get week;
+
+  /// No description provided for @month.
+  ///
+  /// In en, this message translates to:
+  /// **'Month'**
+  String get month;
+
+  /// No description provided for @year.
+  ///
+  /// In en, this message translates to:
+  /// **'Year'**
+  String get year;
+
+  /// No description provided for @overall.
+  ///
+  /// In en, this message translates to:
+  /// **'Overall'**
+  String get overall;
 }
 
 class _AppLocalizationsDelegate

@@ -303,14 +303,10 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: _goNext,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primaryPink,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                    style: AppColors.primaryButtonStyle.copyWith(
+                      padding: MaterialStateProperty.all(
+                        const EdgeInsets.symmetric(vertical: 16),
                       ),
-                      elevation: 4,
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

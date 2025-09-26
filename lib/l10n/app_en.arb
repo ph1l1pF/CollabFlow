@@ -119,6 +119,7 @@
   "dashboard": "Dashboard",
   "dashboardWelcome": "Welcome back! 👋",
   "dashboardSubtitle": "Here's your collaboration overview",
+  "welcomeBack": "Welcome back",
   "totalEarnings": "Total Earnings",
   "totalCollaborations": "Total Collaborations",
   "activeCollaborations": "Active",
@@ -127,6 +128,11 @@
   "allTime": "All time",
   "inProgress": "In progress",
   "finished": "Finished",
-  "createFirstCollab": "Create your first collaboration to see your dashboard"
+  "createFirstCollab": "Create your first collaboration to see your dashboard",
+  "timePeriod": "Time Period",
+  "week": "Week",
+  "month": "Month",
+  "year": "Year",
+  "overall": "Overall"
 }
  
