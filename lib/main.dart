@@ -13,13 +13,14 @@ import 'package:ugcworks/views/earnings-overview/earnings-overview.dart';
 import 'package:ugcworks/views/dashboard/dashboard.dart';
 import 'package:ugcworks/views/about/settings.dart';
 import 'package:ugcworks/views/onboarding/onboarding.dart';
+import 'package:ugcworks/views/create-collaboration/create-collaboration.dart';
+import 'package:ugcworks/constants/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:ugcworks/l10n/app_localizations.dart';
-import 'package:ugcworks/constants/app_colors.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
 
 
@@ -244,34 +245,114 @@ class _MainAppContent extends StatelessWidget {
     required this.pages,
   });
 
+  Widget _buildNavItem(IconData icon, int index, bool isSelected, BuildContext context) {
+    return GestureDetector(
+      onTap: () => onIndexChanged(index),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        child: Icon(
+          icon,
+          size: 30,
+          color: isSelected 
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: pages[selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: selectedIndex,
-        onTap: onIndexChanged,
-        iconSize: 35,
-        elevation: 6,
-        items: [
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.analytics),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.list),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.euro),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(Icons.settings),
-            label: '',
-          ),
-        ],
+      bottomNavigationBar: Container(
+        height: 80,
+        decoration: BoxDecoration(
+          color: Theme.of(context).bottomNavigationBarTheme.backgroundColor ?? 
+                 Theme.of(context).colorScheme.surface,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 8,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            // Left group: Dashboard and Collaborations
+            Positioned(
+              left: 20,
+              top: 0,
+              bottom: 0,
+              child: Row(
+                children: [
+                  _buildNavItem(Icons.analytics, 0, selectedIndex == 0, context),
+                  const SizedBox(width: 20),
+                  _buildNavItem(Icons.list, 1, selectedIndex == 1, context),
+                ],
+              ),
+            ),
+            // Right group: Earnings and Settings
+            Positioned(
+              right: 20,
+              top: 0,
+              bottom: 0,
+              child: Row(
+                children: [
+                  _buildNavItem(Icons.euro, 2, selectedIndex == 2, context),
+                  const SizedBox(width: 20),
+                  _buildNavItem(Icons.settings, 3, selectedIndex == 3, context),
+                ],
+              ),
+            ),
+            // Plus button in the center between menu items
+            Positioned(
+              left: 0,
+              right: 0,
+              top: -19,
+              bottom: 8,
+              child: Center(
+                child: Container(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryPink,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(24),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CollaborationWizard(),
+                          ),
+                        );
+                      },
+                      child: const Center(
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 15,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
