@@ -27,6 +27,7 @@ class CollaborationsListViewModel extends ChangeNotifier {
           id: collab.id,
           stateIcon: CollaborationStateUtils.getStateIcon(collab.state),
           state: collab.state,
+          hasNotifications: collab.deadline.sendNotification,
         );
       }).toList());
 
@@ -44,6 +45,7 @@ class CollaborationSmallViewModel {
   final String id;
   final IconData stateIcon;
   final CollabState state;
+  final bool hasNotifications;
 
   CollaborationSmallViewModel({
     required this.title,
@@ -52,5 +54,6 @@ class CollaborationSmallViewModel {
     required this.id,
     required this.stateIcon,
     required this.state,
+    required this.hasNotifications,
   });
 }

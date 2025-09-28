@@ -221,15 +221,6 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
               );
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CollaborationWizard()),
-              );
-            },
-          ),
         ],
       ),
       body: Consumer<CollaborationsListViewModel>(
@@ -389,7 +380,36 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                               ),
                             ],
                           ),
-                          trailing: const Icon(Icons.chevron_right),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Notification bell icon
+                              Stack(
+                                children: [
+                                  Icon(
+                                    Icons.notifications,
+                                    color: collab.hasNotifications 
+                                        ? AppColors.primaryPink 
+                                        : Colors.grey,
+                                    size: 20,
+                                  ),
+                                  if (!collab.hasNotifications)
+                                    Positioned.fill(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          
+                                        ),
+                                        child: CustomPaint(
+                                          painter: StrikeThroughPainter(),
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                              const SizedBox(width: 8),
+                              const Icon(Icons.chevron_right),
+                            ],
+                          ),
                           onTap: () {
                             Navigator.push(
                               context,
@@ -416,4 +436,24 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
       ),
     );
   }
+}
+
+class StrikeThroughPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = Colors.grey.shade600
+      ..strokeWidth = 2.0
+      ..strokeCap = StrokeCap.round;
+
+    // Draw diagonal line from top-left to bottom-right
+    canvas.drawLine(
+      Offset(0, 0),
+      Offset(size.width, size.height),
+      paint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

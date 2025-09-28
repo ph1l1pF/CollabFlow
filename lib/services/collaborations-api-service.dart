@@ -78,14 +78,14 @@ class CollaborationsApiService {
         // Success - mark as clean
         collaboration.isDirty = false;
         _collaborationsRepository.updateCollaboration(collaboration, setIsDirty: false);
-        print("Successfully synced collaboration: ${collaboration.title}");
       } else if (response.statusCode == 401) {
-        // Unauthorized - try to refresh token
-        print("Token expired, attempting refresh...");
         final refreshSuccess = await _refreshToken();
         if (refreshSuccess) {
           // Retry the request with new token (only once to prevent infinite loops)
           await _syncSingleCollaboration(collaboration);
+        }
+        else {
+          await _secureStorageService.clearAuthData();
         }
       } else {
         print("Failed to sync collaboration ${collaboration.title}: ${response.statusCode} - ${response.body}");
@@ -257,8 +257,10 @@ class CollaborationsApiService {
           // Retry the request with new token
           await fetchAndSyncAllCollaborations();
         }
-      } else {
-      }
+        else {
+          await _secureStorageService.clearAuthData();
+        }
+      } 
     } on TimeoutException {
       print("Timeout fetching collaborations from server");
     } catch (e) {
@@ -270,8 +272,6 @@ class CollaborationsApiService {
     try {
       final localCollaborations = _collaborationsRepository.collaborations;
       final localIds = localCollaborations.map((c) => c.id).toSet();
-      
-      int addedCount = 0;
       
       for (final serverCollabData in serverCollaborations) {
         final serverId = serverCollabData['id'] as String;
@@ -285,8 +285,6 @@ class CollaborationsApiService {
             
             // Add to local repository
             _collaborationsRepository.addCollaborationFromServer(collaboration);
-            addedCount++;
-            
             print("Added collaboration from server: ${collaboration.title}");
           } catch (e) {
             print("Error parsing server collaboration $serverId: $e");
@@ -294,17 +292,9 @@ class CollaborationsApiService {
         }
       }
       
-      print("Sync completed: Added $addedCount new collaborations from server");
     } catch (e) {
       print("Error syncing server collaborations: $e");
     }
-  }
-
-  /// Get count of dirty collaborations
-  int _getDirtyCount() {
-    return _collaborationsRepository.collaborations
-        .where((collab) => collab.isDirty)
-        .length;
   }
 
   Future<void> deleteAll() async {
@@ -337,7 +327,7 @@ class CollaborationsApiService {
           // Retry the delete request with new token
           await deleteAll();
         } else {
-          throw Exception("Token refresh failed");
+           await _secureStorageService.clearAuthData();
         }
       } else {
         throw Exception("Failed to delete collaborations: ${response.statusCode}");

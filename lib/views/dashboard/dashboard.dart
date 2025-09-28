@@ -485,17 +485,4 @@ class DashboardPage extends StatelessWidget {
       ),
     );
   }
-
-  String _getTimePeriodSubtitle(BuildContext context, TimePeriod period) {
-    switch (period) {
-      case TimePeriod.week:
-        return AppLocalizations.of(context)?.week ?? "Week";
-      case TimePeriod.month:
-        return AppLocalizations.of(context)?.month ?? "Month";
-      case TimePeriod.year:
-        return AppLocalizations.of(context)?.year ?? "Year";
-      case TimePeriod.overall:
-        return AppLocalizations.of(context)?.dashboardSubtitle ?? "Here's your collaboration overview";
-    }
-  }
 }

@@ -56,7 +56,6 @@ class DashboardViewModel extends ChangeNotifier {
   // Total earnings calculation
   double get totalEarnings {
     return _filteredCollaborations
-        .where((collab) => collab.state == CollabState.Finished)
         .fold(0.0, (sum, collab) => sum + collab.fee.amount);
   }
 
@@ -79,13 +78,11 @@ class DashboardViewModel extends ChangeNotifier {
 
   // Highest paid collaboration
   Collaboration? get highestPaidCollaboration {
-    final finishedCollabs = _filteredCollaborations
-        .where((collab) => collab.state == CollabState.Finished)
-        .toList();
     
-    if (finishedCollabs.isEmpty) return null;
     
-    return finishedCollabs.fold<Collaboration?>(null, (highest, collab) {
+    if (_filteredCollaborations.isEmpty) return null;
+    
+    return _filteredCollaborations.fold<Collaboration?>(null, (highest, collab) {
       if (highest == null) return collab;
       return collab.fee.amount > highest.fee.amount ? collab : highest;
     });
