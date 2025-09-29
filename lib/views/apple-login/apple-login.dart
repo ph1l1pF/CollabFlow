@@ -1,3 +1,4 @@
+import 'package:ugcworks/repositories/shared-prefs-repository.dart';
 import 'package:ugcworks/services/auth-service.dart';
 import 'package:ugcworks/services/secure-storage-service.dart';
 import 'package:ugcworks/services/collaborations-api-service.dart';
@@ -32,7 +33,8 @@ class _AppleLoginButtonState extends State<AppleLoginButton> {
 
   Future<void> _checkAuthStatus() async {
     final secureStorageService = Provider.of<SecureStorageService>(context, listen: false);
-    final isAuthenticated = await secureStorageService.isAuthenticated();
+    final sharedPrefsRepository = Provider.of<SharedPrefsRepository>(context, listen: false);
+    final isAuthenticated = await secureStorageService.isAuthenticated() && !await sharedPrefsRepository.isRefreshTokenExpired();
     if (mounted) {
       setState(() {
         _isLoggedIn = isAuthenticated;
@@ -44,6 +46,7 @@ class _AppleLoginButtonState extends State<AppleLoginButton> {
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthService>(context, listen: false);
     final secureStorageService = Provider.of<SecureStorageService>(context, listen: false);
+    final sharedPrefsRepository = Provider.of<SharedPrefsRepository>(context, listen: false);
     final apiService = Provider.of<CollaborationsApiService>(context, listen: false);
 
     // If already logged in, show logged-in state
@@ -90,6 +93,7 @@ class _AppleLoginButtonState extends State<AppleLoginButton> {
           await secureStorageService.storeAccessToken(tokenResponse!.accessToken);
           await secureStorageService.storeRefreshToken(tokenResponse.refreshToken);
           await secureStorageService.storeUserId(tokenResponse.userId);
+          await sharedPrefsRepository.setRefreshTokenExpired(false);
           setState(() {
             _isLoggedIn = true;
           });
