@@ -58,15 +58,13 @@ class StrikeThroughPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = Colors.grey.shade600
-      ..strokeWidth = 2.0
+      ..strokeWidth = 1.5
       ..strokeCap = StrokeCap.round;
 
-    // Draw diagonal line from top-left to bottom-right
-    canvas.drawLine(
-      Offset(0, 0),
-      Offset(size.width, size.height),
-      paint,
-    );
+    final startOffset = Offset(size.width * 0.2, size.height * 0.2);
+    final endOffset = Offset(size.width * 0.8, size.height * 0.8);
+    
+    canvas.drawLine(startOffset, endOffset, paint);
   }
 
   @override

@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:ugcworks/l10n/app_localizations.dart';
 import 'package:ugcworks/constants/app_colors.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
+import 'package:ugcworks/widgets/notification_bell.dart';
 
 class CollaborationDetailsPage extends StatefulWidget {
   final CollaborationDetailsViewModel viewModel;
@@ -68,6 +69,11 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                                   const SizedBox(width: 6),
                                   Text(
                                     DateFormat.yMd(Localizations.localeOf(context).toString()).format(viewModel.collab.deadline.date),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  NotificationBell(
+                                    hasNotifications: viewModel.collab.deadline.sendNotification,
+                                    size: 18,
                                   ),
                                 ],
                               ),
