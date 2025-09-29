@@ -133,6 +133,10 @@
   "week": "Week",
   "month": "Month",
   "year": "Year",
-  "overall": "Overall"
+  "overall": "Overall",
+  "finish": "Finish",
+  "finishCollaboration": "Finish Collaboration",
+  "finishCollaborationConfirm": "Are you sure you want to mark this collaboration as finished?",
+  "collaborationFinished": "Collaboration marked as finished! ✅"
 }
  

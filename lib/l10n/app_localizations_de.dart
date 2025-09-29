@@ -417,4 +417,18 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get overall => 'Gesamt';
+
+  @override
+  String get finish => 'Abschließen';
+
+  @override
+  String get finishCollaboration => 'Collaboration abschließen';
+
+  @override
+  String get finishCollaborationConfirm =>
+      'Bist du sicher, dass du diese Collaboration als abgeschlossen markieren möchtest?';
+
+  @override
+  String get collaborationFinished =>
+      'Collaboration als abgeschlossen markiert! ✅';
 }

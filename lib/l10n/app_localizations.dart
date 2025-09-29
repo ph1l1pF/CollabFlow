@@ -889,6 +889,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Overall'**
   String get overall;
+
+  /// No description provided for @finish.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish'**
+  String get finish;
+
+  /// No description provided for @finishCollaboration.
+  ///
+  /// In en, this message translates to:
+  /// **'Finish Collaboration'**
+  String get finishCollaboration;
+
+  /// No description provided for @finishCollaborationConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to mark this collaboration as finished?'**
+  String get finishCollaborationConfirm;
+
+  /// No description provided for @collaborationFinished.
+  ///
+  /// In en, this message translates to:
+  /// **'Collaboration marked as finished! ✅'**
+  String get collaborationFinished;
 }
 
 class _AppLocalizationsDelegate

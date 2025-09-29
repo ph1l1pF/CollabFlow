@@ -417,4 +417,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get overall => 'Overall';
+
+  @override
+  String get finish => 'Finish';
+
+  @override
+  String get finishCollaboration => 'Finish Collaboration';
+
+  @override
+  String get finishCollaborationConfirm =>
+      'Are you sure you want to mark this collaboration as finished?';
+
+  @override
+  String get collaborationFinished => 'Collaboration marked as finished! ✅';
 }

@@ -301,6 +301,52 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
               ],
             ),
           ),
+          // Finish button (always show, but disabled if already finished)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            child: ElevatedButton.icon(
+              icon: const Icon(Icons.check_circle),
+              label: Text(AppLocalizations.of(context)?.finish ?? 'Finish'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: viewModel.collab.state == CollabState.Finished ? Colors.grey : Colors.green,
+                foregroundColor: Colors.white,
+                minimumSize: const Size.fromHeight(48),
+              ),
+              onPressed: viewModel.collab.state == CollabState.Finished ? null : () async {
+                final confirmed = await showDialog<bool>(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text(AppLocalizations.of(context)?.finishCollaboration ?? 'Finish Collaboration'),
+                    content: Text(AppLocalizations.of(context)?.finishCollaborationConfirm ?? 'Are you sure you want to mark this collaboration as finished?'),
+                    actions: [
+                      TextButton(
+                        child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
+                        onPressed: () => Navigator.of(ctx).pop(false),
+                      ),
+                      TextButton(
+                        child: Text(AppLocalizations.of(context)?.finish ?? 'Finish'),
+                        onPressed: () => Navigator.of(ctx).pop(true),
+                      ),
+                    ],
+                  ),
+                );
+                if (confirmed == true) {
+                  setState(() {
+                    viewModel.collab.state = CollabState.Finished;
+                    viewModel.updateCollaboration(viewModel.collab, context: context);
+                  });
+                  
+                  // Show success toast
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(AppLocalizations.of(context)?.collaborationFinished ?? "Collaboration marked as finished! ✅"),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: ElevatedButton.icon(
