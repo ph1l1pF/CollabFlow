@@ -1,16 +1,18 @@
-import 'package:ugcworks/repositories/collaborations-repository.dart';
-import 'package:ugcworks/views/collaboration-details/collaboration-details-view-model.dart';
-import 'package:ugcworks/views/collaboration-details/collboration-details.dart';
-import 'package:ugcworks/views/collaborations-list/collaboration-list-view-model.dart';
-import 'package:ugcworks/views/create-collaboration/create-collaboration.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:ugcworks/models/collaboration.dart';
-import 'package:ugcworks/utils/collaboration-state-utils.dart';
-import 'package:ugcworks/repositories/shared-prefs-repository.dart';
-import 'package:ugcworks/l10n/app_localizations.dart';
 import 'package:ugcworks/constants/app_colors.dart';
+import 'package:ugcworks/l10n/app_localizations.dart';
+import 'package:ugcworks/models/collaboration.dart';
+import 'package:ugcworks/repositories/collaborations-repository.dart';
+import 'package:ugcworks/repositories/shared-prefs-repository.dart';
+import 'package:ugcworks/utils/collaboration-state-utils.dart';
+import 'package:ugcworks/utils/theme_utils.dart';
+import 'package:ugcworks/views/collaboration-details/collboration-details.dart';
+import 'package:ugcworks/views/collaboration-details/collaboration-details-view-model.dart';
+import 'package:ugcworks/views/collaborations-list/collaboration-list-view-model.dart';
+import 'package:ugcworks/views/create-collaboration/create-collaboration.dart';
+import 'package:ugcworks/widgets/notification_bell.dart';
 
 class CollaborationListPage extends StatefulWidget {
   const CollaborationListPage({super.key});
@@ -20,10 +22,8 @@ class CollaborationListPage extends StatefulWidget {
 }
 
 class _CollaborationListPageState extends State<CollaborationListPage> {
-  String _searchText = "";
-  bool _showSearch = false;
-  Set<CollabState> _selectedStates = {};
-  bool _loadingPrefs = true;
+  String _searchText = '';
+  List<CollabState> _selectedStates = [];
 
   @override
   void initState() {
@@ -33,427 +33,303 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
 
   Future<void> _loadSelectedStates() async {
     final prefs = Provider.of<SharedPrefsRepository>(context, listen: false);
-    final stored = await prefs.loadSelectedStates();
-    final selected = stored
-        .map((s) => int.tryParse(s))
-        .whereType<int>()
-        .where((i) => i >= 0 && i < CollabState.values.length)
-        .map((i) => CollabState.values[i])
-        .toSet();
-    if (!mounted) return;
+    final savedStates = await prefs.loadSelectedStates();
     setState(() {
-      _selectedStates = selected;
-      _loadingPrefs = false;
+      _selectedStates = savedStates.map((s) => CollabState.values[int.parse(s)]).toList();
     });
   }
 
+  @override
   Widget build(BuildContext context) {
-    if (_loadingPrefs) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
-    return Scaffold(
-      appBar: AppBar(
-        title: _showSearch
-            ? TextField(
-                autofocus: true,
-                decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context)?.search ?? "Search...",
-                  border: InputBorder.none,
-                  prefixIcon: const Icon(Icons.search),
-                ),
-                onChanged: (val) {
-                  setState(() {
-                    _searchText = val;
-                  });
-                },
-              )
-            : Text(
-                AppLocalizations.of(context)?.myCollaborations ??
-                    "My Collaborations",
-              ),
-        actions: [
-          Consumer<CollaborationsListViewModel>(
-            builder: (context, viewModel, _) {
-              return !_showSearch
-                  ? IconButton(
-                      icon: const Icon(Icons.search),
-                      onPressed: () {
-                        setState(() {
-                          _showSearch = true;
-                        });
-                      },
-                    )
-                  : IconButton(
-                      icon: const Icon(Icons.close),
-                      onPressed: () {
-                        setState(() {
-                          _showSearch = false;
-                          _searchText = "";
-                        });
-                      },
-                    );
-            },
+    return Container(
+      decoration: ThemeUtils.getBackgroundDecoration(context),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: Text(
+            AppLocalizations.of(context)?.collaborations ?? "Collaborations",
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          Consumer<CollaborationsListViewModel>(
-            builder: (context, viewModel, _) {
-              return IconButton(
-                icon: Icon(
-                  _selectedStates.isEmpty
-                      ? Icons.filter_alt_outlined
-                      : Icons.filter_alt,
-                ),
-                tooltip:
-                    AppLocalizations.of(context)?.filterByStatus ??
-                    'Filter by status',
-                onPressed: () async {
-                  final states = CollabState.values;
-                  final tempSelected = Set<CollabState>.from(_selectedStates);
-                  final result = await showDialog<Set<CollabState>>(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text(
-                          AppLocalizations.of(context)?.filterByStatusTitle ??
-                              'Filter by status',
+          elevation: 0,
+          actions: [
+            // Search button
+            IconButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text(AppLocalizations.of(context)?.search ?? "Search"),
+                      content: TextField(
+                        onChanged: (value) {
+                          setState(() {
+                            _searchText = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Search collaborations...",
                         ),
-                        content: SingleChildScrollView(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const SizedBox(height: 8),
-                              for (final s in states)
-                                CheckboxListTile(
-                                  value: tempSelected.contains(s),
-                                  title: Text(
-                                    CollaborationStateUtils.getStateLabel(
-                                      s,
-                                      context,
-                                    ),
-                                  ),
-                                  secondary: Icon(
-                                    CollaborationStateUtils.getStateIcon(s),
-                                  ),
-                                  onChanged: (checked) {
-                                    if (checked == true) {
-                                      tempSelected.add(s);
-                                    } else {
-                                      tempSelected.remove(s);
-                                    }
-                                    (context as Element).markNeedsBuild();
-                                  },
-                                ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: TextButton.icon(
-                                      onPressed: () {
-                                        tempSelected.clear();
-                                        (context as Element).markNeedsBuild();
-                                      },
-                                      icon: const Icon(Icons.filter_alt_off),
-                                      label: Text(
-                                        AppLocalizations.of(
-                                              context,
-                                            )?.removeFilters ??
-                                            'Remove filters',
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: TextButton.icon(
-                                      onPressed: () {
-                                        tempSelected
-                                          ..clear()
-                                          ..addAll(states);
-                                        (context as Element).markNeedsBuild();
-                                      },
-                                      icon: const Icon(Icons.select_all),
-                                      label: Text(
-                                        AppLocalizations.of(
-                                              context,
-                                            )?.selectAll ??
-                                            'Select all',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                        actions: [
-                          TextButton.icon(
-                            onPressed: () =>
-                                Navigator.pop(context, tempSelected),
-                            icon: const Icon(Icons.check),
-                            label: Text(
-                              AppLocalizations.of(context)?.apply ?? 'Apply',
-                            ),
-                          ),
-                          TextButton.icon(
-                            onPressed: () =>
-                                Navigator.pop(context, _selectedStates),
-                            icon: const Icon(Icons.close),
-                            label: Text(
-                              AppLocalizations.of(context)?.cancel ?? 'Cancel',
-                            ),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                  if (!mounted) return;
-                  if (result != null) {
-                    setState(() {
-                      _selectedStates = result;
-                    });
-                    // persist
-                    final prefs = Provider.of<SharedPrefsRepository>(
-                      context,
-                      listen: false,
-                    );
-                    await prefs.saveSelectedStates(
-                      _selectedStates.map((e) => e.index.toString()).toList(),
-                    );
-                  }
-                },
-              );
-            },
-          ),
-        ],
-      ),
-      body: Consumer<CollaborationsListViewModel>(
-        builder: (context, viewModel, _) {
-          final matchesSearch = viewModel.collaborations
-              .where(
-                (c) => c.title.toLowerCase().trim().contains(
-                  _searchText.toLowerCase().trim(),
-                ),
-              )
-              .toList();
-          final filtered =
-              (_selectedStates.isEmpty
-                    ? matchesSearch
-                    : matchesSearch
-                          .where((c) => _selectedStates.contains(c.state))
-                          .toList())
-                ..sort((a, b) => a.deadline.compareTo(b.deadline));
-
-          return filtered.isEmpty
-              ? viewModel.collaborations.isEmpty
-                    ? Center(
-                        child: ElevatedButton.icon(
+                      ),
+                      actions: [
+                        TextButton(
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CollaborationWizard(),
-                              ),
-                            );
+                            Navigator.of(context).pop();
                           },
-                          icon: const Icon(Icons.add),
-                          label: Text(
-                            AppLocalizations.of(context)?.createCollaboration ??
-                                "Create Collaboration",
-                          ),
-                          style: AppColors.primaryButtonStyle,
+                          child: Text("Close"),
                         ),
-                      )
-                    : Center(
-                        child: Text(
-                          AppLocalizations.of(context)?.noCollaborationsFound ??
-                              "No collaborations found",
-                        ),
-                      )
-              : ListView.builder(
-                  itemCount: filtered.length,
-                  itemBuilder: (context, index) {
-                    final collab = filtered[index];
-                    return Dismissible(
-                      key: Key(collab.id),
-                      direction: DismissDirection.endToStart,
-                      background: Container(
-                        alignment: Alignment.centerRight,
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        color: Colors.red,
-                        child: const Icon(Icons.delete, color: Colors.white),
-                      ),
-                      confirmDismiss: (direction) async {
-                        return await showDialog<bool>(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                            title: Text(
-                              AppLocalizations.of(
-                                    context,
-                                  )?.deleteCollaboration ??
-                                  'Delete Collaboration',
-                            ),
-                            content: Text(
-                              AppLocalizations.of(
-                                    context,
-                                  )?.deleteCollaborationConfirm ??
-                                  'Do you really want to delete this collaboration?',
-                            ),
-                            actions: [
-                              TextButton(
-                                child: Text(
-                                  AppLocalizations.of(context)?.cancel ??
-                                      'Cancel',
-                                ),
-                                onPressed: () => Navigator.of(ctx).pop(false),
-                              ),
-                              TextButton(
-                                child: Text(
-                                  AppLocalizations.of(context)?.delete ??
-                                      'Delete',
-                                ),
-                                onPressed: () => Navigator.of(ctx).pop(true),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      onDismissed: (direction) {
-                        Provider.of<CollaborationsRepository>(
-                          context,
-                          listen: false,
-                        ).deleteById(collab.id);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              AppLocalizations.of(
-                                    context,
-                                  )?.collaborationDeleted ??
-                                  'Collaboration deleted',
-                            ),
-                          ),
-                        );
-                      },
-                      child: Card(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 2,
-                        child: ListTile(
-                          title: Text(
-                            collab.title,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 4),
-                              Text(
-                                "${AppLocalizations.of(context)?.deadline ?? "Deadline"}: ${DateFormat.yMd(Localizations.localeOf(context).toString()).format(collab.deadline)}",
-                              ),
-                              if (collab.partner != "")
-                                Text(
-                                  "${AppLocalizations.of(context)?.brand ?? "Brand"}: ${collab.partner}",
-                                ),
-                              const SizedBox(height: 4),
-                              Row(
-                                children: [
-                                  Text(
-                                    "${AppLocalizations.of(context)?.status ?? "Status"}: ",
-                                  ),
-                                  Icon(
-                                    collab.stateIcon,
-                                    color: AppColors.primaryPink,
-                                    size: 16,
-                                  ),
-                                  const SizedBox(width: 6),
-                                  Text(
-                                    CollaborationStateUtils.getStateLabel(
-                                      collab.state,
-                                      context,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // Notification bell icon
-                              Stack(
-                                children: [
-                                  Icon(
-                                    Icons.notifications,
-                                    color: collab.hasNotifications 
-                                        ? AppColors.primaryPink 
-                                        : Colors.grey,
-                                    size: 20,
-                                  ),
-                                  if (!collab.hasNotifications)
-                                    Positioned.fill(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          
-                                        ),
-                                        child: CustomPaint(
-                                          painter: StrikeThroughPainter(),
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                              const SizedBox(width: 8),
-                              const Icon(Icons.chevron_right),
-                            ],
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CollaborationDetailsPage(
-                                  viewModel: CollaborationDetailsViewModel(
-                                    collaborationsRepository:
-                                        Provider.of<CollaborationsRepository>(
-                                          context,
-                                          listen: false,
-                                        ),
-                                    collabId: collab.id,
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
+                      ],
                     );
                   },
                 );
-        },
+              },
+              icon: const Icon(Icons.search),
+            ),
+            // Filter button
+            IconButton(
+              onPressed: () async {
+                final result = await showDialog<List<CollabState>>(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return StatefulBuilder(
+                      builder: (context, setState) {
+                        return AlertDialog(
+                          title: Text(AppLocalizations.of(context)?.filterByStatus ?? "Filter by Status"),
+                          content: SingleChildScrollView(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: CollabState.values.map((state) {
+                                final isSelected = _selectedStates.contains(state);
+                                return CheckboxListTile(
+                                  title: Text(
+                                    CollaborationStateUtils.getStateLabel(state, context),
+                                  ),
+                                  value: isSelected,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      if (value == true) {
+                                        _selectedStates.add(state);
+                                      } else {
+                                        _selectedStates.remove(state);
+                                      }
+                                    });
+                                  },
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text(AppLocalizations.of(context)?.cancel ?? "Cancel"),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(_selectedStates);
+                              },
+                              child: Text(AppLocalizations.of(context)?.apply ?? "Apply"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                );
+                if (!mounted) return;
+                if (result != null) {
+                  setState(() {
+                    _selectedStates = result;
+                  });
+                  // persist
+                  final prefs = Provider.of<SharedPrefsRepository>(
+                    context,
+                    listen: false,
+                  );
+                  await prefs.saveSelectedStates(
+                    _selectedStates.map((e) => e.index.toString()).toList(),
+                  );
+                }
+              },
+              icon: const Icon(Icons.filter_list),
+            ),
+          ],
+        ),
+        body: Consumer<CollaborationsListViewModel>(
+          builder: (context, viewModel, _) {
+            final matchesSearch = viewModel.collaborations
+                .where(
+                  (c) => c.title.toLowerCase().trim().contains(
+                    _searchText.toLowerCase().trim(),
+                  ),
+                )
+                .toList();
+            final filtered =
+                (_selectedStates.isEmpty
+                      ? matchesSearch
+                      : matchesSearch
+                            .where((c) => _selectedStates.contains(c.state))
+                            .toList())
+                  ..sort((a, b) => a.deadline.compareTo(b.deadline));
+
+            return filtered.isEmpty
+                ? viewModel.collaborations.isEmpty
+                      ? Center(
+                          child: ElevatedButton.icon(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const CollaborationWizard(),
+                                ),
+                              );
+                            },
+                            icon: const Icon(Icons.add),
+                            label: Text(
+                              AppLocalizations.of(context)?.createCollaboration ??
+                                  "Create Collaboration",
+                            ),
+                            style: AppColors.primaryButtonStyle,
+                          ),
+                        )
+                      : Center(
+                          child: Text(
+                            AppLocalizations.of(context)?.noCollaborationsFound ??
+                                "No collaborations found",
+                          ),
+                        )
+                : ListView.builder(
+                    itemCount: filtered.length,
+                    itemBuilder: (context, index) {
+                      final collab = filtered[index];
+                      return Dismissible(
+                        key: Key(collab.id),
+                        direction: DismissDirection.endToStart,
+                        background: Container(
+                          alignment: Alignment.centerRight,
+                          padding: const EdgeInsets.only(right: 20),
+                          color: Colors.red,
+                          child: const Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ),
+                        confirmDismiss: (direction) async {
+                          return await showDialog<bool>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(AppLocalizations.of(context)?.deleteCollaboration ?? "Delete Collaboration"),
+                                content: Text("Are you sure you want to delete this collaboration?"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.of(context).pop(false),
+                                    child: Text(AppLocalizations.of(context)?.cancel ?? "Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () => Navigator.of(context).pop(true),
+                                    child: Text(AppLocalizations.of(context)?.delete ?? "Delete"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        onDismissed: (direction) {
+                          final repository = Provider.of<CollaborationsRepository>(
+                            context,
+                            listen: false,
+                          );
+                          repository.deleteById(collab.id);
+                        },
+                        child: Card(
+                          margin: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 2,
+                          child: ListTile(
+                            title: Text(
+                              collab.title,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 4),
+                                // Deadline with notification bell
+                                Row(
+                                  children: [
+                                    Text(
+                                      "${AppLocalizations.of(context)?.deadline ?? "Deadline"}: ${DateFormat.yMd(Localizations.localeOf(context).toString()).format(collab.deadline)}",
+                                    ),
+                                    const SizedBox(width: 8),
+                                    NotificationBell(
+                                      hasNotifications: collab.hasNotifications,
+                                      size: 16,
+                                    ),
+                                  ],
+                                ),
+                                if (collab.partner != "")
+                                  Text(
+                                    "${AppLocalizations.of(context)?.brand ?? "Brand"}: ${collab.partner}",
+                                  ),
+                                const SizedBox(height: 4),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "${AppLocalizations.of(context)?.status ?? "Status"}: ",
+                                    ),
+                                    Icon(
+                                      collab.stateIcon,
+                                      color: AppColors.primaryPink,
+                                      size: 16,
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      CollaborationStateUtils.getStateLabel(
+                                        collab.state,
+                                        context,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            trailing: const Icon(Icons.chevron_right),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CollaborationDetailsPage(
+                                    viewModel: CollaborationDetailsViewModel(
+                                      collaborationsRepository:
+                                          Provider.of<CollaborationsRepository>(
+                                        context,
+                                        listen: false,
+                                      ),
+                                      collabId: collab.id,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                  );
+          },
+        ),
       ),
     );
   }
-}
-
-class StrikeThroughPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.grey.shade600
-      ..strokeWidth = 2.0
-      ..strokeCap = StrokeCap.round;
-
-    // Draw diagonal line from top-left to bottom-right
-    canvas.drawLine(
-      Offset(0, 0),
-      Offset(size.width, size.height),
-      paint,
-    );
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
