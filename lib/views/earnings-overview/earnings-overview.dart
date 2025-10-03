@@ -110,7 +110,7 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                       shareText: l10n?.earningsAsCsv ?? 'Earnings as CSV',
                       context: context,
                     );
-                  } else if (choice == 'pdf') {
+                  } else if (choice == 'pdf' && mounted) {
                     await csvService.exportEarningsEntriesPdf(
                       filtered,
                       locale: locale,

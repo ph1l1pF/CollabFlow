@@ -22,10 +22,7 @@ class CollaborationExportService {
     buffer.writeln('$dateHeader,$titleHeader,$amountHeader');
     double total = 0;
     for (final e in entries) {
-      final dateStr = dateFormatter.format(e.date);
-      final title = e.title.replaceAll('"', '""');
-      final amountStr = e.amount.toStringAsFixed(2);
-      buffer.writeln('"$dateStr","$title",$amountStr');
+      buffer.writeln('${dateFormatter.format(e.date)},${e.title.replaceAll(',', ';')},${e.amount.toStringAsFixed(2)}');
       total += e.amount;
     }
 
@@ -37,10 +34,19 @@ class CollaborationExportService {
     final file = File('${tempDir.path}/$fileName');
     await file.writeAsString(buffer.toString(), flush: true);
 
+    // Get the screen size for better positioning
+    final mediaQuery = MediaQuery.of(context);
+    final screenSize = mediaQuery.size;
+    
     await Share.shareXFiles(
       [XFile(file.path)], 
       text: shareText,
-      sharePositionOrigin: Rect.fromLTWH(0, 0, 100, 100), // Default position for iPad compatibility
+      sharePositionOrigin: Rect.fromLTWH(
+        screenSize.width / 2 - 50, 
+        screenSize.height / 2 - 50, 
+        100, 
+        100
+      ),
     );
   }
 
@@ -59,44 +65,95 @@ class CollaborationExportService {
 
     final pdf = pw.Document();
     final tableHeaders = [dateHeader, titleHeader, amountHeader];
-    final dataRows = <List<String>>[];
-    for (final e in entries) {
-      total += e.amount;
-      dataRows.add([
-        dateFormatter.format(e.date),
-        e.title,
-        e.amount.toStringAsFixed(2),
-      ]);
-    }
-
+    
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
-        build: (context) {
-          return pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.stretch,
-            children: [
-              pw.Text(earningsTitle, style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold)),
-              pw.SizedBox(height: 12),
-              pw.TableHelper.fromTextArray(
-                headers: tableHeaders,
-                data: dataRows,
-                headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-                headerDecoration: const pw.BoxDecoration(color: PdfColors.grey300),
-                cellAlignment: pw.Alignment.centerLeft,
-                columnWidths: {
-                  0: const pw.FlexColumnWidth(2),
-                  1: const pw.FlexColumnWidth(5),
-                  2: const pw.FlexColumnWidth(2),
-                },
-              ),
-              pw.SizedBox(height: 12),
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.end,
+        build: (pw.Context context) {
+          final tableRows = <pw.TableRow>[];
+          
+          // Header row
+          tableRows.add(
+            pw.TableRow(
+              decoration: pw.BoxDecoration(color: PdfColors.grey300),
+              children: tableHeaders.map(
+                (header) => pw.Padding(
+                  padding: pw.EdgeInsets.all(5),
+                  child: pw.Text(
+                    header,
+                    style: pw.TextStyle(
+                      fontSize: 12,
+                      fontWeight: pw.FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ).toList(),
+            ),
+          );
+          
+          // Data rows
+          for (final e in entries) {
+            total += e.amount;
+            tableRows.add(
+              pw.TableRow(
                 children: [
-                  pw.Text('$sumLabel: ${total.toStringAsFixed(2)}', style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold)),
+                  pw.Padding(
+                    padding: pw.EdgeInsets.all(5),
+                    child: pw.Text(dateFormatter.format(e.date)),
+                  ),
+                  pw.Padding(
+                    padding: pw.EdgeInsets.all(5),
+                    child: pw.Text(e.title),
+                  ),
+                  pw.Padding(
+                    padding: pw.EdgeInsets.all(5),
+                    child: pw.Text(e.amount.toStringAsFixed(2)),
+                  ),
                 ],
-              )
+              ),
+            );
+          }
+          
+          // Sum row
+          tableRows.add(
+            pw.TableRow(
+              children: [
+                pw.Padding(
+                  padding: pw.EdgeInsets.all(5),
+                  child: pw.Text(''),
+                ),
+                pw.Padding(
+                  padding: pw.EdgeInsets.all(5),
+                  child: pw.Text(''),
+                ),
+                pw.Padding(
+                  padding: pw.EdgeInsets.all(5),
+                  child: pw.Text(
+                    '$sumLabel: ${total.toStringAsFixed(2)}', 
+                    style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold)
+                  ),
+                ),
+              ],
+            ),
+          );
+          
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Text(
+                earningsTitle,
+                style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold),
+              ),
+              pw.SizedBox(height: 20),
+              pw.Table(
+                border: pw.TableBorder.all(),
+                columnWidths: {
+                  0: pw.FlexColumnWidth(2),
+                  1: pw.FlexColumnWidth(3),
+                  2: pw.FlexColumnWidth(2),
+                },
+                children: tableRows,
+              ),
             ],
           );
         },
@@ -109,12 +166,19 @@ class CollaborationExportService {
     final file = File('${tempDir.path}/$fileName');
     await file.writeAsBytes(await pdf.save(), flush: true);
 
+    // Get the screen size for better positioning
+    final mediaQuery = MediaQuery.of(context);
+    final screenSize = mediaQuery.size;
+    
     await Share.shareXFiles(
       [XFile(file.path)], 
       text: shareText,
-      sharePositionOrigin: Rect.fromLTWH(0, 0, 100, 100), // Default position for iPad compatibility
+      sharePositionOrigin: Rect.fromLTWH(
+        screenSize.width / 2 - 50, 
+        screenSize.height / 2 - 50, 
+        100, 
+        100
+      ),
     );
   }
 }
-
-
