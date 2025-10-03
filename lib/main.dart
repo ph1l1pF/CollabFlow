@@ -287,7 +287,7 @@ class _MainAppContent extends StatelessWidget {
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add),
+            icon: Icon(Icons.add, size: 40, weight: 700, color: AppColors.primaryPink),
             label: '',
           ),
           BottomNavigationBarItem(
