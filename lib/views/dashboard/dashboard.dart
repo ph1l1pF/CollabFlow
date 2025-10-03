@@ -386,7 +386,7 @@ class DashboardPage extends StatelessWidget {
               Text(
                 NumberFormat.currency(
                   locale: Localizations.localeOf(context).toString(),
-                  symbol: "€",
+                  symbol: CurrencyUtils.getCurrencySymbol(),
                 ).format(collaboration.fee.amount),
                 style: const TextStyle(
                   fontSize: 20,
