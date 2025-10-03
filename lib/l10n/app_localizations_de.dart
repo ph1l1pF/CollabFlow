@@ -438,4 +438,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get searchCollaborationsHint => 'Collaborations durchsuchen...';
+
+  @override
+  String get deselectAll => 'Alle abwählen';
 }

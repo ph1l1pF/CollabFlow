@@ -139,5 +139,7 @@
   "finishCollaborationConfirm": "Bist du sicher, dass du diese Collaboration als abgeschlossen markieren möchtest?",
   "collaborationFinished": "Collaboration als abgeschlossen markiert! ✅",
   "collaborationAlreadyFinished": "Collaboration ist bereits abgeschlossen!",
-  "searchCollaborationsHint": "Collaborations durchsuchen..."
+  "searchCollaborationsHint": "Collaborations durchsuchen...",
+  "selectAll": "Alle auswählen",
+  "deselectAll": "Alle abwählen"
 }

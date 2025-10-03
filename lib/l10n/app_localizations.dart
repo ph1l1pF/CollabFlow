@@ -371,7 +371,7 @@ abstract class AppLocalizations {
   /// No description provided for @selectAll.
   ///
   /// In en, this message translates to:
-  /// **'Select all'**
+  /// **'Select All'**
   String get selectAll;
 
   /// No description provided for @apply.
@@ -925,6 +925,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search collaborations...'**
   String get searchCollaborationsHint;
+
+  /// No description provided for @deselectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Deselect All'**
+  String get deselectAll;
 }
 
 class _AppLocalizationsDelegate

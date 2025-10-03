@@ -139,6 +139,8 @@
   "finishCollaborationConfirm": "Are you sure you want to mark this collaboration as finished?",
   "collaborationFinished": "Collaboration marked as finished! ✅",
   "collaborationAlreadyFinished": "Collaboration is already finished!",
-  "searchCollaborationsHint": "Search collaborations..."
+  "searchCollaborationsHint": "Search collaborations...",
+  "selectAll": "Select All",
+  "deselectAll": "Deselect All"
 }
  

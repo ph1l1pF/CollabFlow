@@ -146,7 +146,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get removeFilters => 'Remove filters';
 
   @override
-  String get selectAll => 'Select all';
+  String get selectAll => 'Select All';
 
   @override
   String get apply => 'Apply';
@@ -437,4 +437,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchCollaborationsHint => 'Search collaborations...';
+
+  @override
+  String get deselectAll => 'Deselect All';
 }

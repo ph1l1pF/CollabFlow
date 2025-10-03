@@ -57,6 +57,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                     });
                   },
                   decoration: InputDecoration(
+
                     hintText: AppLocalizations.of(context)?.searchCollaborationsHint ?? "Search collaborations...",
                     border: InputBorder.none,
                     hintStyle: TextStyle(
@@ -98,24 +99,50 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                           content: SingleChildScrollView(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
-                              children: CollabState.values.map((state) {
-                                final isSelected = _selectedStates.contains(state);
-                                return CheckboxListTile(
-                                  title: Text(
-                                    CollaborationStateUtils.getStateLabel(state, context),
-                                  ),
-                                  value: isSelected,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      if (value == true) {
-                                        _selectedStates.add(state);
-                                      } else {
-                                        _selectedStates.remove(state);
-                                      }
-                                    });
-                                  },
-                                );
-                              }).toList(),
+                              children: [
+                                // Select All / Deselect All buttons
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _selectedStates = List.from(CollabState.values);
+                                        });
+                                      },
+                                      child: Text(AppLocalizations.of(context)?.selectAll ?? "Select All"),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _selectedStates.clear();
+                                        });
+                                      },
+                                      child: Text(AppLocalizations.of(context)?.deselectAll ?? "Deselect All"),
+                                    ),
+                                  ],
+                                ),
+                                const Divider(),
+                                // Status checkboxes
+                                ...CollabState.values.map((state) {
+                                  final isSelected = _selectedStates.contains(state);
+                                  return CheckboxListTile(
+                                    title: Text(
+                                      CollaborationStateUtils.getStateLabel(state, context),
+                                    ),
+                                    value: isSelected,
+                                    onChanged: (bool? value) {
+                                      setState(() {
+                                        if (value == true) {
+                                          _selectedStates.add(state);
+                                        } else {
+                                          _selectedStates.remove(state);
+                                        }
+                                      });
+                                    },
+                                  );
+                                }),
+                              ],
                             ),
                           ),
                           actions: [
