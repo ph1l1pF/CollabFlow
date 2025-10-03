@@ -24,6 +24,7 @@ class CollaborationListPage extends StatefulWidget {
 class _CollaborationListPageState extends State<CollaborationListPage> {
   String _searchText = '';
   List<CollabState> _selectedStates = [];
+  bool _isSearchVisible = false;
 
   @override
   void initState() {
@@ -47,43 +48,42 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: Text(
-            AppLocalizations.of(context)?.collaborations ?? "Collaborations",
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
+          title: _isSearchVisible
+              ? TextField(
+                  autofocus: true,
+                  onChanged: (value) {
+                    setState(() {
+                      _searchText = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Search collaborations...",
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                    ),
+                  ),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                )
+              : Text(
+                  AppLocalizations.of(context)?.collaborations ?? "Collaborations",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
           elevation: 0,
           actions: [
             // Search button
             IconButton(
               onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: Text(AppLocalizations.of(context)?.search ?? "Search"),
-                      content: TextField(
-                        onChanged: (value) {
-                          setState(() {
-                            _searchText = value;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          hintText: "Search collaborations...",
-                        ),
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text("Close"),
-                        ),
-                      ],
-                    );
-                  },
-                );
+                setState(() {
+                  _isSearchVisible = !_isSearchVisible;
+                  if (!_isSearchVisible) {
+                    _searchText = '';
+                  }
+                });
               },
-              icon: const Icon(Icons.search),
+              icon: Icon(_isSearchVisible ? Icons.close : Icons.search),
             ),
             // Filter button
             IconButton(
@@ -244,16 +244,18 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                           );
                           repository.deleteById(collab.id);
                         },
-                        child: Card(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 8,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 2,
-                          child: ListTile(
+                        child: GestureDetector(
+                         
+                          child: Card(
+                            margin: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 8,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            elevation: 2,
+                            child: ListTile(
                             title: Text(
                               collab.title,
                               style: const TextStyle(
@@ -324,12 +326,15 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                             },
                           ),
                         ),
-                      );
-                    },
-                  );
+                      ),
+                    );
+                  },
+                );
           },
         ),
       ),
     );
   }
+
+
 }
