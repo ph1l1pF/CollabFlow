@@ -250,7 +250,7 @@ class CollaborationsApiService {
       if (response.statusCode == 200) {
         final List<dynamic> serverCollaborations = jsonDecode(response.body);
         
-        await _syncServerCollaborations(serverCollaborations);
+        await _addServerCollabstoLocalRepo(serverCollaborations);
       } else if (response.statusCode == 401) {
         final refreshSuccess = await _refreshToken();
         if (refreshSuccess) {
@@ -268,7 +268,7 @@ class CollaborationsApiService {
     }
   }
 
-  Future<void> _syncServerCollaborations(List<dynamic> serverCollaborations) async {
+  Future<void> _addServerCollabstoLocalRepo(List<dynamic> serverCollaborations) async {
     try {
       final localCollaborations = _collaborationsRepository.collaborations;
       final localIds = localCollaborations.map((c) => c.id).toSet();
