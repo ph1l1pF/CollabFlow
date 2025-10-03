@@ -100,7 +100,7 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                       );
                     },
                   );
-                  if (choice == 'csv') {
+                  if (choice == 'csv' && mounted) {
                     await csvService.exportEarningsEntries(
                       entries,
                       locale: locale,
@@ -108,6 +108,7 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                       titleHeader: l10n?.titleForTable ?? 'Title',
                       amountHeader: l10n?.amount ?? 'Amount',
                       shareText: l10n?.earningsAsCsv ?? 'Earnings as CSV',
+                      context: context,
                     );
                   } else if (choice == 'pdf') {
                     await csvService.exportEarningsEntriesPdf(
@@ -120,6 +121,7 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                           l10n?.earningsOverview ?? 'Earnings Overview',
                       sumLabel: l10n?.sum ?? 'Sum',
                       shareText: l10n?.earningsAsPdf ?? 'Earnings as PDF',
+                      context: context,
                     );
                   }
                 },

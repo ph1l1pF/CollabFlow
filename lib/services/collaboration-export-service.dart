@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -11,9 +12,10 @@ class CollaborationExportService {
   Future<void> exportEarningsEntries(List<EarningsEntryViewModelFields> entries, {
     String locale = 'en',
     String dateHeader = 'Date',
-    String titleHeader = 'Title', 
+    String titleHeader = 'Title',
     String amountHeader = 'Amount',
-    String shareText = 'Earnings as CSV'
+    String shareText = 'Earnings as CSV',
+    required BuildContext context,
   }) async {
     final dateFormatter = DateFormat.yMd(locale);
     final buffer = StringBuffer();
@@ -35,7 +37,11 @@ class CollaborationExportService {
     final file = File('${tempDir.path}/$fileName');
     await file.writeAsString(buffer.toString(), flush: true);
 
-    await Share.shareXFiles([XFile(file.path)], text: shareText);
+    await Share.shareXFiles(
+      [XFile(file.path)], 
+      text: shareText,
+      sharePositionOrigin: Rect.fromLTWH(0, 0, 100, 100), // Default position for iPad compatibility
+    );
   }
 
   Future<void> exportEarningsEntriesPdf(List<EarningsEntryViewModelFields> entries, {
@@ -45,7 +51,8 @@ class CollaborationExportService {
     String amountHeader = 'Amount',
     String earningsTitle = 'Earnings',
     String sumLabel = 'Sum',
-    String shareText = 'Earnings as PDF'
+    String shareText = 'Earnings as PDF',
+    required BuildContext context,
   }) async {
     final dateFormatter = DateFormat.yMd(locale);
     double total = 0;
@@ -102,7 +109,11 @@ class CollaborationExportService {
     final file = File('${tempDir.path}/$fileName');
     await file.writeAsBytes(await pdf.save(), flush: true);
 
-    await Share.shareXFiles([XFile(file.path)], text: shareText);
+    await Share.shareXFiles(
+      [XFile(file.path)], 
+      text: shareText,
+      sharePositionOrigin: Rect.fromLTWH(0, 0, 100, 100), // Default position for iPad compatibility
+    );
   }
 }
 
