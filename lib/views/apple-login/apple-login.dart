@@ -11,11 +11,13 @@ import 'package:ugcworks/l10n/app_localizations.dart';
 class AppleLoginButton extends StatefulWidget {
   final VoidCallback? onSuccess;
   final VoidCallback? onSkip;
+  final bool forceLoginState; // New parameter to force login state
 
   const AppleLoginButton({
     super.key,
     this.onSuccess,
     this.onSkip,
+    this.forceLoginState = false, // Default to false for backward compatibility
   });
 
   @override
@@ -32,6 +34,17 @@ class _AppleLoginButtonState extends State<AppleLoginButton> {
   }
 
   Future<void> _checkAuthStatus() async {
+    // If forceLoginState is true, always show login state (not logged in)
+    if (widget.forceLoginState) {
+      if (mounted) {
+        setState(() {
+          _isLoggedIn = false;
+        });
+      }
+      return;
+    }
+
+    // Otherwise, check authentication status normally
     final secureStorageService = Provider.of<SecureStorageService>(context, listen: false);
     final sharedPrefsRepository = Provider.of<SharedPrefsRepository>(context, listen: false);
     final isAuthenticated = await secureStorageService.isAuthenticated() && !await sharedPrefsRepository.isRefreshTokenExpired();

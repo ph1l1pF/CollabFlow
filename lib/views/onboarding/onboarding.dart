@@ -194,6 +194,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     // Apple Sign-In Button
                     AppleLoginButton(
                       onSuccess: _nextPage,
+                      forceLoginState: true, // Force login state in onboarding
                     ),
                     const SizedBox(height: 16),
                     // Skip option
