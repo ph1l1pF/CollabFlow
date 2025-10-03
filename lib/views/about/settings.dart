@@ -60,7 +60,21 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _shareApp() async {
-    await Share.share(appStoreLink);
+    if (!mounted) return;
+    
+    // Get the screen size for share position
+    final mediaQuery = MediaQuery.of(context);
+    final screenSize = mediaQuery.size;
+    
+    await Share.share(
+      appStoreLink,
+      sharePositionOrigin: Rect.fromLTWH(
+        screenSize.width / 2 - 50, 
+        screenSize.height / 2 - 50, 
+        100, 
+        100
+      ),
+    );
   }
 
   @override
