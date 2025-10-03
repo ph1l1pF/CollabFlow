@@ -6,6 +6,7 @@ import 'package:ugcworks/views/create-collaboration/create-collaboration.dart';
 import 'package:ugcworks/l10n/app_localizations.dart';
 import 'package:ugcworks/constants/app_colors.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
+import 'package:ugcworks/utils/currency_utils.dart';
 
 class DashboardPage extends StatelessWidget {
   const DashboardPage({super.key});
@@ -65,9 +66,9 @@ class DashboardPage extends StatelessWidget {
                           title: AppLocalizations.of(context)?.totalEarnings ?? "Total Earnings",
                           value: NumberFormat.currency(
                             locale: Localizations.localeOf(context).toString(),
-                            symbol: "€",
+                            symbol: CurrencyUtils.getCurrencySymbol(),
                           ).format(viewModel.totalEarnings),
-                          icon: Icons.euro,
+                          icon: CurrencyUtils.getCurrencyIcon(),
                           color: Colors.green,
                           subtitle: AppLocalizations.of(context)?.allTime ?? "All time",
                         ),
@@ -201,9 +202,9 @@ class DashboardPage extends StatelessWidget {
                             title: AppLocalizations.of(context)?.totalEarnings ?? "Total Earnings",
                             value: NumberFormat.currency(
                               locale: Localizations.localeOf(context).toString(),
-                              symbol: "€",
+                              symbol: CurrencyUtils.getCurrencySymbol(),
                             ).format(viewModel.totalEarnings),
-                            icon: Icons.euro,
+                            icon: CurrencyUtils.getCurrencyIcon(),
                             color: Colors.green,
                             subtitle: AppLocalizations.of(context)?.allTime ?? "All time",
                           ),

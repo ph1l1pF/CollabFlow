@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:ugcworks/services/collaboration-export-service.dart';
 import 'package:ugcworks/views/earnings-overview/earnings-overview-view-model.dart';
 import 'package:ugcworks/l10n/app_localizations.dart';
+import 'package:ugcworks/utils/currency_utils.dart';
 
 class EarningsOverviewPage extends StatefulWidget {
   const EarningsOverviewPage({super.key});
@@ -215,7 +216,7 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                               Text(
                                 NumberFormat.currency(
                                   locale: locale,
-                                  symbol: "€",
+                                  symbol: CurrencyUtils.getCurrencySymbol(),
                                 ).format(e.amount),
                               ),
                             ),
@@ -237,7 +238,7 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "${AppLocalizations.of(context)?.sum ?? "Sum"}: ${NumberFormat.currency(locale: locale, symbol: "€").format(total)}",
+                        "${AppLocalizations.of(context)?.sum ?? "Sum"}: ${NumberFormat.currency(locale: locale, symbol: CurrencyUtils.getCurrencySymbol()).format(total)}",
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

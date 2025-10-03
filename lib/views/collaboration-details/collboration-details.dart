@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ugcworks/l10n/app_localizations.dart';
 import 'package:ugcworks/constants/app_colors.dart';
+import 'package:ugcworks/utils/currency_utils.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
 import 'package:ugcworks/widgets/notification_bell.dart';
 
@@ -80,7 +81,7 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                               const SizedBox(height: 8),
                               Row(
                                 children: [
-                                  Icon(Icons.euro, color: Theme.of(context).colorScheme.onSurface, size: 20),
+                                  Icon(CurrencyUtils.getCurrencyIcon(), color: Theme.of(context).colorScheme.onSurface, size: 20),
                                   const SizedBox(width: 6),
                                   Text(
                                     NumberFormat.decimalPatternDigits(locale: locale, decimalDigits: 2).format(viewModel.collab.fee.amount),

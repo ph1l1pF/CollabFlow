@@ -5,6 +5,7 @@ import 'package:ugcworks/models/collaboration.dart';
 import 'package:ugcworks/l10n/app_localizations.dart';
 import 'package:ugcworks/constants/app_colors.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
+import 'package:ugcworks/utils/currency_utils.dart';
 
 class BasicCollaborationStep extends StatefulWidget {
   final void Function({
@@ -206,7 +207,7 @@ class _BasicCollaborationStepState extends State<BasicCollaborationStep> {
             TextFormField(
               decoration: InputDecoration(
                 labelText: AppLocalizations.of(context)?.fee ?? 'Fee (optional)',
-                prefixText: '€ ',
+                prefixText: '${CurrencyUtils.getCurrencySymbol()} ',
               ),
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               validator: (val) {

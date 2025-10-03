@@ -16,6 +16,7 @@ import 'package:ugcworks/views/about/settings.dart';
 import 'package:ugcworks/views/onboarding/onboarding.dart';
 import 'package:ugcworks/views/create-collaboration/create-collaboration.dart';
 import 'package:ugcworks/constants/app_colors.dart';
+import 'package:ugcworks/utils/currency_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -291,7 +292,7 @@ class _MainAppContent extends StatelessWidget {
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.euro),
+            icon: Icon(CurrencyUtils.getCurrencyIcon()),
             label: '',
           ),
           BottomNavigationBarItem(
