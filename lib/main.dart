@@ -112,6 +112,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   final List<Widget> _pages = [
     const DashboardPage(),
     const CollaborationListPage(),
+    const CollaborationWizard(), // Add button will navigate to this
     const EarningsOverviewPage(),
     const SettingsPage(),
   ];
@@ -156,6 +157,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void dispose() {
     // Remove lifecycle observer
     WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
 
@@ -228,9 +230,20 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           child: _MainAppContent(
             selectedIndex: _selectedIndex,
             onIndexChanged: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
+              if (index == 2) {
+                // Add button - navigate to CollaborationWizard
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CollaborationWizard(),
+                  ),
+                );
+              } else {
+                // Normal navigation
+                setState(() {
+                  _selectedIndex = index;
+                });
+              }
             },
             pages: _pages,
           ),
@@ -251,114 +264,41 @@ class _MainAppContent extends StatelessWidget {
     required this.pages,
   });
 
-  Widget _buildNavItem(IconData icon, int index, bool isSelected, BuildContext context) {
-    return GestureDetector(
-      onTap: () => onIndexChanged(index),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Icon(
-          icon,
-          size: 30,
-          color: isSelected 
-              ? Theme.of(context).colorScheme.primary
-              : Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: pages[selectedIndex],
-      bottomNavigationBar: Container(
-        height: 80,
-        decoration: BoxDecoration(
-          color: Theme.of(context).bottomNavigationBarTheme.backgroundColor ?? 
-                 Theme.of(context).colorScheme.surface,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 8,
-              offset: const Offset(0, -2),
-            ),
-          ],
-        ),
-        child: Stack(
-          children: [
-            // Left group: Dashboard and Collaborations
-            Positioned(
-              left: 20,
-              top: 0,
-              bottom: 0,
-              child: Row(
-                children: [
-                  _buildNavItem(Icons.analytics, 0, selectedIndex == 0, context),
-                  const SizedBox(width: 20),
-                  _buildNavItem(Icons.list, 1, selectedIndex == 1, context),
-                ],
-              ),
-            ),
-            // Right group: Earnings and Settings
-            Positioned(
-              right: 20,
-              top: 0,
-              bottom: 0,
-              child: Row(
-                children: [
-                  _buildNavItem(Icons.euro, 2, selectedIndex == 2, context),
-                  const SizedBox(width: 20),
-                  _buildNavItem(Icons.settings, 3, selectedIndex == 3, context),
-                ],
-              ),
-            ),
-            // Plus button in the center between menu items
-            Positioned(
-              left: 0,
-              right: 0,
-              top: -19,
-              bottom: 8,
-              child: Center(
-                child: Container(
-                  width: 48,
-                  height: 48,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryPink,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 6,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(24),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CollaborationWizard(),
-                          ),
-                        );
-                      },
-                      child: const Center(
-                        child: Icon(
-                          Icons.add,
-                          color: Colors.white,
-                          size: 15,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: selectedIndex,
+        onTap: onIndexChanged,
+        selectedItemColor: Theme.of(context).colorScheme.primary,
+        unselectedItemColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+        iconSize: 35,
+        elevation: 8,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.analytics),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.euro),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: '',
+          ),
+        ],
       ),
     );
   }
