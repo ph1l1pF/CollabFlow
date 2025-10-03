@@ -23,7 +23,7 @@ class _SettingsPageState extends State<SettingsPage> {
   static const String developerName = 'Philip Frerk';
   static const String developerEmail = 'philip.frerk@gmail.com';
   static const String appStoreLink =
-      'https://testflight.apple.com/join/QQc1cXU6';
+      'https://apps.apple.com/de/app/ugcworks/id6753014313';
 
   @override
   void initState() {
@@ -54,7 +54,7 @@ class _SettingsPageState extends State<SettingsPage> {
     final uri = Uri(
       scheme: 'mailto',
       path: developerEmail,
-      query: 'subject=Feedback%20zu%20CollabFlow',
+      query: 'subject=Feedback%20zu%20UGCWorks',
     );
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
