@@ -137,6 +137,8 @@
   "finish": "Finish",
   "finishCollaboration": "Finish Collaboration",
   "finishCollaborationConfirm": "Are you sure you want to mark this collaboration as finished?",
-  "collaborationFinished": "Collaboration marked as finished! ✅"
+  "collaborationFinished": "Collaboration marked as finished! ✅",
+  "collaborationAlreadyFinished": "Collaboration is already finished!",
+  "searchCollaborationsHint": "Search collaborations..."
 }
  

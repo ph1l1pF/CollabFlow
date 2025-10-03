@@ -57,7 +57,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                     });
                   },
                   decoration: InputDecoration(
-                    hintText: "Search collaborations...",
+                    hintText: AppLocalizations.of(context)?.searchCollaborationsHint ?? "Search collaborations...",
                     border: InputBorder.none,
                     hintStyle: TextStyle(
                       color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),

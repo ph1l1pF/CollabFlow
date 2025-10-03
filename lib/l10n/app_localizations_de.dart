@@ -431,4 +431,11 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get collaborationFinished =>
       'Collaboration als abgeschlossen markiert! ✅';
+
+  @override
+  String get collaborationAlreadyFinished =>
+      'Collaboration ist bereits abgeschlossen!';
+
+  @override
+  String get searchCollaborationsHint => 'Collaborations durchsuchen...';
 }

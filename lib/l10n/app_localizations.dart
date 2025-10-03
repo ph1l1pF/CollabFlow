@@ -913,6 +913,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Collaboration marked as finished! ✅'**
   String get collaborationFinished;
+
+  /// No description provided for @collaborationAlreadyFinished.
+  ///
+  /// In en, this message translates to:
+  /// **'Collaboration is already finished!'**
+  String get collaborationAlreadyFinished;
+
+  /// No description provided for @searchCollaborationsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search collaborations...'**
+  String get searchCollaborationsHint;
 }
 
 class _AppLocalizationsDelegate
