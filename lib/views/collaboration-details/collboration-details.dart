@@ -304,12 +304,12 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
           ),
           // Finish button (always show, but disabled if already finished)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: ElevatedButton.icon(
               icon: const Icon(Icons.check_circle),
               label: Text(AppLocalizations.of(context)?.finish ?? 'Finish'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: viewModel.collab.state == CollabState.Finished ? Colors.grey : Colors.green,
+                backgroundColor: viewModel.collab.state == CollabState.Finished ? Colors.grey : AppColors.primaryPink,
                 foregroundColor: Colors.white,
                 minimumSize: const Size.fromHeight(48),
               ),
@@ -348,8 +348,9 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
               },
             ),
           ),
+          const SizedBox(height: 8),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
             child: ElevatedButton.icon(
               icon: const Icon(Icons.delete),
               label: Text(AppLocalizations.of(context)?.deleteCollaboration ?? 'Delete Collaboration'),

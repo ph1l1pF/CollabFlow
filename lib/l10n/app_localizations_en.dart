@@ -419,7 +419,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get overall => 'Overall';
 
   @override
-  String get finish => 'Finish';
+  String get finish => 'Finish Collaboration';
 
   @override
   String get finishCollaboration => 'Finish Collaboration';

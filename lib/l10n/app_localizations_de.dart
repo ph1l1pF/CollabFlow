@@ -419,7 +419,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get overall => 'Gesamt';
 
   @override
-  String get finish => 'Abschließen';
+  String get finish => 'Collaboration Abschließen';
 
   @override
   String get finishCollaboration => 'Collaboration abschließen';

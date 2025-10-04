@@ -111,8 +111,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   bool _onboardingDone = false;
 
   final List<Widget> _pages = [
-    const DashboardPage(),
     const CollaborationListPage(),
+    const DashboardPage(),
     const CollaborationWizard(), // Add button will navigate to this
     const EarningsOverviewPage(),
     const SettingsPage(),
@@ -280,11 +280,11 @@ class _MainAppContent extends StatelessWidget {
         elevation: 8,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.analytics),
+            icon: Icon(Icons.list),
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
+            icon: Icon(Icons.analytics),
             label: '',
           ),
           BottomNavigationBarItem(

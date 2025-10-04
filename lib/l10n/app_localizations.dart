@@ -893,7 +893,7 @@ abstract class AppLocalizations {
   /// No description provided for @finish.
   ///
   /// In en, this message translates to:
-  /// **'Finish'**
+  /// **'Finish Collaboration'**
   String get finish;
 
   /// No description provided for @finishCollaboration.
