@@ -29,7 +29,7 @@ class ReviewService {
     await prefs.setInt('collaborations_created_count', count + 1);
 
     // Show popup after creating 5 collaborations
-    if (count == 4 && !(prefs.getBool(_keyPopupShown) ?? false)) {
+    if (count == 3 && !(prefs.getBool(_keyPopupShown) ?? false)) {
       _schedulePopup(context);
     }
   }
@@ -37,11 +37,13 @@ class ReviewService {
   /// Track when user finishes a collaboration (from "Finish" button)
   Future<void> trackCollaborationFinished(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
-    final count = prefs.getInt('collaborations_finished_counter') ?? 0;
-    await prefs.setInt('collaborations_finished_count', count + 1);
+    // Use a single consistent key for read/write
+    const key = 'collaborations_finished_count';
+    final count = prefs.getInt(key) ?? 0;
+    await prefs.setInt(key, count + 1);
 
-    // Show popup after finishing 2 collaborations
-    if (count == 1 && !(prefs.getBool(_keyPopupShown) ?? false)) {
+    // Show popup on first finish (count == 0 before increment)
+    if (count == 0 && !(prefs.getBool(_keyPopupShown) ?? false)) {
       _schedulePopup(context);
     }
   }

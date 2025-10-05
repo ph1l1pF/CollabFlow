@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:ugcworks/l10n/app_localizations.dart';
 import 'package:ugcworks/constants/app_colors.dart';
-import 'package:ugcworks/services/review_service.dart';
 
 class ReviewPopup extends StatelessWidget {
   const ReviewPopup({super.key});
@@ -119,12 +119,27 @@ class ReviewPopup extends StatelessWidget {
       // Try to open the in-app review flow
       if (await inAppReview.isAvailable()) {
         await inAppReview.requestReview();
-      } else {
-        // Fallback: open the App Store page directly
-        await inAppReview.openStoreListing();
+        return;
       }
+
+      // Fallback 1: Open App Store listing directly (needs appStoreId on iOS)
+      try {
+        await inAppReview.openStoreListing(appStoreId: '6753014313');
+        return;
+      } catch (_) {/* continue to next fallback */}
+
+      // Fallback 2: Deep link to write-review page via itms-apps (iOS)
+      // This is more reliable on TestFlight where requestReview may be ignored
+      const itmsUrl = 'itms-apps://itunes.apple.com/app/id6753014313?action=write-review';
+      await launchUrl(Uri.parse(itmsUrl), mode: LaunchMode.externalApplication);
     } catch (e) {
-      // Handle error silently
+      // Final fallback: open HTTPS URL (may open in Safari if App Store not reachable)
+      const httpsUrl = 'https://apps.apple.com/app/id6753014313?action=write-review';
+      try {
+        await launchUrl(Uri.parse(httpsUrl), mode: LaunchMode.externalApplication);
+      } catch (_) {
+        // Swallow as last resort
+      }
     }
   }
 }
