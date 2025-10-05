@@ -141,6 +141,10 @@
   "collaborationAlreadyFinished": "Collaboration is already finished!",
   "searchCollaborationsHint": "Search collaborations...",
   "selectAll": "Select All",
-  "deselectAll": "Deselect All"
+  "deselectAll": "Deselect All",
+  "enjoyingApp": "Enjoying UGCWorks?",
+  "reviewMessage": "We would love to hear your feedback! Your review helps us improve and reach more creators.",
+  "notNow": "Not now",
+  "rateApp": "Rate App"
 }
  

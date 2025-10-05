@@ -441,4 +441,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get deselectAll => 'Alle abwählen';
+
+  @override
+  String get enjoyingApp => 'Gefällt dir UGCWorks?';
+
+  @override
+  String get reviewMessage =>
+      'Wir würden uns über dein Feedback freuen! Deine Bewertung hilft uns, die App zu verbessern und mehr Creator zu erreichen.';
+
+  @override
+  String get notNow => 'Später';
+
+  @override
+  String get rateApp => 'Bewerte App';
 }

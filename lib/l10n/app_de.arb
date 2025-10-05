@@ -141,5 +141,9 @@
   "collaborationAlreadyFinished": "Collaboration ist bereits abgeschlossen!",
   "searchCollaborationsHint": "Collaborations durchsuchen...",
   "selectAll": "Alle auswählen",
-  "deselectAll": "Alle abwählen"
+  "deselectAll": "Alle abwählen",
+  "enjoyingApp": "Gefällt dir UGCWorks?",
+  "reviewMessage": "Wir würden uns über dein Feedback freuen! Deine Bewertung hilft uns, die App zu verbessern und mehr Creator zu erreichen.",
+  "notNow": "Später",
+  "rateApp": "Bewerte App"
 }

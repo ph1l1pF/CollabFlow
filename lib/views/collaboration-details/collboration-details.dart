@@ -11,6 +11,8 @@ import 'package:ugcworks/constants/app_colors.dart';
 import 'package:ugcworks/utils/currency_utils.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
 import 'package:ugcworks/widgets/notification_bell.dart';
+import 'package:ugcworks/services/review_service.dart';
+import 'package:provider/provider.dart';
 
 class CollaborationDetailsPage extends StatefulWidget {
   final CollaborationDetailsViewModel viewModel;
@@ -336,6 +338,10 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                     viewModel.collab.state = CollabState.Finished;
                     viewModel.updateCollaboration(viewModel.collab, context: context);
                   });
+                  
+                  // Track collaboration finished for review popup
+                  Provider.of<ReviewService>(context, listen: false)
+                      .trackCollaborationFinished(context);
                   
                   // Show success toast
                   ScaffoldMessenger.of(context).showSnackBar(

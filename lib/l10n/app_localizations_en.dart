@@ -440,4 +440,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get deselectAll => 'Deselect All';
+
+  @override
+  String get enjoyingApp => 'Enjoying UGCWorks?';
+
+  @override
+  String get reviewMessage =>
+      'We would love to hear your feedback! Your review helps us improve and reach more creators.';
+
+  @override
+  String get notNow => 'Not now';
+
+  @override
+  String get rateApp => 'Rate App';
 }

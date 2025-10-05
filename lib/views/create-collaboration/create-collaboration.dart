@@ -7,6 +7,7 @@ import 'package:ugcworks/views/create-collaboration/step-1-basic/create-collabor
 import 'package:ugcworks/views/create-collaboration/create-collaboration-page-2.dart';
 import 'package:ugcworks/views/create-collaboration/create-collaboration-page-3.dart';
 import 'package:ugcworks/views/notification-permission/notification-permission.dart';
+import 'package:ugcworks/services/review_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
@@ -192,6 +193,10 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
 
     await _requestNotificationPermissionsIfNecessary();
     _collaborationsRepository.createCollaboration(collab, context: context);
+
+    // Track collaboration creation for review popup
+    Provider.of<ReviewService>(context, listen: false)
+        .trackCollaborationCreated(context);
 
     // Show success toast
     if (mounted) {

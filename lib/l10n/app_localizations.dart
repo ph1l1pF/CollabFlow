@@ -931,6 +931,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Deselect All'**
   String get deselectAll;
+
+  /// No description provided for @enjoyingApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Enjoying UGCWorks?'**
+  String get enjoyingApp;
+
+  /// No description provided for @reviewMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We would love to hear your feedback! Your review helps us improve and reach more creators.'**
+  String get reviewMessage;
+
+  /// No description provided for @notNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Not now'**
+  String get notNow;
+
+  /// No description provided for @rateApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate App'**
+  String get rateApp;
 }
 
 class _AppLocalizationsDelegate

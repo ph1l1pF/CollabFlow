@@ -17,6 +17,7 @@ import 'package:ugcworks/views/onboarding/onboarding.dart';
 import 'package:ugcworks/views/create-collaboration/create-collaboration.dart';
 import 'package:ugcworks/constants/app_colors.dart';
 import 'package:ugcworks/utils/currency_utils.dart';
+import 'package:ugcworks/services/review_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -80,6 +81,9 @@ void main() async {
           create: (_) => CollaborationExportService(),
         ),
         Provider(
+          create: (_) => ReviewService(),
+        ),
+        Provider(
           create: (_) => AuthService(),
         ),
         Provider(
@@ -125,6 +129,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     
     // Add lifecycle observer
     WidgetsBinding.instance.addObserver(this);
+    
+    // Track app launch
+    Provider.of<ReviewService>(context, listen: false).trackAppLaunch(context);
   }
 
   @override
@@ -264,7 +271,6 @@ class _MainAppContent extends StatelessWidget {
     required this.onIndexChanged,
     required this.pages,
   });
-
 
   @override
   Widget build(BuildContext context) {
