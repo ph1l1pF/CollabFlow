@@ -18,6 +18,8 @@ import 'package:ugcworks/views/create-collaboration/create-collaboration.dart';
 import 'package:ugcworks/constants/app_colors.dart';
 import 'package:ugcworks/utils/currency_utils.dart';
 import 'package:ugcworks/services/review_service.dart';
+import 'package:ugcworks/services/analytics_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -30,6 +32,13 @@ import 'package:ugcworks/utils/theme_utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  try {
+    await Firebase.initializeApp();
+  } catch (e) {
+    // Continue app startup without Firebase if not configured yet
+    // This avoids crashes on TestFlight/dev until flutterfire configure is done
+    debugPrint('Firebase initialization failed: $e');
+  }
   //await Hive.deleteFromDisk();
   
   await Hive.initFlutter("ugcworks");
@@ -79,6 +88,9 @@ void main() async {
         ),
         Provider(
           create: (_) => CollaborationExportService(),
+        ),
+        Provider(
+          create: (_) => AnalyticsService(),
         ),
         Provider(
           create: (_) => ReviewService(),
@@ -132,6 +144,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     
     // Track app launch
     Provider.of<ReviewService>(context, listen: false).trackAppLaunch(context);
+    Provider.of<AnalyticsService>(context, listen: false).logAppOpen();
   }
 
   @override

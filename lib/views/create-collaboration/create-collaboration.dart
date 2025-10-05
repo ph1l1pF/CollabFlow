@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
 import 'package:ugcworks/l10n/app_localizations.dart';
+import 'package:ugcworks/services/analytics_service.dart';
 
 class CollaborationWizard extends StatefulWidget {
   const CollaborationWizard({super.key});
@@ -197,6 +198,11 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
     // Track collaboration creation for review popup
     Provider.of<ReviewService>(context, listen: false)
         .trackCollaborationCreated(context);
+    // Analytics
+    Provider.of<AnalyticsService>(context, listen: false).logCollaborationCreated(
+      collabId: collab.id,
+      state: collab.state.name,
+    );
 
     // Show success toast
     if (mounted) {

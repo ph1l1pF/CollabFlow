@@ -6,6 +6,7 @@ import 'package:ugcworks/views/earnings-overview/earnings-overview-view-model.da
 import 'package:ugcworks/l10n/app_localizations.dart';
 import 'package:ugcworks/utils/currency_utils.dart';
 import 'package:ugcworks/services/review_service.dart';
+import 'package:ugcworks/services/analytics_service.dart';
 
 class EarningsOverviewPage extends StatefulWidget {
   const EarningsOverviewPage({super.key});
@@ -114,6 +115,9 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                     // Track export for review popup
                     Provider.of<ReviewService>(context, listen: false)
                         .trackEarningsExport(context);
+                    // Analytics
+                    Provider.of<AnalyticsService>(context, listen: false)
+                        .logEarningsExport(format: 'csv', count: filtered.length);
                   } else if (choice == 'pdf' && mounted) {
                     await csvService.exportEarningsEntriesPdf(
                       filtered,
@@ -130,6 +134,9 @@ class _EarningsOverviewPageState extends State<EarningsOverviewPage> {
                     // Track export for review popup
                     Provider.of<ReviewService>(context, listen: false)
                         .trackEarningsExport(context);
+                    // Analytics
+                    Provider.of<AnalyticsService>(context, listen: false)
+                        .logEarningsExport(format: 'pdf', count: filtered.length);
                   }
                 },
               ),

@@ -13,6 +13,7 @@ import 'package:ugcworks/views/collaboration-details/collaboration-details-view-
 import 'package:ugcworks/views/collaborations-list/collaboration-list-view-model.dart';
 import 'package:ugcworks/views/create-collaboration/create-collaboration.dart';
 import 'package:ugcworks/widgets/notification_bell.dart';
+import 'package:ugcworks/services/analytics_service.dart';
 
 class CollaborationListPage extends StatefulWidget {
   const CollaborationListPage({super.key});
@@ -186,6 +187,11 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                   await prefs.saveSelectedStates(
                     _selectedStates.map((e) => e.index.toString()).toList(),
                   );
+                // Analytics
+                if (mounted) {
+                  Provider.of<AnalyticsService>(context, listen: false)
+                      .logFiltersApplied(selectedStatesCount: _selectedStates.length);
+                }
                 }
               },
             ),

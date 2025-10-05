@@ -12,6 +12,7 @@ import 'package:ugcworks/utils/currency_utils.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
 import 'package:ugcworks/widgets/notification_bell.dart';
 import 'package:ugcworks/services/review_service.dart';
+import 'package:ugcworks/services/analytics_service.dart';
 import 'package:provider/provider.dart';
 
 class CollaborationDetailsPage extends StatefulWidget {
@@ -342,6 +343,9 @@ class _CollaborationDetailsPageState extends State<CollaborationDetailsPage> {
                   // Track collaboration finished for review popup
                   Provider.of<ReviewService>(context, listen: false)
                       .trackCollaborationFinished(context);
+                  // Analytics
+                  Provider.of<AnalyticsService>(context, listen: false)
+                      .logCollaborationFinished(collabId: viewModel.collab.id);
                   
                   // Show success toast
                   ScaffoldMessenger.of(context).showSnackBar(

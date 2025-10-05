@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:ugcworks/l10n/app_localizations.dart';
 import 'package:ugcworks/constants/app_colors.dart';
+import 'package:ugcworks/services/analytics_service.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final VoidCallback? onComplete;
@@ -33,6 +34,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Future<void> onFinish(BuildContext context) async {
     final repo = Provider.of<SharedPrefsRepository>(context, listen: false);
     await repo.setOnboardingDone();
+    // Analytics: finished
+    Provider.of<AnalyticsService>(context, listen: false).logOnboardingFinished();
     
     if (widget.onComplete != null) {
       widget.onComplete!();
@@ -199,7 +202,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     const SizedBox(height: 16),
                     // Skip option
                     TextButton(
-                      onPressed: _nextPage,
+                      onPressed: () {
+                        // Analytics: skipped
+                        Provider.of<AnalyticsService>(context, listen: false).logOnboardingSkipped();
+                        _nextPage();
+                      },
                       child: Text(
                         AppLocalizations.of(context)?.skip ?? "Skip for now",
                         style: TextStyle(
@@ -253,6 +260,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 const SizedBox(height: 16),
                 TextButton(
                   onPressed: () {
+                    // Analytics: skipped via footer
+                    Provider.of<AnalyticsService>(context, listen: false).logOnboardingSkipped();
                     onFinish(context);
                   },
                   child: Text(AppLocalizations.of(context)?.skip ?? "Skip"),
