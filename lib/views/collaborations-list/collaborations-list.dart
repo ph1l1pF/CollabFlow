@@ -88,6 +88,15 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
             ),
             // Filter button
             IconButton(
+              isSelected: _selectedStates.isNotEmpty,
+              selectedIcon: Icon(
+                Icons.filter_alt,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              icon: Icon(
+                Icons.filter_alt_outlined,
+                color: Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+              ),
               onPressed: () async {
                 final result = await showDialog<List<CollabState>>(
                   context: context,
@@ -179,7 +188,6 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                   );
                 }
               },
-              icon: const Icon(Icons.filter_list),
             ),
           ],
         ),
