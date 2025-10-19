@@ -195,6 +195,22 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                 }
               },
             ),
+            // Add collaboration button
+            IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const CollaborationWizard(),
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.add,
+                color: Theme.of(context).colorScheme.primary,
+                size: 28,
+              ),
+            ),
           ],
         ),
         body: Consumer<CollaborationsListViewModel>(
@@ -286,7 +302,9 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                           repository.deleteById(collab.id);
                         },
                         child: GestureDetector(
-                         
+                          onLongPress: () {
+                            _showFinishContextMenu(context, collab);
+                          },
                           child: Card(
                             margin: const EdgeInsets.symmetric(
                               horizontal: 12,
@@ -377,5 +395,68 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
     );
   }
 
+  void _showFinishContextMenu(BuildContext context, CollaborationSmallViewModel collab) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        final isFinished = collab.state == CollabState.Finished;
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                collab.title,
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+              ListTile(
+                leading: Icon(
+                  Icons.check_circle, 
+                  color: isFinished ? Colors.grey : Colors.green,
+                ),
+                title: Text(
+                  AppLocalizations.of(context)?.finish ?? "Finish",
+                  style: TextStyle(
+                    color: isFinished ? Colors.grey : null,
+                  ),
+                ),
+                enabled: !isFinished,
+                onTap: isFinished ? null : () async {
+                  Navigator.pop(context);
+                  await _finishCollaboration(context, collab);
+                },
+              ),
+              const SizedBox(height: 10),
+              ListTile(
+                leading: const Icon(Icons.close),
+                title: Text(AppLocalizations.of(context)?.cancel ?? "Cancel"),
+                onTap: () => Navigator.pop(context),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _finishCollaboration(BuildContext context, CollaborationSmallViewModel collab) async {
+    final viewModel = Provider.of<CollaborationsListViewModel>(context, listen: false);
+    final success = await viewModel.finishCollaboration(collab.id, context);
+    
+    if (mounted && success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(AppLocalizations.of(context)?.collaborationFinished ?? "Collaboration marked as finished! ✅"),
+          backgroundColor: Colors.green,
+        ),
+      );
+      
+      // Analytics
+      Provider.of<AnalyticsService>(context, listen: false)
+          .logCollaborationFinished(collabId: collab.id);
+    }
+  }
 
 }

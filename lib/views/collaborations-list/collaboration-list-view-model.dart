@@ -31,6 +31,21 @@ class CollaborationsListViewModel extends ChangeNotifier {
         );
       }).toList());
 
+  Future<bool> finishCollaboration(String collaborationId, BuildContext context) async {
+    try {
+      final fullCollab = _collaborationsRepository.collaborations.firstWhere((c) => c.id == collaborationId);
+      
+      if (fullCollab.state != CollabState.Finished) {
+        fullCollab.state = CollabState.Finished;
+        _collaborationsRepository.updateCollaboration(fullCollab, context: context);
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
   @override
   void dispose() {
     _collaborationsRepository.removeListener(_onRepositoryChanged);
