@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
 import 'package:ugcworks/constants/app_colors.dart';
+import 'package:ugcworks/l10n/app_localizations.dart';
 
 class ScriptStep extends StatefulWidget {
   final void Function({
@@ -67,7 +68,7 @@ class _ScriptStepState extends State<ScriptStep> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const Text('Skript & Notizen bearbeiten'),
+          title: Text(AppLocalizations.of(context)?.editScriptAndNotes ?? 'Edit Script & Notes'),
           elevation: 0,
         ),
         body: Form(
@@ -77,13 +78,13 @@ class _ScriptStepState extends State<ScriptStep> {
           children: [
             TextFormField(
               controller: _scriptController,
-              decoration: const InputDecoration(labelText: 'Script (optional)'),
+              decoration: InputDecoration(labelText: AppLocalizations.of(context)?.scriptOptional ?? 'Script (optional)'),
               maxLines: 5,
             ),
             const SizedBox(height: 16),
             TextFormField(
               controller: _notesController,
-              decoration: const InputDecoration(labelText: 'Notizen (optional)'),
+              decoration: InputDecoration(labelText: AppLocalizations.of(context)?.notesOptional ?? 'Notes (optional)'),
               maxLines: 3,
             ),
             const SizedBox(height: 24),
@@ -100,13 +101,13 @@ class _ScriptStepState extends State<ScriptStep> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.arrow_back, size: 20),
                         SizedBox(width: 8),
                         Text(
-                          'Zurück',
+                          AppLocalizations.of(context)?.back ?? 'Back',
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -122,11 +123,11 @@ class _ScriptStepState extends State<ScriptStep> {
                         const EdgeInsets.symmetric(vertical: 16),
                       ),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Weiter',
+                          AppLocalizations.of(context)?.next ?? 'Next',
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(width: 8),

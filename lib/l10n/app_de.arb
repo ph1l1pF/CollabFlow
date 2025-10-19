@@ -152,5 +152,8 @@
   "phoneNumber": "Telefonnummer",
   "companyName": "Firmenname",
   "customerNumber": "Kundennummer",
-  "optional": "optional"
+  "optional": "optional",
+  "editScriptAndNotes": "Skript & Notizen bearbeiten",
+  "scriptOptional": "Script (optional)",
+  "notesOptional": "Notizen (optional)"
 }

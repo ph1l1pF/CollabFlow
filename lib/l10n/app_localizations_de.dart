@@ -475,4 +475,13 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get optional => 'optional';
+
+  @override
+  String get editScriptAndNotes => 'Skript & Notizen bearbeiten';
+
+  @override
+  String get scriptOptional => 'Script (optional)';
+
+  @override
+  String get notesOptional => 'Notizen (optional)';
 }

@@ -997,6 +997,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'optional'**
   String get optional;
+
+  /// No description provided for @editScriptAndNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Script & Notes'**
+  String get editScriptAndNotes;
+
+  /// No description provided for @scriptOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Script (optional)'**
+  String get scriptOptional;
+
+  /// No description provided for @notesOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes (optional)'**
+  String get notesOptional;
 }
 
 class _AppLocalizationsDelegate

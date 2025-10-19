@@ -152,6 +152,9 @@
   "phoneNumber": "Phone Number",
   "companyName": "Company Name",
   "customerNumber": "Customer Number",
-  "optional": "optional"
+  "optional": "optional",
+  "editScriptAndNotes": "Edit Script & Notes",
+  "scriptOptional": "Script (optional)",
+  "notesOptional": "Notes (optional)"
 }
  
