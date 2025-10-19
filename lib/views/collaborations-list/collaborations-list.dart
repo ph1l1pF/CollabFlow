@@ -295,11 +295,16 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
                           );
                         },
                         onDismissed: (direction) {
-                          final repository = Provider.of<CollaborationsRepository>(
-                            context,
-                            listen: false,
-                          );
-                          repository.deleteById(collab.id);
+                          try {
+                            final repository = Provider.of<CollaborationsRepository>(
+                              context,
+                              listen: false,
+                            );
+                            repository.deleteById(collab.id);
+                          } catch (e) {
+                            // Silently handle widget lifecycle errors
+                            print('Error in onDismissed: $e');
+                          }
                         },
                         child: GestureDetector(
                           onLongPress: () {
@@ -430,6 +435,18 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
               ),
               const SizedBox(height: 10),
               ListTile(
+                leading: const Icon(Icons.delete, color: Colors.red),
+                title: Text(
+                  AppLocalizations.of(context)?.delete ?? "Delete",
+                  style: const TextStyle(color: Colors.red),
+                ),
+                onTap: () async {
+                  Navigator.pop(context);
+                  await _deleteCollaboration(context, collab);
+                },
+              ),
+              const SizedBox(height: 10),
+              ListTile(
                 leading: const Icon(Icons.close),
                 title: Text(AppLocalizations.of(context)?.cancel ?? "Cancel"),
                 onTap: () => Navigator.pop(context),
@@ -442,20 +459,77 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
   }
 
   Future<void> _finishCollaboration(BuildContext context, CollaborationSmallViewModel collab) async {
-    final viewModel = Provider.of<CollaborationsListViewModel>(context, listen: false);
-    final success = await viewModel.finishCollaboration(collab.id, context);
-    
-    if (mounted && success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)?.collaborationFinished ?? "Collaboration marked as finished! ✅"),
-          backgroundColor: Colors.green,
-        ),
-      );
+    try {
+      // Store references before async operations
+      if (!mounted) return;
+      final viewModel = Provider.of<CollaborationsListViewModel>(context, listen: false);
+      final analyticsService = Provider.of<AnalyticsService>(context, listen: false);
       
-      // Analytics
-      Provider.of<AnalyticsService>(context, listen: false)
-          .logCollaborationFinished(collabId: collab.id);
+      final success = await viewModel.finishCollaboration(collab.id, context);
+      
+      if (mounted && success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(AppLocalizations.of(context)?.collaborationFinished ?? "Collaboration marked as finished! ✅"),
+            backgroundColor: Colors.green,
+          ),
+        );
+        
+        // Analytics
+        if (mounted) {
+          analyticsService.logCollaborationFinished(collabId: collab.id);
+        }
+      }
+    } catch (e) {
+      // Silently handle any widget lifecycle errors
+      print('Error in _finishCollaboration: $e');
+    }
+  }
+
+  Future<void> _deleteCollaboration(BuildContext context, CollaborationSmallViewModel collab) async {
+    try {
+      // Store references before async operations
+      if (!mounted) return;
+      final repository = Provider.of<CollaborationsRepository>(context, listen: false);
+      
+      final confirmed = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(AppLocalizations.of(context)?.deleteCollaboration ?? "Delete Collaboration"),
+            content: Text(AppLocalizations.of(context)?.deleteCollaborationConfirm ?? "Are you sure you want to delete this collaboration?"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(AppLocalizations.of(context)?.cancel ?? "Cancel"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text(
+                  AppLocalizations.of(context)?.delete ?? "Delete",
+                  style: const TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+
+      if (confirmed == true && mounted) {
+        repository.deleteById(collab.id);
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(AppLocalizations.of(context)?.collaborationDeleted ?? "Collaboration deleted"),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      // Silently handle any widget lifecycle errors
+      print('Error in _deleteCollaboration: $e');
     }
   }
 
