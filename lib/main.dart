@@ -307,7 +307,27 @@ class _MainAppContent extends StatelessWidget {
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.add, size: 40, weight: 700, color: AppColors.primaryPink),
+            icon: Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.primaryPink,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primaryPink.withOpacity(0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: const Icon(
+                Icons.add,
+                size: 28,
+                color: Colors.white,
+                weight: 700,
+              ),
+            ),
             label: '',
           ),
           BottomNavigationBarItem(
