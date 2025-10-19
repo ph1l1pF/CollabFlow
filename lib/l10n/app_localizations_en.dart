@@ -483,4 +483,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notesOptional => 'Notes (optional)';
+
+  @override
+  String get createFirstCollaboration => 'Create Your First Collaboration';
+
+  @override
+  String get createFirstCollaborationMessage =>
+      'Let\'s get you started! Create your first collaboration to see how UGCWorks works.';
+
+  @override
+  String get createFirstCollaborationButton => 'Create First Collaboration';
+
+  @override
+  String get deleteCollab => 'Delete Collaboration';
 }

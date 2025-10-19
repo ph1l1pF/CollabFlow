@@ -437,7 +437,7 @@ class _CollaborationListPageState extends State<CollaborationListPage> {
               ListTile(
                 leading: const Icon(Icons.delete, color: Colors.red),
                 title: Text(
-                  AppLocalizations.of(context)?.delete ?? "Delete",
+                  AppLocalizations.of(context)?.deleteCollab ?? "Delete Collaboration",
                   style: const TextStyle(color: Colors.red),
                 ),
                 onTap: () async {

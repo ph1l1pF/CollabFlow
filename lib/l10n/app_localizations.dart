@@ -1015,6 +1015,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notes (optional)'**
   String get notesOptional;
+
+  /// No description provided for @createFirstCollaboration.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Your First Collaboration'**
+  String get createFirstCollaboration;
+
+  /// No description provided for @createFirstCollaborationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s get you started! Create your first collaboration to see how UGCWorks works.'**
+  String get createFirstCollaborationMessage;
+
+  /// No description provided for @createFirstCollaborationButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create First Collaboration'**
+  String get createFirstCollaborationButton;
+
+  /// No description provided for @deleteCollab.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Collaboration'**
+  String get deleteCollab;
 }
 
 class _AppLocalizationsDelegate

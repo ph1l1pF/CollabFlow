@@ -1,6 +1,7 @@
 import 'package:ugcworks/repositories/shared-prefs-repository.dart';
 import 'package:ugcworks/views/collaborations-list/collaborations-list.dart';
 import 'package:ugcworks/views/apple-login/apple-login.dart';
+import 'package:ugcworks/views/create-collaboration/create-collaboration.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -21,7 +22,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _controller = PageController();
 
   void _nextPage() {
-    if (_controller.page! < 4) {
+    if (_controller.page! < 5) {
       _controller.nextPage(
         duration: const Duration(milliseconds: 400),
         curve: Curves.easeInOut,
@@ -218,6 +219,69 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
               ),
 
+              // 👉 Create First Collaboration page
+              Container(
+                padding: const EdgeInsets.all(24),
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.add_circle_outline,
+                      size: 100,
+                      color: AppColors.primaryPink,
+                    ),
+                    const SizedBox(height: 32),
+                    Text(
+                      AppLocalizations.of(context)?.createFirstCollaboration ?? "Create Your First Collaboration",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      AppLocalizations.of(context)?.createFirstCollaborationMessage ?? "Let's get you started! Create your first collaboration to see how UGCWorks works.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 18, color: Theme.of(context).colorScheme.onSurface),
+                    ),
+                    const SizedBox(height: 40),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CollaborationWizard(),
+                          ),
+                        ).then((_) {
+                          // After creating collaboration, finish onboarding
+                          onFinish(context);
+                        });
+                      },
+                      style: AppColors.primaryButtonStyle,
+                      child: Text(
+                        AppLocalizations.of(context)?.createFirstCollaborationButton ?? "Create First Collaboration",
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextButton(
+                      onPressed: () {
+                        // Skip creating collaboration and finish onboarding
+                        onFinish(context);
+                      },
+                      child: Text(
+                        AppLocalizations.of(context)?.skip ?? "Skip for now",
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
               // 👉 Final page
               Container(
                 padding: const EdgeInsets.all(24),
@@ -250,7 +314,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: [
                 SmoothPageIndicator(
                   controller: _controller,
-                  count: 5, 
+                  count: 6, 
                   effect: const ExpandingDotsEffect(
                     activeDotColor: AppColors.primaryPink,
                     dotHeight: 8,

@@ -155,6 +155,10 @@
   "optional": "optional",
   "editScriptAndNotes": "Edit Script & Notes",
   "scriptOptional": "Script (optional)",
-  "notesOptional": "Notes (optional)"
+  "notesOptional": "Notes (optional)",
+  "createFirstCollaboration": "Create Your First Collaboration",
+  "createFirstCollaborationMessage": "Let's get you started! Create your first collaboration to see how UGCWorks works.",
+  "createFirstCollaborationButton": "Create First Collaboration",
+  "deleteCollab": "Delete Collaboration"
 }
  
