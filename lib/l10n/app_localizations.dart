@@ -955,6 +955,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rate App'**
   String get rateApp;
+
+  /// No description provided for @editPartnerData.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Partner Data'**
+  String get editPartnerData;
+
+  /// No description provided for @brandAndContact.
+  ///
+  /// In en, this message translates to:
+  /// **'Brand & Contact'**
+  String get brandAndContact;
+
+  /// No description provided for @contactPersonName.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Person'**
+  String get contactPersonName;
+
+  /// No description provided for @phoneNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Phone Number'**
+  String get phoneNumber;
+
+  /// No description provided for @companyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Company Name'**
+  String get companyName;
+
+  /// No description provided for @customerNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Customer Number'**
+  String get customerNumber;
+
+  /// No description provided for @optional.
+  ///
+  /// In en, this message translates to:
+  /// **'optional'**
+  String get optional;
 }
 
 class _AppLocalizationsDelegate

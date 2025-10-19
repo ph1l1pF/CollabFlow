@@ -145,5 +145,12 @@
   "enjoyingApp": "Gefällt dir UGCWorks?",
   "reviewMessage": "Wir würden uns über dein Feedback freuen! Deine Bewertung hilft uns, die App zu verbessern und mehr Creator zu erreichen.",
   "notNow": "Später",
-  "rateApp": "Bewerte App"
+  "rateApp": "Bewerte App",
+  "editPartnerData": "Partnerdaten bearbeiten",
+  "brandAndContact": "Brand & Kontakt",
+  "contactPersonName": "Ansprechpartner",
+  "phoneNumber": "Telefonnummer",
+  "companyName": "Firmenname",
+  "customerNumber": "Kundennummer",
+  "optional": "optional"
 }

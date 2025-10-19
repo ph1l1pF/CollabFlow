@@ -453,4 +453,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rateApp => 'Rate App';
+
+  @override
+  String get editPartnerData => 'Edit Partner Data';
+
+  @override
+  String get brandAndContact => 'Brand & Contact';
+
+  @override
+  String get contactPersonName => 'Contact Person';
+
+  @override
+  String get phoneNumber => 'Phone Number';
+
+  @override
+  String get companyName => 'Company Name';
+
+  @override
+  String get customerNumber => 'Customer Number';
+
+  @override
+  String get optional => 'optional';
 }

@@ -2,6 +2,7 @@ import 'package:ugcworks/models/collaboration.dart';
 import 'package:flutter/material.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
 import 'package:ugcworks/constants/app_colors.dart';
+import 'package:ugcworks/l10n/app_localizations.dart';
 
 class PartnerStep extends StatefulWidget {
   final void Function(Partner partner, bool next) onFinish;
@@ -83,7 +84,7 @@ class _PartnerStepState extends State<PartnerStep> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: const Text('Partnerdaten bearbeiten'),
+          title: Text(AppLocalizations.of(context)?.editPartnerData ?? 'Edit Partner Data'),
           elevation: 0,
         ),
         body: Form(
@@ -91,17 +92,17 @@ class _PartnerStepState extends State<PartnerStep> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            const Text(
-              "Brand & Kontakt",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            Text(
+              AppLocalizations.of(context)?.brandAndContact ?? "Brand & Contact",
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            _buildField("Name Ansprechpartner", controller: _nameController),
-            _buildField("E-Mail", controller: _emailController, keyboardType: TextInputType.emailAddress),
-            _buildField("Telefonnummer", controller: _phoneController, keyboardType: TextInputType.phone),
-            _buildField("Firmenname", controller: _companyNameController),
-            _buildField("Branche", controller: _industryController),
-            _buildField("Kundennummer", controller: _customerNumberController),
+            _buildField(AppLocalizations.of(context)?.contactPersonName ?? "Contact Person", controller: _nameController),
+            _buildField(AppLocalizations.of(context)?.email ?? "E-Mail", controller: _emailController, keyboardType: TextInputType.emailAddress),
+            _buildField(AppLocalizations.of(context)?.phoneNumber ?? "Phone Number", controller: _phoneController, keyboardType: TextInputType.phone),
+            _buildField(AppLocalizations.of(context)?.companyName ?? "Company Name", controller: _companyNameController),
+            _buildField(AppLocalizations.of(context)?.industry ?? "Industry", controller: _industryController),
+            _buildField(AppLocalizations.of(context)?.customerNumber ?? "Customer Number", controller: _customerNumberController),
             const SizedBox(height: 24),
             Row(
               children: [
@@ -116,13 +117,13 @@ class _PartnerStepState extends State<PartnerStep> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.arrow_back, size: 20),
                         SizedBox(width: 8),
                         Text(
-                          "Zurück",
+                          AppLocalizations.of(context)?.back ?? "Back",
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -138,11 +139,11 @@ class _PartnerStepState extends State<PartnerStep> {
                         const EdgeInsets.symmetric(vertical: 16),
                       ),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Weiter",
+                          AppLocalizations.of(context)?.next ?? "Next",
                           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(width: 8),
@@ -170,7 +171,7 @@ class _PartnerStepState extends State<PartnerStep> {
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
-          labelText: label + ' (optional)',
+          labelText: '$label (${AppLocalizations.of(context)?.optional ?? "optional"})',
           border: const OutlineInputBorder(),
         ),
         keyboardType: keyboardType,

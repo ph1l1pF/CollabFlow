@@ -145,6 +145,13 @@
   "enjoyingApp": "Enjoying UGCWorks?",
   "reviewMessage": "We would love to hear your feedback! Your review helps us improve and reach more creators.",
   "notNow": "Not now",
-  "rateApp": "Rate App"
+  "rateApp": "Rate App",
+  "editPartnerData": "Edit Partner Data",
+  "brandAndContact": "Brand & Contact",
+  "contactPersonName": "Contact Person",
+  "phoneNumber": "Phone Number",
+  "companyName": "Company Name",
+  "customerNumber": "Customer Number",
+  "optional": "optional"
 }
  
