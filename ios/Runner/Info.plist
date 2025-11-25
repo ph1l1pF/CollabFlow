@@ -58,8 +58,22 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+				<string>fb778842734858662</string>
 			</array>
 		</dict>
+	</array>
+	<key>FacebookAppID</key>
+	<string>778842734858662</string>
+	<key>FacebookClientToken</key>
+	<string>1d1fdea25b35fe8b267c971c9bf8701b</string>
+	<key>FacebookDisplayName</key>
+	<string>UGCWorks</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
 	</array>
 </dict>
 </plist>

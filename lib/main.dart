@@ -19,7 +19,8 @@ import 'package:ugcworks/constants/app_colors.dart';
 import 'package:ugcworks/utils/currency_utils.dart';
 import 'package:ugcworks/services/review_service.dart';
 import 'package:ugcworks/services/analytics_service.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:ugcworks/services/facebook_app_events_service.dart';
+//import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -32,13 +33,25 @@ import 'package:ugcworks/utils/theme_utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // try {
+  //   await Firebase.initializeApp();
+  // } catch (e) {
+  //   // Continue app startup without Firebase if not configured yet
+  //   // This avoids crashes on TestFlight/dev until flutterfire configure is done
+  //   debugPrint('Firebase initialization failed: $e');
+  // }
+  
+  // Initialize Facebook App Events for Meta Ads pixel
+  final facebookAppEventsService = FacebookAppEventsService();
   try {
-    await Firebase.initializeApp();
+    // Track app install/activation event for Meta Ads optimization
+    // This allows Meta Ads to optimize campaigns for app installs
+    await facebookAppEventsService.logActivateApp();
+    debugPrint('Facebook App Events initialized');
   } catch (e) {
-    // Continue app startup without Firebase if not configured yet
-    // This avoids crashes on TestFlight/dev until flutterfire configure is done
-    debugPrint('Firebase initialization failed: $e');
+    debugPrint('Facebook App Events initialization failed: $e');
   }
+  
   //await Hive.deleteFromDisk();
   
   await Hive.initFlutter("ugcworks");
@@ -96,6 +109,9 @@ void main() async {
           create: (_) => ReviewService(),
         ),
         Provider(
+          create: (_) => facebookAppEventsService,
+        ),
+        Provider(
           create: (_) => AuthService(),
         ),
         Provider(
@@ -145,6 +161,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     // Track app launch
     Provider.of<ReviewService>(context, listen: false).trackAppLaunch(context);
     Provider.of<AnalyticsService>(context, listen: false).logAppOpen();
+    // Track app open for Meta Ads
+    Provider.of<FacebookAppEventsService>(context, listen: false).logAppOpen();
   }
 
   @override
