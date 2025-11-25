@@ -1039,6 +1039,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Delete Collaboration'**
   String get deleteCollab;
+
+  /// No description provided for @trackingPermissionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Help improving UGCWorks?'**
+  String get trackingPermissionTitle;
+
+  /// No description provided for @trackingPermissionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'We’d like to collect anonymous usage data to help improve UGCWorks and detect issues more quickly. For this, we need your permission to track.'**
+  String get trackingPermissionMessage;
+
+  /// No description provided for @trackingPermissionInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Your data will be handled securely.'**
+  String get trackingPermissionInfo;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
 }
 
 class _AppLocalizationsDelegate

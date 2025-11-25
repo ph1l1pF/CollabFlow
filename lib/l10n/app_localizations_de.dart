@@ -497,4 +497,17 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get deleteCollab => 'Collaboration löschen';
+
+  @override
+  String get trackingPermissionTitle => 'UGCWorks verbessern?';
+
+  @override
+  String get trackingPermissionMessage =>
+      'Wir möchten anonyme Nutzungsdaten erfassen, um UGCWorks weiter zu verbessern und Fehler schneller zu erkennen. Dafür benötigen wir deine Erlaubnis zum Tracking.';
+
+  @override
+  String get trackingPermissionInfo => 'Deine Daten werden sicher verwahrt.';
+
+  @override
+  String get ok => 'OK';
 }

@@ -13,6 +13,8 @@ import 'package:provider/provider.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
 import 'package:ugcworks/l10n/app_localizations.dart';
 import 'package:ugcworks/services/analytics_service.dart';
+import 'package:ugcworks/services/app_tracking_service.dart';
+import 'package:ugcworks/widgets/tracking_permission_dialog.dart';
 
 class CollaborationWizard extends StatefulWidget {
   const CollaborationWizard({super.key});
@@ -192,8 +194,15 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
       notes: _notes ?? '',
     );
 
-    await _requestNotificationPermissionsIfNecessary();
+    final isFirstCollaboration = await _sharedPrefsRepository.isFirstCollaboration();
+
+    await _requestNotificationPermissionsIfNecessary(isFirstCollaboration);
     _collaborationsRepository.createCollaboration(collab, context: context);
+
+    // Check if this is the first collaboration and request tracking permission
+    if (isFirstCollaboration && mounted) {
+      await _requestTrackingPermissionIfNeeded(context);
+    }
 
     // Track collaboration creation for review popup
     Provider.of<ReviewService>(context, listen: false)
@@ -217,22 +226,21 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
     Navigator.of(context).pop();
   }
 
-  Future<void> _requestNotificationPermissionsIfNecessary() async {
+  Future<void> _requestNotificationPermissionsIfNecessary(bool isFirstCollaboration) async {
     final enabled = await _notificationsRepository.notificationsEnabled();
     if (enabled) {
       return;
     }
 
-    final isFirstCollaboration = await _sharedPrefsRepository.isFirstCollaboration();
     if (!isFirstCollaboration) {
       return;
     }
     await _sharedPrefsRepository.setIsFirstCollaboration();
-      await Navigator.of(context).push<bool>(
-        MaterialPageRoute(
-          builder: (context) => NotificationPermissionScreen(),
-        ),
-      );
+    await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (context) => NotificationPermissionScreen(),
+      ),
+    );
   }
 
   void _handleScriptStep({
@@ -247,6 +255,41 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
       _nextStep();
     } else {
       _previousStep();
+    }
+  }
+
+  Future<void> _requestTrackingPermissionIfNeeded(BuildContext context) async {
+    final appTrackingService = Provider.of<AppTrackingService>(context, listen: false);
+    
+    // Check if tracking is already authorized
+    final isAuthorized = await appTrackingService.isTrackingAuthorized();
+    if (isAuthorized) {
+      print('Tracking is already authorized');
+      return; // Already authorized, no need to show dialog
+    }
+
+    // Check if tracking is available (iOS 14+)
+    final isAvailable = await appTrackingService.isTrackingAvailable();
+    if (!isAvailable) {
+      print('Tracking is not available');
+      return; // Tracking not available on this platform
+    }
+
+    // Show custom dialog first
+    if (!mounted) return;
+    
+    final shouldRequest = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => TrackingPermissionDialog(
+        onOk: () => Navigator.of(context).pop(true),
+        onCancel: () => Navigator.of(context).pop(false),
+      ),
+    );
+
+    // If user clicked OK, show the native Apple tracking dialog
+    if (shouldRequest == true && mounted) {
+      await appTrackingService.requestTrackingPermission();
     }
   }
 }

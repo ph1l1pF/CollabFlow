@@ -75,5 +75,7 @@
 		<string>fbauth2</string>
 		<string>fbshareextension</string>
 	</array>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>We’d like to collect anonymous usage data to help improve UGCWorks and detect issues more quickly.</string>
 </dict>
 </plist>

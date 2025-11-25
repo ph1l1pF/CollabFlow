@@ -159,5 +159,9 @@
   "createFirstCollaboration": "Erstelle deine erste Collaboration",
   "createFirstCollaborationMessage": "Lass uns anfangen! Erstelle deine erste Collaboration, um zu sehen, wie UGCWorks funktioniert.",
   "createFirstCollaborationButton": "Erste Collaboration erstellen",
-  "deleteCollab": "Collaboration löschen"
+  "deleteCollab": "Collaboration löschen",
+  "trackingPermissionTitle": "UGCWorks verbessern?",
+  "trackingPermissionMessage": "Wir möchten anonyme Nutzungsdaten erfassen, um UGCWorks weiter zu verbessern und Fehler schneller zu erkennen. Dafür benötigen wir deine Erlaubnis zum Tracking.",
+  "trackingPermissionInfo": "Deine Daten werden sicher verwahrt.",
+  "ok": "OK"
 }
