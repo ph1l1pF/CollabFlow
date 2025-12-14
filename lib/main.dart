@@ -21,7 +21,7 @@ import 'package:ugcworks/services/review_service.dart';
 import 'package:ugcworks/services/analytics_service.dart';
 import 'package:ugcworks/services/facebook_app_events_service.dart';
 import 'package:ugcworks/services/app_tracking_service.dart';
-//import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -34,13 +34,13 @@ import 'package:ugcworks/utils/theme_utils.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // try {
-  //   await Firebase.initializeApp();
-  // } catch (e) {
-  //   // Continue app startup without Firebase if not configured yet
-  //   // This avoids crashes on TestFlight/dev until flutterfire configure is done
-  //   debugPrint('Firebase initialization failed: $e');
-  // }
+  try {
+    await Firebase.initializeApp();
+  } catch (e) {
+    // Continue app startup without Firebase if not configured yet
+    // This avoids crashes on TestFlight/dev until flutterfire configure is done
+    debugPrint('Firebase initialization failed: $e');
+  }
   
   // Initialize Facebook App Events for Meta Ads pixel
   final facebookAppEventsService = FacebookAppEventsService();
