@@ -47,5 +47,43 @@ class FacebookAppEventsService {
       debugPrint('Facebook App Events: Failed to log event $eventName: $e');
     }
   }
+
+  /// Track complete registration event (Standard Meta Event)
+  /// This is a standard event that Meta Ads can optimize for
+  /// Use this when a user completes onboarding or creates their first collaboration
+  Future<void> logCompleteRegistration({
+    Map<String, dynamic>? parameters,
+  }) async {
+    try {
+      await _facebookAppEvents.logEvent(
+        name: 'fb_mobile_complete_registration',
+        parameters: parameters ?? {},
+      );
+    } catch (e) {
+      debugPrint('Facebook App Events: Failed to log complete registration: $e');
+    }
+  }
+
+  /// Track purchase event (Standard Meta Event)
+  /// Use this for transactions or important conversions
+  Future<void> logPurchase({
+    required double amount,
+    String? currency,
+    Map<String, dynamic>? parameters,
+  }) async {
+    try {
+      final params = <String, dynamic>{
+        'fb_currency': currency ?? 'EUR',
+        'fb_value': amount,
+        ...?parameters,
+      };
+      await _facebookAppEvents.logEvent(
+        name: 'fb_mobile_purchase',
+        parameters: params,
+      );
+    } catch (e) {
+      debugPrint('Facebook App Events: Failed to log purchase: $e');
+    }
+  }
 }
 

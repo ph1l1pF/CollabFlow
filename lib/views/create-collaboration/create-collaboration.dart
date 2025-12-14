@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:ugcworks/utils/theme_utils.dart';
 import 'package:ugcworks/l10n/app_localizations.dart';
 import 'package:ugcworks/services/analytics_service.dart';
+import 'package:ugcworks/services/facebook_app_events_service.dart';
 import 'package:ugcworks/services/app_tracking_service.dart';
 import 'package:ugcworks/widgets/tracking_permission_dialog.dart';
 
@@ -212,6 +213,43 @@ class _CollaborationWizardState extends State<CollaborationWizard> {
       collabId: collab.id,
       state: collab.state.name,
     );
+    
+    // Facebook App Events - Track with standard events for Meta Ads optimization
+    final facebookAppEvents = Provider.of<FacebookAppEventsService>(context, listen: false);
+    
+    if (isFirstCollaboration) {
+      // Use standard event for first collaboration (can be optimized in Meta Ads)
+      // This represents the user "completing registration" by creating their first collaboration
+      await facebookAppEvents.logCompleteRegistration(
+        parameters: {
+          'collab_id': collab.id,
+          'state': collab.state.name,
+        },
+      );
+    } else {
+      // For subsequent collaborations, track as custom event (for analytics)
+      await facebookAppEvents.logEvent(
+        eventName: 'collaboration_created',
+        parameters: {
+          'collab_id': collab.id,
+          'state': collab.state.name,
+          'has_fee': collab.fee.amount > 0,
+          'fee_amount': collab.fee.amount,
+        },
+      );
+    }
+    
+    // If collaboration has a fee, also track as purchase event
+    if (collab.fee.amount > 0) {
+      await facebookAppEvents.logPurchase(
+        amount: collab.fee.amount,
+        currency: collab.fee.currency,
+        parameters: {
+          'collab_id': collab.id,
+          'state': collab.state.name,
+        },
+      );
+    }
 
     // Show success toast
     if (mounted) {
