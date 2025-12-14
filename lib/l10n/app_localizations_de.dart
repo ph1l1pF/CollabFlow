@@ -222,7 +222,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get welcomeMessage =>
-      'Hast du genug davon, deine Collaborations in Excel, Notiz-Apps und Kalendern zu verwalten?';
+      'UGCWorks hilft dir dabei, den Überblick über deine Collaborations zu behalten und sie auf clevere Weise zu verwalten.\nLass uns zuerst mit ein paar Fragen beginnen';
 
   @override
   String get keepTrack =>
@@ -510,4 +510,79 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get ok => 'OK';
+
+  @override
+  String get onboardingQuestion1 =>
+      'Wie viele Collaborations hattest du in den letzten 3 Monaten?';
+
+  @override
+  String get onboardingQuestion1Option1 => '1-3';
+
+  @override
+  String get onboardingQuestion1Option2 => '4-10';
+
+  @override
+  String get onboardingQuestion1Option3 => 'mehr als 10';
+
+  @override
+  String get onboardingQuestion2 =>
+      'Wie viel Zeit pro Woche verbringst du mit Organisation statt Content?';
+
+  @override
+  String get onboardingQuestion2Option1 => '< 30 Minuten';
+
+  @override
+  String get onboardingQuestion2Option2 => '30–60 Minuten';
+
+  @override
+  String get onboardingQuestion2Option3 => '1–2 Stunden';
+
+  @override
+  String get onboardingQuestion2Option4 => '2+ Stunden';
+
+  @override
+  String get onboardingQuestion3 =>
+      'Was ist aktuell am stressigsten bei Collaborations?';
+
+  @override
+  String get onboardingQuestion3Option1 => 'Deadlines im Blick behalten';
+
+  @override
+  String get onboardingQuestion3Option2 => 'Überblick über laufende Projekte';
+
+  @override
+  String get onboardingQuestion3Option3 => 'Absprachen mit Brands';
+
+  @override
+  String get onboardingQuestion3Option4 => 'Rechnungen / Einnahmen tracken';
+
+  @override
+  String get onboardingQuestion3Option5 => 'Dateien & Briefings finden';
+
+  @override
+  String get onboardingQuestion3Option6 => 'Nichts davon';
+
+  @override
+  String get onboardingQuestion4 => 'Wie organisierst du deine Deals?';
+
+  @override
+  String get onboardingQuestion4Option1 => 'Excel / Google Sheets';
+
+  @override
+  String get onboardingQuestion4Option2 => 'Notizen-App';
+
+  @override
+  String get onboardingQuestion4Option3 => 'Kalender';
+
+  @override
+  String get onboardingQuestion4Option4 => 'E-Mail';
+
+  @override
+  String get onboardingQuestion4Option5 => 'Andere Tools';
+
+  @override
+  String get onboardingQuestion4Option6 => 'Gar nicht organisiert';
+
+  @override
+  String get multipleSelectionPossible => '(Mehrfachauswahl möglich)';
 }

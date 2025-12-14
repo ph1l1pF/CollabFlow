@@ -521,7 +521,7 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeMessage.
   ///
   /// In en, this message translates to:
-  /// **'Tired of managing your collaborations in Excel, note apps and calendars?'**
+  /// **'UGCWorks helps you keeping track of your collaborations and managing them in a smart way.\nLet\'s start with a few questions first'**
   String get welcomeMessage;
 
   /// No description provided for @keepTrack.
@@ -1049,7 +1049,7 @@ abstract class AppLocalizations {
   /// No description provided for @trackingPermissionMessage.
   ///
   /// In en, this message translates to:
-  /// **'We’d like to collect anonymous usage data to help improve UGCWorks and detect issues more quickly. For this, we need your permission to track.'**
+  /// **'We\'d like to collect anonymous usage data to help improve UGCWorks and detect issues more quickly. For this, we need your permission to track.'**
   String get trackingPermissionMessage;
 
   /// No description provided for @trackingPermissionInfo.
@@ -1063,6 +1063,150 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'OK'**
   String get ok;
+
+  /// No description provided for @onboardingQuestion1.
+  ///
+  /// In en, this message translates to:
+  /// **'How many collaborations did you have in the last 3 months?'**
+  String get onboardingQuestion1;
+
+  /// No description provided for @onboardingQuestion1Option1.
+  ///
+  /// In en, this message translates to:
+  /// **'1-3'**
+  String get onboardingQuestion1Option1;
+
+  /// No description provided for @onboardingQuestion1Option2.
+  ///
+  /// In en, this message translates to:
+  /// **'4-10'**
+  String get onboardingQuestion1Option2;
+
+  /// No description provided for @onboardingQuestion1Option3.
+  ///
+  /// In en, this message translates to:
+  /// **'more than 10'**
+  String get onboardingQuestion1Option3;
+
+  /// No description provided for @onboardingQuestion2.
+  ///
+  /// In en, this message translates to:
+  /// **'How much time per week do you spend on organization instead of content?'**
+  String get onboardingQuestion2;
+
+  /// No description provided for @onboardingQuestion2Option1.
+  ///
+  /// In en, this message translates to:
+  /// **'< 30 minutes'**
+  String get onboardingQuestion2Option1;
+
+  /// No description provided for @onboardingQuestion2Option2.
+  ///
+  /// In en, this message translates to:
+  /// **'30–60 minutes'**
+  String get onboardingQuestion2Option2;
+
+  /// No description provided for @onboardingQuestion2Option3.
+  ///
+  /// In en, this message translates to:
+  /// **'1–2 hours'**
+  String get onboardingQuestion2Option3;
+
+  /// No description provided for @onboardingQuestion2Option4.
+  ///
+  /// In en, this message translates to:
+  /// **'2+ hours'**
+  String get onboardingQuestion2Option4;
+
+  /// No description provided for @onboardingQuestion3.
+  ///
+  /// In en, this message translates to:
+  /// **'What is currently most stressful about collaborations?'**
+  String get onboardingQuestion3;
+
+  /// No description provided for @onboardingQuestion3Option1.
+  ///
+  /// In en, this message translates to:
+  /// **'Keeping track of deadlines'**
+  String get onboardingQuestion3Option1;
+
+  /// No description provided for @onboardingQuestion3Option2.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview of ongoing projects'**
+  String get onboardingQuestion3Option2;
+
+  /// No description provided for @onboardingQuestion3Option3.
+  ///
+  /// In en, this message translates to:
+  /// **'Communications with brands'**
+  String get onboardingQuestion3Option3;
+
+  /// No description provided for @onboardingQuestion3Option4.
+  ///
+  /// In en, this message translates to:
+  /// **'Tracking invoices / earnings'**
+  String get onboardingQuestion3Option4;
+
+  /// No description provided for @onboardingQuestion3Option5.
+  ///
+  /// In en, this message translates to:
+  /// **'Finding files & briefings'**
+  String get onboardingQuestion3Option5;
+
+  /// No description provided for @onboardingQuestion3Option6.
+  ///
+  /// In en, this message translates to:
+  /// **'None of the above'**
+  String get onboardingQuestion3Option6;
+
+  /// No description provided for @onboardingQuestion4.
+  ///
+  /// In en, this message translates to:
+  /// **'How do you organize your deals?'**
+  String get onboardingQuestion4;
+
+  /// No description provided for @onboardingQuestion4Option1.
+  ///
+  /// In en, this message translates to:
+  /// **'Excel / Google Sheets'**
+  String get onboardingQuestion4Option1;
+
+  /// No description provided for @onboardingQuestion4Option2.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes app'**
+  String get onboardingQuestion4Option2;
+
+  /// No description provided for @onboardingQuestion4Option3.
+  ///
+  /// In en, this message translates to:
+  /// **'Calendar'**
+  String get onboardingQuestion4Option3;
+
+  /// No description provided for @onboardingQuestion4Option4.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get onboardingQuestion4Option4;
+
+  /// No description provided for @onboardingQuestion4Option5.
+  ///
+  /// In en, this message translates to:
+  /// **'Other tools'**
+  String get onboardingQuestion4Option5;
+
+  /// No description provided for @onboardingQuestion4Option6.
+  ///
+  /// In en, this message translates to:
+  /// **'Not organized'**
+  String get onboardingQuestion4Option6;
+
+  /// No description provided for @multipleSelectionPossible.
+  ///
+  /// In en, this message translates to:
+  /// **'(Multiple selection possible)'**
+  String get multipleSelectionPossible;
 }
 
 class _AppLocalizationsDelegate

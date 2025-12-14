@@ -222,7 +222,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get welcomeMessage =>
-      'Tired of managing your collaborations in Excel, note apps and calendars?';
+      'UGCWorks helps you keeping track of your collaborations and managing them in a smart way.\nLet\'s start with a few questions first';
 
   @override
   String get keepTrack =>
@@ -502,11 +502,86 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get trackingPermissionMessage =>
-      'We’d like to collect anonymous usage data to help improve UGCWorks and detect issues more quickly. For this, we need your permission to track.';
+      'We\'d like to collect anonymous usage data to help improve UGCWorks and detect issues more quickly. For this, we need your permission to track.';
 
   @override
   String get trackingPermissionInfo => 'Your data will be handled securely.';
 
   @override
   String get ok => 'OK';
+
+  @override
+  String get onboardingQuestion1 =>
+      'How many collaborations did you have in the last 3 months?';
+
+  @override
+  String get onboardingQuestion1Option1 => '1-3';
+
+  @override
+  String get onboardingQuestion1Option2 => '4-10';
+
+  @override
+  String get onboardingQuestion1Option3 => 'more than 10';
+
+  @override
+  String get onboardingQuestion2 =>
+      'How much time per week do you spend on organization instead of content?';
+
+  @override
+  String get onboardingQuestion2Option1 => '< 30 minutes';
+
+  @override
+  String get onboardingQuestion2Option2 => '30–60 minutes';
+
+  @override
+  String get onboardingQuestion2Option3 => '1–2 hours';
+
+  @override
+  String get onboardingQuestion2Option4 => '2+ hours';
+
+  @override
+  String get onboardingQuestion3 =>
+      'What is currently most stressful about collaborations?';
+
+  @override
+  String get onboardingQuestion3Option1 => 'Keeping track of deadlines';
+
+  @override
+  String get onboardingQuestion3Option2 => 'Overview of ongoing projects';
+
+  @override
+  String get onboardingQuestion3Option3 => 'Communications with brands';
+
+  @override
+  String get onboardingQuestion3Option4 => 'Tracking invoices / earnings';
+
+  @override
+  String get onboardingQuestion3Option5 => 'Finding files & briefings';
+
+  @override
+  String get onboardingQuestion3Option6 => 'None of the above';
+
+  @override
+  String get onboardingQuestion4 => 'How do you organize your deals?';
+
+  @override
+  String get onboardingQuestion4Option1 => 'Excel / Google Sheets';
+
+  @override
+  String get onboardingQuestion4Option2 => 'Notes app';
+
+  @override
+  String get onboardingQuestion4Option3 => 'Calendar';
+
+  @override
+  String get onboardingQuestion4Option4 => 'Email';
+
+  @override
+  String get onboardingQuestion4Option5 => 'Other tools';
+
+  @override
+  String get onboardingQuestion4Option6 => 'Not organized';
+
+  @override
+  String get multipleSelectionPossible => '(Multiple selection possible)';
 }

@@ -43,8 +43,9 @@ dependencies:
   url_launcher: ^6.3.0
   sign_in_with_apple: ^6.1.0
   in_app_review: ^2.0.8
-  firebase_core: ^4.2.1
+  firebase_core: ^4.1.1
   firebase_analytics: ^12.0.4
+  cloud_firestore: ^6.1.0
   facebook_app_events: ^0.21.0
   app_tracking_transparency: ^2.0.3
   http: ^1.1.0
